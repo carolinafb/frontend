@@ -18,4 +18,5 @@ RUN npm run build
 EXPOSE 3000
 
 # Running the app
+# Prod CMD "npm" "start"
 CMD "npm" "run" "dev"
