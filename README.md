@@ -30,7 +30,7 @@ First, run the development server:
 npm start
 # or
 docker-compose up
-yarn d
+```
 
 
 ## Deploy on Vercel
