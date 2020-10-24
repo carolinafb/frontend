@@ -8,8 +8,12 @@
     "start": "docker-compose up"
   },
   "dependencies": {
+    "antd": "^4.7.2",
+    "axios": "^0.21.0",
+    "i18next": "^19.8.2",
     "next": "9.5.3",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "react-i18next": "^11.7.3"
   }
 }
