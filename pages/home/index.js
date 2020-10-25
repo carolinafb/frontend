@@ -1,6 +1,7 @@
 import React from "react";
-import { Layout } from "antd";
+import { Layout, Space } from "antd";
 import Navbar from "../../components/header/Navbar";
+import HomeChief from "../../components/home/HomeChief";
 
 const { Header, Content } = Layout;
 
@@ -8,10 +9,10 @@ const Home = () => {
   return (
     <Layout>
       <Header>
-        <Navbar className="" />
+        <Navbar />
       </Header>
       <Content>
-        Content //homeChief //homeMedico //homeAdmin //homeSystemRoules
+        <HomeChief />
       </Content>
     </Layout>
   );
