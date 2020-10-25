@@ -1,7 +1,6 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Login from "../components/login/Login";
-import getConfig from "next/config";
 
 export default function Home() {
   return (
@@ -16,7 +15,7 @@ export default function Home() {
 
         <p className={styles.description}>Sistema de emergencia Covid (?)</p>
 
-        <Login />
+        <Login apiEndPoint="http://localhost:8080" />
       </main>
     </div>
   );

@@ -14,5 +14,6 @@ module.exports = {
   publicRuntimeConfig: {
     // Will be available on both server and client
     staticFolder: "/static",
+    API_ENDPOINT: 'localhost:3000'
   },
 };

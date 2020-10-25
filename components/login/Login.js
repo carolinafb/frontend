@@ -10,9 +10,12 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import getConfig from "next/config";
+import { useRouter, Router } from 'next/router'
 
 const Login = ({ apiEndPoint }) => {
   const [user, setUser] = useState(null);
+  const router = useRouter()
 
   const [msg, setErr] = useState(null);
 
@@ -35,7 +38,11 @@ const Login = ({ apiEndPoint }) => {
 
   const onFinish = () => {
     console.log("el boton funciona y cargo bien el formulario");
-    axios.post(apiEndPoint + "/authenticate").catch((err) => {
+    axios.post(apiEndPoint + "/authenticate")
+    .then((res) => { 
+      router.push(res.data.redirect)
+    })
+    .catch((err) => {
       setErr("msgError");
     });
   };
@@ -114,11 +121,9 @@ const Login = ({ apiEndPoint }) => {
     </Fragment>
   );
 };
-
-export async function getStaticProps(context) {
-  return {
-    props: { apiEndPoint: process.env.NEXT_PUBLIC_APIENDPOINT }, // will be passed to the page component as props
-  };
-}
+export async function getStaticProps() {
+  console.log(JSON.stringify(getConfig()));
+  return { props: { apiEndPoint: 'localhost' } }
+};
 
 export default Login;
