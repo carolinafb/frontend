@@ -14,3 +14,13 @@ a {
 * {
   box-sizing: border-box;
 }
+.title2 {
+  color: white;
+  font-size: medium;
+}
+.nav-color {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  background: rgb(107, 45, 177);
+}
