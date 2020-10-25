@@ -1,17 +1,17 @@
 import React from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
-
+import HomeSystemRoules from "../../components/home/HomeSystemRule";
 const { Header, Content } = Layout;
 
 const Home = () => {
   return (
     <Layout>
-      <Header>
-        <Navbar className="" />
+      <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
+        <Navbar/>
       </Header>
       <Content>
-        Content //homeChief //homeMedico //homeAdmin //homeSystemRoules
+        <HomeSystemRoules/>
       </Content>
     </Layout>
   );

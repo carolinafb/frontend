@@ -1,5 +1,6 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Drawer, Button } from "antd";
+import  TopDrawer  from "./TopDrawer";
 import { BellFilled } from "@ant-design/icons";
 
 const Navbar = () => {
@@ -12,16 +13,18 @@ const Navbar = () => {
   };
 
   return (
-    <div className="nav-color">
+    <div>
       <Button type="primary" onClick={showDrawer}>
         Menu
       </Button>
       <Drawer
-        title="Basic Drawer"
+        title={<TopDrawer />}
         placement="left"
         closable={true}
         onClose={onClose}
         visible={visible}
+        headerStyle={{ backgroundColor: "rgb(107, 45, 177)" }}
+        footer={<label>logout</label>}
       >
         <p>Some contents...</p>
         <p>Some contents...</p>

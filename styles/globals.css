@@ -24,3 +24,9 @@ a {
   align-items: baseline;
   background: rgb(107, 45, 177);
 }
+.violet{
+  background-color: rgb(107, 45, 177);
+}
+.ant-drawer-body {
+  color: rgba(0, 0, 0, 0.85);
+}
