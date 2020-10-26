@@ -22,7 +22,6 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  background: rgb(107, 45, 177);
 }
 
 .align-column-center {
@@ -35,9 +34,7 @@ a {
 .margin__big {
   margin: 30px;
 }
-.ant-layout-header {
-  background: rgb(107, 45, 177) !important;
-}
+
 .violet {
   background-color: rgb(107, 45, 177);
 }

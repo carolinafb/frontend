@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Drawer, Button } from "antd";
 import TopDrawer from "./TopDrawer";
-import { BellFilled, LogoutOutlined } from "@ant-design/icons";
+import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
 
-const Navbar = () => {
+const Navbar = ({ user, buttons }) => {
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(true);
@@ -12,22 +12,13 @@ const Navbar = () => {
     setVisible(false);
   };
 
+  //loads user actions depending on role into array
+
   return (
-    <div>
-      <Button type="primary" onClick={showDrawer}>
-        Menu
-      </Button>
+    <div className="nav-color">
+      <Button type="text" onClick={showDrawer} icon={<MenuOutlined />}></Button>
       <Drawer
-        title={
-          <TopDrawer
-            userInfo={{
-              role: "DOCTOR",
-              name: "Carolina",
-              lastname: "Fernandez",
-              system: "UTI",
-            }}
-          />
-        }
+        title={<TopDrawer userInfo={user} />}
         placement="left"
         closable={true}
         onClose={onClose}
@@ -39,9 +30,11 @@ const Navbar = () => {
           </Button>
         }
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>noleguta</p>
+        {buttons.forEach((element) => {
+          <Button type="text">{element}</Button>;
+        })}
+        <Button type="text">{buttons[0]}</Button>
       </Drawer>
       <label className="title2">Nombre/Rol</label>
       <BellFilled />
