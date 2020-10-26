@@ -31,8 +31,8 @@ const Navbar = ({ user, buttons }) => {
         }
       >
         <p>noleguta</p>
-        {buttons.forEach((element) => {
-          <Button type="text">{element}</Button>;
+        {buttons.map((element) => {
+          return <Button type="text">{element}</Button>;
         })}
         <Button type="text">{buttons[0]}</Button>
       </Drawer>
