@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Drawer, Button } from "antd";
+import React, { useEffect,useState } from "react";
+import { Drawer, Button ,List} from "antd";
 import TopDrawer from "./TopDrawer";
 import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
 
-const Navbar = ({ user, buttons }) => {
+const Navbar = ({ info }) => {
+
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(true);
@@ -12,13 +13,33 @@ const Navbar = ({ user, buttons }) => {
     setVisible(false);
   };
 
+
+  let buttonsToShow = [];
+  useEffect(() => {
+    if (info && info.role == ("DOCTOR" || "SYSTEMCHIEF")) {
+      buttonsToShow.push("ALERTAS");
+      if (info && info.system == "GUARDIA") {
+        buttonsToShow.push("INGRESAR PACIENTE");
+      }
+    }
+    if (info && info.role == "SYSTEMCHIEF") {
+      buttonsToShow.push("PACIENTES NUEVOS");
+    }
+    if (info && info.role == "ADMIN") {
+      buttonsToShow.push("SISTEMAS");
+      buttonsToShow.push("JEFES/MEDICOS");
+      buttonsToShow.push("EVALUACIONES");
+    }
+  });
+
   //loads user actions depending on role into array
 
   return (
+    
     <div className="nav-color">
       <Button type="text" onClick={showDrawer} icon={<MenuOutlined />}></Button>
       <Drawer
-        title={<TopDrawer userInfo={user} />}
+        title={<TopDrawer userInfo={info} />}
         placement="left"
         closable={true}
         onClose={onClose}
@@ -30,11 +51,13 @@ const Navbar = ({ user, buttons }) => {
           </Button>
         }
       >
-        <p>noleguta</p>
-        {buttons.forEach((element) => {
-          <Button type="text">{element}</Button>;
-        })}
-        <Button type="text">{buttons[0]}</Button>
+    <List
+      size="medium"
+      dataSource={buttonsToShow}
+      renderItem={item => <List.Item> <Button type="text">{item}</Button></List.Item>}
+    />
+
+      
       </Drawer>
       <label className="title2">Nombre/Rol</label>
       <BellFilled />

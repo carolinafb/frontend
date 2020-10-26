@@ -2,66 +2,33 @@ import React from "react";
 import { List, Typography, Divider ,Table, Space, Collapse, Button} from 'antd';
 const { Panel } = Collapse;
 
-const data = [
-    {
-       "name":"Sala 1",
-       "beds":[
-          {
-             "name":"Cama 1",
-             "patient":{
-                "name":"Luciano",
-                "lastname":"Pérez Cerra"
-             }},
-             {
-              "name":"Cama 2",
-              "patient":{
-                 "name":"lucas",
-                 "lastname":"Pérez "
-              }}
-              ,
-             {
-              "name":"Cama 3",
-              "patient":{
-                 "name":"juan",
-                 "lastname":"martinez "
-              }
-          }]
-        },
-          {
-             "name":"Sala 2",
-             "beds":[
-                
-             ]
-          },
-          {
-            "name":"Sala 3",
-            "beds":[
-               {
-                  "name":"Cama 1",
-                  "patient":{
-                     "name":"federico",
-                     "lastname":"Cerra"
-                  }},
-                  {
-                   "name":"Cama 2",
-                   "patient":{
-                      "name":"mario",
-                      "lastname":"juarez "
-                   }}]
-             }
-       ]
- 
-const Rooms = () => {
+const Rooms = ({info}) => {
   return <div>
 <Collapse accordion>
-{data &&
-            data.map((user, index) => (
-                <Panel header={user.name} key={`user${index}`}>
 
-      <Table dataSource={user.beds} pagination={false}>
+
+{info && info.map((room, index) => (
+                <Panel header={room.name} key={`room${index}`}>
+
+
+
+      <Table dataSource={room.beds} pagination={false}>
     <Table title="Bed Name" dataIndex="name" key="firstName" />
-    <Table title="Name" dataIndex="patient.name" key="Name" />
-    <Table title="Last Name" dataIndex="patient.lastname"  key="age" />
+    <Table
+      title="name"
+      dataIndex="patient"
+      key="patient"
+      render={patient => ( <p> {patient.name} </p>
+      )}
+    />
+    <Table
+      title="lastname"
+      dataIndex="patient"
+      key="patient"
+      render={patient => ( <p> {patient.lastname} </p>
+      )}
+    />
+
     <Table
       title="Action"
       key="action"
@@ -73,6 +40,7 @@ const Rooms = () => {
       )}
     />
   </Table>
+
 
     </Panel>
             ))}

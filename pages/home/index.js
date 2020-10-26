@@ -8,17 +8,17 @@ const Home = () => {
   const { Header, Content } = Layout;
   let buttonsToShow = [];
   const user = {
-    role: "DOCTOR",
+    role: "ADMIN",
     name: "Carolina",
     lastname: "Fernandez",
     system: "UTI",
   };
 
-  /* useEffect(() => {
+   useEffect(() => {
      axios
-       .get("https://")
+       .get("https:8080/init")
        .then((res) => setprojects(res.data));
-   }, [setprojects]);*/
+   }, [setprojects]);
 
   useEffect(() => {
     if (user.role == ("DOCTOR" || "SYSTEMCHIEF")) {
