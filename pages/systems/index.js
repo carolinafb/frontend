@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
-import Rooms from "../../components/patients/Rooms";
+import HomeChief from "../../components/home/HomeChief";
 import axios from "axios";
 
-const Patients = () => {
+const Home = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
 
@@ -18,10 +18,10 @@ const Patients = () => {
         <Navbar info={state.user} />
       </Header>
       <Content>
-        <Rooms info={state.rooms} />
+        <HomeChief />
       </Content>
     </Layout>
   );
 };
 
-export default Patients;
+export default Home;

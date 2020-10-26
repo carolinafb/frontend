@@ -9,11 +9,11 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import getConfig from "next/config";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 const Login = ({ apiEndPoint }) => {
   const [user, setUser] = useState(null);
-  const router = useRouter()
+  const router = useRouter();
 
   const [msg, setErr] = useState(null);
 
@@ -36,9 +36,10 @@ const Login = ({ apiEndPoint }) => {
 
   const onFinish = () => {
     console.log("el boton funciona y cargo bien el formulario");
-    axios.post(apiEndPoint + "/authenticate")
+    axios
+      .post(apiEndPoint + "/authenticate")
       .then((res) => {
-        router.push(res.data.redirect)
+        router.push(res.data.redirect);
       })
       .catch((err) => {
         setErr("login.error.msg");
@@ -63,9 +64,7 @@ const Login = ({ apiEndPoint }) => {
         <Form.Item
           label="Nombre de Usuario"
           name="itemName"
-          rules={[
-            { required: true, message: "Ingrese el nombre de usuario!" },
-          ]}
+          rules={[{ required: true, message: "Ingrese el nombre de usuario!" }]}
         >
           <Input
             name="username"
@@ -95,7 +94,7 @@ const Login = ({ apiEndPoint }) => {
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
             Ingresar
-            </Button>
+          </Button>
         </Form.Item>
       </Form>
 
@@ -107,19 +106,17 @@ const Login = ({ apiEndPoint }) => {
         icon={<FacebookFilled />}
         suffix={<UserOutlined />}
       >
-        {" "}
-          Ingresar con
-        </Button>
+        Ingresar con
+      </Button>
       <Button type="secondary" size="large" icon={<GoogleCircleFilled />}>
-        {" "}
-          Ingresar con
-        </Button>
+        Ingresar con
+      </Button>
     </Fragment>
   );
 };
 export async function getStaticProps() {
   console.log(JSON.stringify(getConfig()));
-  return { props: { apiEndPoint: 'localhost' } }
-};
+  return { props: { apiEndPoint: "localhost" } };
+}
 
 export default Login;
