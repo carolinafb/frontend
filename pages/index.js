@@ -15,7 +15,7 @@ export default function Home() {
 
         <p className={styles.description}>Sistema de emergencia Covid (?)</p>
 
-        <Login apiEndPoint="http://localhost:8080" />
+        <Login apiEndPoint="http://localhost:9000" />
       </main>
     </div>
   );

@@ -9,7 +9,7 @@ const Home = () => {
   const [state, setstate] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:8080/init").then((res) => setstate(res.data));
+    axios.get("http://localhost:9000/init").then((res) => setstate(res.data));
   }, [setstate]);
 
   return (
