@@ -58,8 +58,6 @@ const Rooms = () => {
             data.map((user, index) => (
                 <Panel header={user.name} key={`user${index}`}>
 
-
-
       <Table dataSource={user.beds} pagination={false}>
     <Table title="Bed Name" dataIndex="name" key="firstName" />
     <Table title="Name" dataIndex="patient.name" key="Name" />
@@ -74,27 +72,7 @@ const Rooms = () => {
         </Space>
       )}
     />
-  </Table>,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  </Table>
 
     </Panel>
             ))}
