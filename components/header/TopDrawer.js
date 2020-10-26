@@ -1,9 +1,10 @@
-import React, { Fragment } from "react";
+import React, { useState } from "react";
 import { Card, Typography, Switch } from "antd";
 
 const TopDrower = ({ userInfo }) => {
   const { role, name, lastname, system } = userInfo;
   const { Title } = Typography;
+  // ROLES TO COMPARE: "ADMIN" "DOCTOR" "SYSTEMCHIEF" "SYSTEMRULES"
 
   return (
     <Card
@@ -20,11 +21,15 @@ const TopDrower = ({ userInfo }) => {
         {lastname}
       </Title>
       <p>{role}</p>
-      <div>
-        <label>En Linea:</label>
-        <br />
-        <Switch checkedChildren="ON" unCheckedChildren="OFF" defaultChecked />
-      </div>
+      {role == ("DOCTOR" || "SYSTEMCHIEF") ? (
+        <div>
+          <label>
+            <strong>En Linea:</strong>
+          </label>
+          <br />
+          <Switch checkedChildren="ON" unCheckedChildren="OFF" defaultChecked />
+        </div>
+      ) : null}
     </Card>
   );
 };
