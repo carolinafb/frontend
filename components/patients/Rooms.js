@@ -1,32 +1,104 @@
 import React from "react";
-import { Switch } from 'antd';
-import { List, Typography, Divider } from 'antd';
-
+import { List, Typography, Divider ,Table, Space, Collapse, Button} from 'antd';
+const { Panel } = Collapse;
 
 const data = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-];
-
+    {
+       "name":"Sala 1",
+       "beds":[
+          {
+             "name":"Cama 1",
+             "patient":{
+                "name":"Luciano",
+                "lastname":"Pérez Cerra"
+             }},
+             {
+              "name":"Cama 2",
+              "patient":{
+                 "name":"lucas",
+                 "lastname":"Pérez "
+              }}
+              ,
+             {
+              "name":"Cama 3",
+              "patient":{
+                 "name":"juan",
+                 "lastname":"martinez "
+              }
+          }]
+        },
+          {
+             "name":"Sala 2",
+             "beds":[
+                
+             ]
+          },
+          {
+            "name":"Sala 3",
+            "beds":[
+               {
+                  "name":"Cama 1",
+                  "patient":{
+                     "name":"federico",
+                     "lastname":"Cerra"
+                  }},
+                  {
+                   "name":"Cama 2",
+                   "patient":{
+                      "name":"mario",
+                      "lastname":"juarez "
+                   }}]
+             }
+       ]
+ 
 const Rooms = () => {
   return <div>
-      <Divider orientation="left">Small Size</Divider>
-    <List
-      size="small"
-      header={<div>Header</div>}
-      footer={<div>Footer</div>}
-      bordered
-      dataSource={data}
-      renderItem={item => <List.Item>{item}</List.Item>}
+<Collapse accordion>
+{data &&
+            data.map((user, index) => (
+                <Panel header={user.name} key={`user${index}`}>
+
+
+
+      <Table dataSource={user.beds} pagination={false}>
+    <Table title="Bed Name" dataIndex="name" key="firstName" />
+    <Table title="Name" dataIndex="patient.name" key="Name" />
+    <Table title="Last Name" dataIndex="patient.lastname"  key="age" />
+    <Table
+      title="Action"
+      key="action"
+      render={(text, record) => (
+        <Space size="middle">
+          <a>Invite</a>
+          <a>Delete</a>
+        </Space>
+      )}
     />
-    
+  </Table>,
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </Panel>
+            ))}
+</Collapse>
   </div>;
 };
 export default Rooms;

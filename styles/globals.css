@@ -20,11 +20,25 @@ a {
 }
 .nav-color {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: baseline;
   background: rgb(107, 45, 177);
 }
-.violet{
+
+.align-column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.margin__big {
+  margin: 30px;
+}
+.ant-layout-header {
+  background: rgb(107, 45, 177) !important;
+}
+.violet {
   background-color: rgb(107, 45, 177);
 }
 .ant-drawer-body {
