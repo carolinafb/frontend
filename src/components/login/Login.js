@@ -47,7 +47,8 @@ const Login = () => {
         router.push(res.data.redirect);
       })
       .catch((err) => {
-        setErr("login.error.msg");
+        console.log(err);
+        setErr(err);
       });
   };
 
@@ -57,6 +58,7 @@ const Login = () => {
 
   return (
     <Fragment>
+      {msg ? <Alert message={t(msg)} type="error" /> : null}
       {msg ? <Alert message={t(msg)} type="error" /> : null}
       <Form
         {...layout}
