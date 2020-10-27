@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import { Form, Input, Button, Divider, Alert } from "antd";
 import {
   UserOutlined,
@@ -10,10 +10,12 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import getConfig from "next/config";
 import { useRouter } from "next/router";
+import { UserContext } from "../../contexts/UserContext";
 
-const Login = ({ apiEndPoint }) => {
+const Login = () => {
   const [user, setUser] = useState(null);
   const router = useRouter();
+  const { setJwt, apiEndPoint } = useContext(UserContext);
 
   const [msg, setErr] = useState(null);
 
@@ -35,10 +37,13 @@ const Login = ({ apiEndPoint }) => {
   };
 
   const onFinish = () => {
-    console.log("el boton funciona y cargo bien el formulario");
     axios
-      .post(apiEndPoint + "/authenticate")
+      .post(apiEndPoint + "/authenticate", {
+        email: user.email,
+        password: user.password,
+      })
       .then((res) => {
+        setJwt(res.data.jwt);
         router.push(res.data.redirect);
       })
       .catch((err) => {
@@ -62,14 +67,14 @@ const Login = ({ apiEndPoint }) => {
         onFinishFailed={onFinishFailed}
       >
         <Form.Item
-          label="Nombre de Usuario"
+          label="Email"
           name="itemName"
           rules={[{ required: true, message: "Ingrese el nombre de usuario!" }]}
         >
           <Input
-            name="username"
+            name="email"
             size="large"
-            placeholder="large size"
+            placeholder="Ingrese el email"
             suffix={<UserOutlined />}
             onChange={onChange}
           />
@@ -114,6 +119,7 @@ const Login = ({ apiEndPoint }) => {
     </Fragment>
   );
 };
+
 export async function getStaticProps() {
   console.log(JSON.stringify(getConfig()));
   return { props: { apiEndPoint: "localhost" } };

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 import Login from "../components/login/Login";
 
 export default function Home() {
@@ -12,10 +12,8 @@ export default function Home() {
 
       <main className={styles.main}>
         <img src="/SeCo.png" alt="SeCo"></img>
-
         <p className={styles.description}>Sistema de emergencia Covid (?)</p>
-
-        <Login apiEndPoint="http://localhost:8080" />
+        <Login />
       </main>
     </div>
   );
