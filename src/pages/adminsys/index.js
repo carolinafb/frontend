@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
-import Rooms from "../../components/patients/Rooms";
+import Systems from "../../components/adminsys/Systems";
 import axios from "axios";
 
-const Patients = () => {
+const adminsys = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:9000/patients").then((res) => setstate(res.data));
+    axios.get("http://localhost:9000/adminsys").then((res) => setstate(res.data));
   }, []);
 
   return (
@@ -18,10 +18,10 @@ const Patients = () => {
         <Navbar info={state.user} />
       </Header>
       <Content>
-        <Rooms info={state.rooms} />
+        <Systems systems={state.systems} />
       </Content>
     </Layout>
   );
 };
 
-export default Patients;
+export default adminsys;
