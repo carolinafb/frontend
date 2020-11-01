@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
-import HomeChief from "../../components/home/HomeChief";
+import SystemsAdmin from "../../components/systems/Systems";
 import axios from "axios";
 
-const Home = () => {
+const systems = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
-  /*
+
   useEffect(() => {
-    axios.get("http://localhost:9000/init").then((res) => setstate(res.data));
-  }, [setstate]);
-*/
+    axios.get("http://localhost:9000/systems").then((res) => setstate(res.data));
+  }, []);
+
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
         <Navbar info={state.user} />
       </Header>
       <Content>
-        <HomeChief />
+        <SystemsAdmin systems={state.systems} />
       </Content>
     </Layout>
   );
 };
 
-export default Home;
+export default systems;

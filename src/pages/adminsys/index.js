@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
-import Systems from "../../components/adminsys/Systems";
+import SystemsAdmin from "../../components/adminsys/SystemsAdmin";
 import axios from "axios";
 
 const adminsys = () => {
@@ -18,7 +18,7 @@ const adminsys = () => {
         <Navbar info={state.user} />
       </Header>
       <Content>
-        <Systems systems={state.systems} />
+        <SystemsAdmin systems={state.systems} />
       </Content>
     </Layout>
   );
