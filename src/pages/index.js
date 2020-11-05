@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "../../styles/Home.module.css";
 import Login from "../components/login/Login";
+import Navbar from "../components/header/Navbar";
 
 export default function Home() {
   return (

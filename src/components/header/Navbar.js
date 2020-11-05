@@ -1,17 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Drawer, Button, List } from "antd";
 import TopDrawer from "./TopDrawer";
 import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { UserContext } from "../../contexts/UserContext";
+import { useRouter } from "next/router";
 
 const Navbar = ({ info }) => {
+  const router = useRouter();
   let buttonsToShow = [];
   const [visible, setVisible] = useState(false);
+  const { jwt, setJwt, apiEndPoint } = useContext(UserContext);
 
   const showDrawer = () => {
     setVisible(true);
   };
   const onClose = () => {
     setVisible(false);
+  };
+  const logOut = () => {
+    // Make a request for a user with a given ID
+    axios
+      .get(apiEndPoint + "/logOut", { jwt })
+      .then((res) => {
+        setJwt({});
+        router.push(res.data.redirect);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
   };
 
   //loads user actions depending on role into array
@@ -41,7 +59,7 @@ const Navbar = ({ info }) => {
         visible={visible}
         headerStyle={{ backgroundColor: "rgb(107, 45, 177)" }}
         footer={
-          <Button type="text" icon={<LogoutOutlined />}>
+          <Button type="text" onClick={logOut} icon={<LogoutOutlined />}>
             Cerrar Sesion
           </Button>
         }

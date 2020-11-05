@@ -1,21 +1,22 @@
 import React from "react";
-import { Table, Space, Collapse  } from "antd";
+import { Table, Space, Collapse } from "antd";
 const { Panel } = Collapse;
 
 const RoomsSystem = ({ rooms }) => {
   return (
     <div>
-    <Collapse accordion>
-      {rooms &&
-        rooms.map((room, index) => (
-          <Panel header={room.name} key={`room${index}`}>
-            <Table dataSource={room.patients} pagination={false}>
-              <Table title="Bed Name" dataIndex="bed_name" key="firstName" />
+      <Collapse accordion>
+        {rooms &&
+          rooms.map((room, index) => (
+            <Panel header={room.name} key={`room${index}`}>
+              <Table dataSource={room.beds} pagination={false}>
+                <Table title="Bed Name" dataIndex="name" key="firstName" />
                 <Table
                   title="name"
                   dataIndex="patient_name"
                   key="patient_name"
                 />
+
                 <Table
                   title="lastname"
                   dataIndex="patient_last_name"
@@ -30,13 +31,12 @@ const RoomsSystem = ({ rooms }) => {
                       <a>Delete</a>
                     </Space>
                   )}
-              />
-            </Table>
-          </Panel>
-        ))}
-    </Collapse>
-  </div>
-      
+                />
+              </Table>
+            </Panel>
+          ))}
+      </Collapse>
+    </div>
   );
 };
 export default RoomsSystem;
