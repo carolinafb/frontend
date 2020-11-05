@@ -9,7 +9,7 @@ const Systems = ({ systems }) => {
       <Collapse accordion>
         {systems &&
           systems.map((system, index) => (
-            <Panel header={system.system_name} key={`system${index}`}>
+            <Panel header={system.name} key={`system${index}`}>
           
             <Rooms rooms={system.rooms} />
             </Panel>

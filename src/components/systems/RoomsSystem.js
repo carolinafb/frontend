@@ -8,8 +8,8 @@ const RoomsSystem = ({ rooms }) => {
     <Collapse accordion>
       {rooms &&
         rooms.map((room, index) => (
-          <Panel header={room.room_name} key={`room${index}`}>
-            <Table dataSource={room.beds} pagination={false}>
+          <Panel header={room.name} key={`room${index}`}>
+            <Table dataSource={room.patients} pagination={false}>
               <Table title="Bed Name" dataIndex="bed_name" key="firstName" />
                 <Table
                   title="name"

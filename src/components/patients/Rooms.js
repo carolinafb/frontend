@@ -8,7 +8,7 @@ const Rooms = ({ info }) => {
       <Collapse accordion>
         {info &&
           info.map((room, index) => (
-            <Panel header={room.room_name} key={`room${index}`}>
+            <Panel header={room.name} key={`room${index}`}>
               <Table dataSource={room.patients} pagination={false}>
                 <Table title="Bed Name" dataIndex="bed_name" key="firstName" />
                 <Table
