@@ -1,6 +1,8 @@
 import React from "react";
-import { Table, Space, Collapse, Button } from "antd";
+import { Table,Typography, Space, Collapse, Button } from "antd";
 const { Panel } = Collapse;
+const { Text} = Typography;
+
 
 const RoomsSystem = ({ rooms }) => {
   const columns = [
@@ -14,7 +16,7 @@ const RoomsSystem = ({ rooms }) => {
       render: (text, record) => (
 
         <Space size="middle">
-           {record["patient_last_name"]} {record["patient_name"]}{record["patient_name"] ? <p></p>: <p>Vacia</p>}
+            {record["patient_name"] ? <p>{record["patient_name"]} {record["patient_last_name"]}</p>: <Text type="success">Libre</Text>}
         </Space>
       ),
       key: "patient_last_name",
@@ -24,9 +26,8 @@ const RoomsSystem = ({ rooms }) => {
       key: "Acciones",
       render: (text, record) => (
         <Space size="middle">
-          {record["patient_id"] ? <Button type="primary">Ver</Button>: <a/>}
-          {record["patient_id"] ? <Button type="primary">Evolucionar</Button>: <a/>
-        }
+          {record["patient_id"] && <Button type="primary">Ver</Button>}
+          {record["patient_id"] && <Button type="primary">Asignar</Button>}
         </Space>
       ),
     },
@@ -42,7 +43,7 @@ const RoomsSystem = ({ rooms }) => {
                 dataSource={room.beds}
                 pagination={false}
                 columns={columns}
-                scroll={{ x: 700 }}
+                scroll={{ x: 500 }}
               ></Table>
             </Panel>
           ))}
