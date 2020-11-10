@@ -13,7 +13,10 @@ const AddPatients = () => {
         <Navbar info={state.user} />
       </Header>
       <Content>
-        {state.addDataToPatient ? <AddPatientData /> : <SerchPatient />}
+        {
+          //state.addDataToPatient ? <AddPatientData /> : <SerchPatient />
+        }
+        <AddPatientData />
       </Content>
     </Layout>
   );

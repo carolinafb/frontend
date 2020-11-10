@@ -1,27 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, DatePicker, InputNumber } from "antd";
 
 const AffiliateData = () => {
-  const onChange = (e) => {};
-
+  const dni = 33333333; //la idea que el DNI ya me lo de de la pantalla anterior
+  const [affiliateData, setAffiliateData] = React.useState({ dni: 33333333 });
+  const onChange = (e) => {
+    setAffiliateData({
+      ...affiliateData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const addbirthDate = (e, date) => {
+    setAffiliateData({
+      ...affiliateData,
+      birth_date: date,
+    });
+  };
   return (
     <div className="align-column-center2">
       <Form
         layout="vertical"
         style={{ width: "100%" }}
-        name="basic"
+        name="affiliateData"
         initialValues={{
           remember: true,
         }}
       >
         <Form.Item
           label="Ingrese el DNI: "
-          name="dniLabel"
           rules={[{ required: true, message: "Ingrese el DNI de la persona" }]}
         >
           <InputNumber
             placeholder="DNI"
             name="dni"
+            value={dni}
             onChange={onChange}
             style={{ width: "100%" }}
           />
@@ -29,7 +41,6 @@ const AffiliateData = () => {
 
         <Form.Item
           label="Fecha de Nacimiento:"
-          name="fechaDeNacimiento"
           rules={[
             {
               required: true,
@@ -38,12 +49,14 @@ const AffiliateData = () => {
           ]}
         >
           <DatePicker
+            name="birthDate"
             placeholder="Fecha de nacimiento"
+            mode="date"
             style={{ width: "100%" }}
+            onChange={addbirthDate}
           />
         </Form.Item>
         <Form.Item
-          name="apellido"
           label="Apellido:"
           rules={[
             {
@@ -52,10 +65,9 @@ const AffiliateData = () => {
             },
           ]}
         >
-          <Input placeholder="Apellido" />
+          <Input placeholder="Apellido" name="lastName" onChange={onChange} />
         </Form.Item>
         <Form.Item
-          name="nombre"
           label="Nombre:"
           rules={[
             {
@@ -64,10 +76,9 @@ const AffiliateData = () => {
             },
           ]}
         >
-          <Input placeholder="Nombre" />
+          <Input placeholder="Nombre" name="name" onChange={onChange} />
         </Form.Item>
         <Form.Item
-          name="direccion"
           label="Direccion:"
           rules={[
             {
@@ -76,10 +87,9 @@ const AffiliateData = () => {
             },
           ]}
         >
-          <Input placeholder="Direccion" />
+          <Input placeholder="Direccion" name="direction" onChange={onChange} />
         </Form.Item>
         <Form.Item
-          name="phone"
           label="Phone Number"
           rules={[
             {
@@ -88,17 +98,15 @@ const AffiliateData = () => {
             },
           ]}
         >
-          <Input placeholder="Telefono" />
+          <Input placeholder="Telefono" name="phone" onChange={onChange} />
         </Form.Item>
         <Form.Item
           label="Email"
-          name="itemName"
           rules={[{ required: true, message: "Ingrese el email!" }]}
         >
           <Input name="email" placeholder="Email" onChange={onChange} />
         </Form.Item>
         <Form.Item
-          name="obraSocial"
           label="Obra social"
           rules={[
             {
@@ -107,7 +115,11 @@ const AffiliateData = () => {
             },
           ]}
         >
-          <Input placeholder="Obra social" />
+          <Input
+            placeholder="Obra social"
+            name="socialSecurity"
+            onChange={onChange}
+          />
         </Form.Item>
       </Form>
     </div>

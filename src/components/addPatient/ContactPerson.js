@@ -2,18 +2,24 @@ import React from "react";
 import { Form, Input } from "antd";
 
 const ContactPerson = () => {
+  const [contactPerson, setContactPerson] = React.useState({});
+  const onChange = (e) => {
+    setContactPerson({
+      ...contactPerson,
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
     <div className="align-column-center2">
       <Form
         layout="vertical"
         style={{ width: "100%" }}
-        name="basic"
+        name="contactPerson"
         initialValues={{
           remember: true,
         }}
       >
         <Form.Item
-          name="apellido"
           label="Apellido:"
           rules={[
             {
@@ -22,10 +28,9 @@ const ContactPerson = () => {
             },
           ]}
         >
-          <Input placeholder="Apellido" />
+          <Input placeholder="Apellido" name="lastName" onChange={onChange} />
         </Form.Item>
         <Form.Item
-          name="nombre"
           label="Nombre:"
           rules={[
             {
@@ -34,10 +39,9 @@ const ContactPerson = () => {
             },
           ]}
         >
-          <Input placeholder="Nombre" />
+          <Input placeholder="Nombre" name="name" onChange={onChange} />
         </Form.Item>
         <Form.Item
-          name="parentesco"
           label="Parentesco/Relacion:"
           rules={[
             {
@@ -46,10 +50,13 @@ const ContactPerson = () => {
             },
           ]}
         >
-          <Input placeholder="Parentesco/Relacion" />
+          <Input
+            placeholder="Parentesco/Relacion"
+            name="relationship"
+            onChange={onChange}
+          />
         </Form.Item>
         <Form.Item
-          name="phone"
           label="Phone Number"
           rules={[
             {
@@ -58,7 +65,7 @@ const ContactPerson = () => {
             },
           ]}
         >
-          <Input placeholder="Telefono" />
+          <Input placeholder="Telefono" name="phone" onChange={onChange} />
         </Form.Item>
       </Form>
     </div>

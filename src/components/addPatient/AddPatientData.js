@@ -22,6 +22,7 @@ const AddPatientData = () => {
   ];
 
   const [current, setCurrent] = React.useState(0);
+  //const [pattient, setPattient] = React.useState(0);
 
   const next = () => {
     setCurrent(current + 1);
