@@ -33,7 +33,29 @@ const Systems = ({ systems }) => {
       <Collapse accordion>
         {systems &&
           systems.map((system, index) => (
-            <Panel header={<h1>{system.name}</h1>} key={`system${index}`}>
+            <Panel
+              header={
+                <div>
+                  <Row gutter={8}>
+                    <Col className="gutter-row" span={11}>
+                      <div>
+                        <h1>{system.name}</h1>
+                      </div>
+                    </Col>
+                    <Col className="gutter-row" span={12}>
+                      <div>
+                        {system.retirable == true ? (
+                          <Button type="danger">Borrar</Button>
+                        ) : (
+                          <p></p>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              }
+              key={`system${index}`}
+            >
               <header>
                 <Collapse accordion>
                   <Panel header="Informacion general">

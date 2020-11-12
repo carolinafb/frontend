@@ -1,18 +1,18 @@
 import React from "react";
 import { useState } from "react";
-import { Table,Button, Space, Collapse  } from "antd";
+import { Table, Button, Row, Col, Space, Collapse } from "antd";
 import CreateForm from "../../components/adminsys/Load";
 const { Panel } = Collapse;
 
 const RoomsAdmin = ({ rooms }) => {
-   const [visible, setVisible] = useState(false);
-   const [roomId, setRoomId] = useState(null);
-   const [systemId, setSystemId] = useState(null);
-   const [titulo, setTitulo] = useState(false);
-   const onCreate = (values) => {
-     console.log("Received values of form: ", values);
-     setVisible(false);
-   };
+  const [visible, setVisible] = useState(false);
+  const [roomId, setRoomId] = useState(null);
+  const [systemId, setSystemId] = useState(null);
+  const [titulo, setTitulo] = useState(false);
+  const onCreate = (values) => {
+    console.log("Received values of form: ", values);
+    setVisible(false);
+  };
 
   const columns = [
     {
@@ -25,9 +25,11 @@ const RoomsAdmin = ({ rooms }) => {
       key: "Acciones",
       render: (text, record) => (
         <Space size="middle">
-          {(record["patientId"])?  <p>Asignada</p> : <Button type="danger">Borrar</Button> }
-
-          
+          {record["patientId"] ? (
+            <p>Asignada</p>
+          ) : (
+            <Button type="danger">Borrar</Button>
+          )}
         </Space>
       ),
     },
@@ -48,7 +50,29 @@ const RoomsAdmin = ({ rooms }) => {
       <Collapse accordion>
         {rooms &&
           rooms.map((room, index) => (
-            <Panel header={room.name} key={`room${index}`}>
+            <Panel
+              header={
+                <div>
+                  <Row gutter={8}>
+                    <Col className="gutter-row" span={11}>
+                      <div>
+                        <h2>{room.name}</h2>
+                      </div>
+                    </Col>
+                    <Col className="gutter-row" span={12}>
+                      <div>
+                        {room.beds.length === 0 ? (
+                          <Button type="danger">Borrar</Button>
+                        ) : (
+                          <p></p>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              }
+              key={`room${index}`}
+            >
               <Table
                 dataSource={room.beds}
                 pagination={false}
