@@ -1,28 +1,55 @@
-import React, { Fragment } from "react";
-import { Steps, Button, message, Row, Col } from "antd";
+import React, { Fragment, useContext, useState } from "react";
+import axios from "axios";
+import { Steps, Button, Row, Col, Form } from "antd";
 import AffiliateData from "./AffiliateData";
 import PersonalHistory from "./PersonalHistory";
 import ContactPerson from "./ContactPerson";
+import { UserContext } from "../../contexts/UserContext";
 
 const AddPatientData = () => {
+  const { apiEndPoint } = useContext(UserContext);
+  const [current, setCurrent] = useState(0);
+  const [data, setData] = useState({});
+  const [form] = Form.useForm();
   const { Step } = Steps;
   const steps = [
     {
       title: "Datos Filiatorios",
-      content: <AffiliateData />,
+      content: <AffiliateData form={form} />,
     },
     {
       title: "Antecedentes Personales",
-      content: <PersonalHistory />,
+      content: <PersonalHistory form={form} />,
     },
     {
       title: "Persona de contacto",
-      content: <ContactPerson />,
+      content: <ContactPerson form={form} />,
     },
   ];
 
-  const [current, setCurrent] = React.useState(0);
-  //const [pattient, setPattient] = React.useState(0);
+  const onOk = () => {
+    console.log("current ", current);
+    form
+      .validateFields()
+      .then((values) => {
+        const newData = { ...data, ...values };
+        setData(newData);
+        if (current < 2) {
+          next();
+        } else {
+          axios
+            .post(apiEndPoint + "/validatePatient", {
+              data: newData,
+            })
+            .then((res) => {
+              // router.push(res.data.redirect);
+            });
+        }
+      })
+      .catch((info) => {
+        console.log("Validate Failed:", info);
+      });
+  };
 
   const next = () => {
     setCurrent(current + 1);
@@ -31,6 +58,7 @@ const AddPatientData = () => {
   const prev = () => {
     setCurrent(current - 1);
   };
+
   return (
     <Fragment>
       <Steps size="small" current={current}>
@@ -57,7 +85,7 @@ const AddPatientData = () => {
           <Button
             style={{ marginBottom: "2%", marginLeft: "2%" }}
             type="primary"
-            onClick={() => next()}
+            onClick={onOk}
           >
             Next
           </Button>
@@ -66,7 +94,7 @@ const AddPatientData = () => {
           <Button
             style={{ marginBottom: "2%", marginLeft: "2%" }}
             type="primary"
-            onClick={() => message.success("Processing complete!")}
+            onClick={onOk}
           >
             Done
           </Button>
@@ -74,7 +102,7 @@ const AddPatientData = () => {
         {current > 0 && (
           <Button
             style={{ marginBottom: "2%", marginLeft: "3px" }}
-            onClick={() => prev()}
+            onClick={prev}
           >
             Previous
           </Button>

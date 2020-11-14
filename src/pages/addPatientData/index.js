@@ -1,9 +1,9 @@
 import Navbar from "../../components/header/Navbar";
 import { Layout } from "antd";
 import React, { useState } from "react";
-import SerchPatient from "../../components/addPatient/SerchPatient";
+import AddPatientData from "../../components/addPatient/AddPatientData";
 
-const AddPatients = () => {
+const AddPatientsData = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
 
@@ -13,10 +13,10 @@ const AddPatients = () => {
         <Navbar info={state.user} />
       </Header>
       <Content>
-        <SerchPatient />
+        <AddPatientData />
       </Content>
     </Layout>
   );
 };
 
-export default AddPatients;
+export default AddPatientsData;

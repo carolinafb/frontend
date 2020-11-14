@@ -1,17 +1,11 @@
 import React from "react";
 import { Form, Input } from "antd";
 
-const ContactPerson = () => {
-  const [contactPerson, setContactPerson] = React.useState({});
-  const onChange = (e) => {
-    setContactPerson({
-      ...contactPerson,
-      [e.target.name]: e.target.value,
-    });
-  };
+const ContactPerson = ({ form }) => {
   return (
     <div className="align-column-center2">
       <Form
+        form={form}
         layout="vertical"
         style={{ width: "100%" }}
         name="contactPerson"
@@ -21,6 +15,7 @@ const ContactPerson = () => {
       >
         <Form.Item
           label="Apellido:"
+          name="contactPerson_lastName"
           rules={[
             {
               required: true,
@@ -28,10 +23,11 @@ const ContactPerson = () => {
             },
           ]}
         >
-          <Input placeholder="Apellido" name="lastName" onChange={onChange} />
+          <Input placeholder="Apellido" />
         </Form.Item>
         <Form.Item
           label="Nombre:"
+          name="contactPerson_name"
           rules={[
             {
               required: true,
@@ -39,10 +35,11 @@ const ContactPerson = () => {
             },
           ]}
         >
-          <Input placeholder="Nombre" name="name" onChange={onChange} />
+          <Input placeholder="Nombre" />
         </Form.Item>
         <Form.Item
           label="Parentesco/Relacion:"
+          name="contactPerson_relationship"
           rules={[
             {
               required: true,
@@ -50,14 +47,11 @@ const ContactPerson = () => {
             },
           ]}
         >
-          <Input
-            placeholder="Parentesco/Relacion"
-            name="relationship"
-            onChange={onChange}
-          />
+          <Input placeholder="Parentesco/Relacion" />
         </Form.Item>
         <Form.Item
           label="Phone Number"
+          name="contactPerson_phone"
           rules={[
             {
               required: true,
@@ -65,7 +59,7 @@ const ContactPerson = () => {
             },
           ]}
         >
-          <Input placeholder="Telefono" name="phone" onChange={onChange} />
+          <Input placeholder="Telefono" />
         </Form.Item>
       </Form>
     </div>
