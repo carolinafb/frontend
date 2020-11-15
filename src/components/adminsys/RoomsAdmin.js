@@ -1,17 +1,45 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
-import { Table, Button, Row, Col, Space, Collapse } from "antd";
-import CreateForm from "../../components/adminsys/Load";
+import { Table, Icon, Button, Row, Col, Space, Collapse } from "antd";
+import CreateForm from "./LoadEdit";
+import axios from "axios";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { useRouter } from "next/router";
+import { UserContext } from "../../contexts/UserContext";
 const { Panel } = Collapse;
 
 const RoomsAdmin = ({ rooms }) => {
   const [visible, setVisible] = useState(false);
   const [roomId, setRoomId] = useState(null);
+  const [bedId, setBedId] = useState(null);
   const [systemId, setSystemId] = useState(null);
   const [titulo, setTitulo] = useState(false);
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
     setVisible(false);
+  };
+
+  const router = useRouter();
+  const { apiEndPoint } = useContext(UserContext);
+
+  const onDeleteRoom = (roomId) => {
+    axios
+      .delete(apiEndPoint + "/room", {
+        data: { roomId },
+      })
+      .then((res) => {
+        router.push(res.data.redirect);
+      });
+  };
+
+  const onDeleteBed = (bedId) => {
+    axios
+      .delete(apiEndPoint + "/bed", {
+        data: { bedId },
+      })
+      .then((res) => {
+        router.push(res.data.redirect);
+      });
   };
 
   const columns = [
@@ -21,15 +49,40 @@ const RoomsAdmin = ({ rooms }) => {
       key: "name",
     },
     {
-      title: "Acciones",
-      key: "Acciones",
+      title: "Borrar",
+      key: "Borrar",
       render: (text, record) => (
         <Space size="middle">
           {record["patientId"] ? (
             <p>Asignada</p>
           ) : (
-            <Button type="danger">Borrar</Button>
+            <Button
+              onClick={() => {
+                onDeleteBed(record.id);
+              }}
+              type="danger"
+            >
+              <DeleteOutlined />
+            </Button>
           )}
+        </Space>
+      ),
+    },
+    {
+      title: "Modificar",
+      key: "Modificar",
+      render: (text, record) => (
+        <Space size="middle">
+          <Button
+            onClick={() => {
+              setVisible(true);
+              setBedId(record.id);
+              setTitulo("Modificar cama");
+            }}
+            type="primary"
+          >
+            <EditOutlined />
+          </Button>
         </Space>
       ),
     },
@@ -40,6 +93,7 @@ const RoomsAdmin = ({ rooms }) => {
       <CreateForm
         roomId={roomId}
         systemId={systemId}
+        bedId={bedId}
         titulo={titulo}
         visible={visible}
         onCreate={onCreate}
@@ -54,18 +108,39 @@ const RoomsAdmin = ({ rooms }) => {
               header={
                 <div>
                   <Row gutter={8}>
-                    <Col className="gutter-row" span={11}>
+                    <Col className="gutter-row" span={12}>
                       <div>
                         <h2>{room.name}</h2>
                       </div>
                     </Col>
-                    <Col className="gutter-row" span={12}>
+                    <Col className="gutter-row" span={4}>
                       <div>
                         {room.beds.length === 0 ? (
-                          <Button type="danger">Borrar</Button>
+                          <Button
+                            onClick={() => {
+                              onDeleteRoom(room.id);
+                            }}
+                            type="danger"
+                          >
+                            <DeleteOutlined />
+                          </Button>
                         ) : (
                           <p></p>
                         )}
+                      </div>
+                    </Col>
+                    <Col className="gutter-row" span={4}>
+                      <div>
+                        <Button
+                          onClick={() => {
+                            setVisible(true);
+                            setRoomId(room.id);
+                            setTitulo("Modificar sala");
+                          }}
+                          type="primary"
+                        >
+                          <EditOutlined />
+                        </Button>
                       </div>
                     </Col>
                   </Row>
@@ -85,11 +160,11 @@ const RoomsAdmin = ({ rooms }) => {
                     onClick={() => {
                       setVisible(true);
                       setRoomId(room.id);
-                      setSystemId(null);
                       setTitulo("Agregar cama");
                     }}
                     type="primary"
                   >
+                    {" "}
                     Agregar cama
                   </Button>
                 </div>
