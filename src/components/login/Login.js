@@ -41,7 +41,7 @@ const Login = () => {
       .post("/authenticate", {
         email: user.email,
         password: user.password,
-      }, { withCredentials: true})
+      })
       .then((res) => {
         setJwt(res.data.jwt);
         router.push(res.data.redirect);
