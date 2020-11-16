@@ -51,7 +51,7 @@ const AddPatientData = () => {
               }
             })
             .catch((err) => {
-              setError(true);
+              setError(err.response.data.error);
             });
         }
       })
@@ -106,7 +106,7 @@ const AddPatientData = () => {
             >
               {error && (
                 <Alert
-                  message="Algun campo se cargo mal!"
+                  message={error}
                   type="error"
                   style={{ alignContent: "center" }}
                 />

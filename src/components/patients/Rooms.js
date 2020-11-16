@@ -1,37 +1,48 @@
 import React from "react";
-import { Table, Space, Collapse } from "antd";
+import { Table, Button, Space, Collapse } from "antd";
 const { Panel } = Collapse;
 
-const Rooms = ({ info }) => {
+const Rooms = ({ rooms }) => {
+  const columns = [
+    {
+      title: "Cama",
+      dataIndex: "bedName",
+      key: "name",
+    },
+    {
+      title: "Paciente",
+      render: (text, record) => (
+
+        <Space size="middle">
+            {record["patientName"]} {record["patientLastName"]}
+        </Space>
+      ),
+      key: "patientName",
+    },
+    {
+      title: "Acciones",
+      key: "Acciones",
+      render: (text, record) => (
+        <Space size="middle">
+          {record["patientId"] && <Button type="primary">Ver</Button>}
+          {record["patientId"] && <Button type="primary">Evolucionar</Button>}
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <div>
       <Collapse accordion>
-        {info &&
-          info.map((room, index) => (
+        {rooms &&
+          rooms.map((room, index) => (
             <Panel header={room.name} key={`room${index}`}>
-              <Table dataSource={room.patients} pagination={false}>
-                <Table title="Bed Name" dataIndex="bed_name" key="firstName" />
-                <Table
-                  title="name"
-                  dataIndex="patient_name"
-                  key="patient_name"
-                />
-                <Table
-                  title="lastname"
-                  dataIndex="patient_last_name"
-                  key="patient_last_name"
-                />
-                <Table
-                  title="Action"
-                  key="action"
-                  render={(text, record) => (
-                    <Space size="middle">
-                      <a>Invite</a>
-                      <a>Delete</a>
-                    </Space>
-                  )}
-                />
-              </Table>
+              <Table
+                dataSource={room.patients}
+                pagination={false}
+                columns={columns}
+                scroll={{ x: 470 }}
+              ></Table>
             </Panel>
           ))}
       </Collapse>

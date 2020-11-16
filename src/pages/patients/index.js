@@ -18,7 +18,7 @@ const Patients = () => {
         <Navbar info={state.user} />
       </Header>
       <Content>
-        <Rooms info={state.rooms} />
+        <Rooms rooms={state.rooms} />
       </Content>
     </Layout>
   );
