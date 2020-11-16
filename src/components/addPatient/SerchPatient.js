@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { UserContext } from "../../contexts/UserContext";
 import { useTranslation } from "react-i18next";
 import React, { useState, useContext } from "react";
-
 import { Space, Typography, InputNumber, Alert, Form, Button } from "antd";
 
 const SerchPatient = () => {

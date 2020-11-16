@@ -1,10 +1,11 @@
 import React, { Fragment, useContext, useState } from "react";
 import axios from "axios";
-import { Steps, Button, Row, Col, Form } from "antd";
+import { Steps, Button, Row, Col, Form, Result, Alert } from "antd";
 import AffiliateData from "./AffiliateData";
 import PersonalHistory from "./PersonalHistory";
 import ContactPerson from "./ContactPerson";
 import { UserContext } from "../../contexts/UserContext";
+import { useRouter } from "next/router";
 
 const AddPatientData = () => {
   const { apiEndPoint } = useContext(UserContext);
@@ -12,6 +13,11 @@ const AddPatientData = () => {
   const [data, setData] = useState({});
   const [form] = Form.useForm();
   const { Step } = Steps;
+  const [sucess, setSucess] = useState(false);
+  const [error, setError] = useState(false);
+  const [redir, setRedirect] = useState(false);
+  const router = useRouter();
+
   const steps = [
     {
       title: "Datos Filiatorios",
@@ -28,7 +34,6 @@ const AddPatientData = () => {
   ];
 
   const onOk = () => {
-    console.log("current ", current);
     form
       .validateFields()
       .then((values) => {
@@ -38,11 +43,15 @@ const AddPatientData = () => {
           next();
         } else {
           axios
-            .post(apiEndPoint + "/validatePatient", {
-              data: newData,
-            })
+            .post(apiEndPoint + "/validatePatient", newData)
             .then((res) => {
-              // router.push(res.data.redirect);
+              if (res.status) {
+                setSucess(true);
+                setRedirect(res.data.redirect);
+              }
+            })
+            .catch((err) => {
+              setError(true);
             });
         }
       })
@@ -61,53 +70,80 @@ const AddPatientData = () => {
 
   return (
     <Fragment>
-      <Steps size="small" current={current}>
-        {steps.map((item) => (
-          <Step
-            key={item.title}
-            title={item.title}
-            style={{ margin: "1%", padding: "0%" }}
-          />
-        ))}
-      </Steps>
-      <Row justify="start">
-        <Col
-          xs={24}
-          sm={{ span: 15, offset: 1 }}
-          lg={{ span: 10, offset: 1 }}
-          xl={{ span: 6, offset: 1 }}
-        >
-          {steps[current].content}
-        </Col>
-      </Row>
-      <div>
-        {current < steps.length - 1 && (
-          <Button
-            style={{ marginBottom: "2%", marginLeft: "2%" }}
-            type="primary"
-            onClick={onOk}
-          >
-            Next
-          </Button>
-        )}
-        {current === steps.length - 1 && (
-          <Button
-            style={{ marginBottom: "2%", marginLeft: "2%" }}
-            type="primary"
-            onClick={onOk}
-          >
-            Done
-          </Button>
-        )}
-        {current > 0 && (
-          <Button
-            style={{ marginBottom: "2%", marginLeft: "3px" }}
-            onClick={prev}
-          >
-            Previous
-          </Button>
-        )}
-      </div>
+      {sucess ? (
+        <Result
+          status="success"
+          title="Se agrego al paciente CORRECTAMENTE"
+          extra={
+            <Button
+              type="primary"
+              style={{ backgroundColor: "#4CAF50", border: "#4CAF50" }}
+              onClick={() => {
+                router.push(redir);
+              }}
+            >
+              Continuar
+            </Button>
+          }
+        />
+      ) : (
+        <Fragment>
+          <Steps size="small" current={current}>
+            {steps.map((item) => (
+              <Step
+                key={item.title}
+                title={item.title}
+                style={{ margin: "1%", padding: "0%" }}
+              />
+            ))}
+          </Steps>
+          <Row justify="start">
+            <Col
+              xs={24}
+              sm={{ span: 15, offset: 1 }}
+              lg={{ span: 10, offset: 1 }}
+              xl={{ span: 6, offset: 1 }}
+            >
+              {error && (
+                <Alert
+                  message="Algun campo se cargo mal!"
+                  type="error"
+                  style={{ alignContent: "center" }}
+                />
+              )}
+              {steps[current].content}
+            </Col>
+          </Row>
+          <Fragment>
+            {current < steps.length - 1 && (
+              <Button
+                style={{ marginBottom: "2%", marginLeft: "2%" }}
+                type="primary"
+                onClick={onOk}
+              >
+                Next
+              </Button>
+            )}
+            {current === steps.length - 1 && (
+              <Button
+                style={{ marginBottom: "2%", marginLeft: "2%" }}
+                type="primary"
+                onClick={onOk}
+              >
+                Done
+              </Button>
+            )}
+            {current > 0 && (
+              <Button
+                style={{ marginBottom: "2%", marginLeft: "3px" }}
+                onClick={prev}
+              >
+                Previous
+              </Button>
+            )}
+          </Fragment>
+        </Fragment>
+      )}
     </Fragment>
   );
 };
