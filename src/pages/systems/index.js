@@ -3,13 +3,14 @@ import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
 import SystemsAdmin from "../../components/systems/Systems";
 import axios from "axios";
+import axiosInstance from "../../components/axios";
 
 const systems = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:9000/systems").then((res) => setstate(res.data));
+    axiosInstance.get("/systems").then((res) => setstate(res.data));
   }, []);
 
   return (
