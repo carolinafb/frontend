@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
 import Rooms from "../../components/patients/Rooms";
-import axios from "axios";
+import axiosInstance from "../../components/axios";
 
 const Patients = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:9000/patients").then((res) => setstate(res.data));
+    axiosInstance.get("/patients").then((res) => setstate(res.data));
   }, []);
 
   return (
