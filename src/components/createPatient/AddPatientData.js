@@ -8,7 +8,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { useRouter } from "next/router";
 
 const AddPatientData = () => {
-  const { apiEndPoint } = useContext(UserContext);
+  const { apiEndPoint, setPatientData } = useContext(UserContext);
   const [current, setCurrent] = useState(0);
   const [data, setData] = useState({});
   const [form] = Form.useForm();
@@ -16,6 +16,7 @@ const AddPatientData = () => {
   const [sucess, setSucess] = useState(false);
   const [error, setError] = useState(false);
   const [redir, setRedirect] = useState(false);
+
   const router = useRouter();
 
   const steps = [
@@ -48,6 +49,7 @@ const AddPatientData = () => {
               if (res.status) {
                 setSucess(true);
                 setRedirect(res.data.redirect);
+                setPatientData(res.data.data);
               }
             })
             .catch((err) => {

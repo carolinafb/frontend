@@ -9,7 +9,9 @@ const Patients = () => {
   const [state, setstate] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:9000/patients").then((res) => setstate(res.data));
+    axios
+      .get("http://localhost:9000/patients")
+      .then((res) => setstate(res.data));
   }, []);
 
   return (
