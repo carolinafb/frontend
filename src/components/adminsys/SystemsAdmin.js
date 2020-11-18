@@ -95,18 +95,22 @@ const Systems = ({ systems }) => {
                     </Col>
 
                     <Col className="gutter-row" span={4}>
-                      <div>
-                        <Button
-                          onClick={() => {
-                            setVisible(true);
-                            setSystemId(system.id);
-                            setTitulo("Modificar sistema");
-                          }}
-                          type="primary"
-                        >
-                          <EditOutlined />
-                        </Button>
-                      </div>
+                      {system.retirable == true ? (
+                        <div>
+                          <Button
+                            onClick={() => {
+                              setVisible(true);
+                              setSystemId(system.id);
+                              setTitulo("Modificar sistema");
+                            }}
+                            type="primary"
+                          >
+                            <EditOutlined />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
                     </Col>
                   </Row>
                 </div>
