@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import axiosInstance from "../axios";
-import getConfig from "next/config";
-import { Button, Modal, Form, Input, Radio } from "antd";
+import {  Modal, Form, Input } from "antd";
 import { useRouter } from "next/router";
 import { UserContext } from "../../contexts/UserContext";
 
@@ -13,7 +12,7 @@ const CreateForm = ({
   titulo,
   systemId,
   roomId,
-  bedId,
+  bedId
 }) => {
   const router = useRouter();
   const { apiEndPoint } = useContext(UserContext);
@@ -37,68 +36,18 @@ const CreateForm = ({
       systemId,
       roomId
     );
-
-    if (titulo == "Agregar sistema") {
-      axiosInstance
-        .post(apiEndPoint + "/system", {
-          nombre: nombre,
-        })
+    const payload = {
+      nombre,
+      systemId, // estos son parametros opcionales, si no se pasan quedan
+      roomId,
+      bedId
+    };
+    const path = systemId ? '/system' : roomId ? '/room' : '/bed';
+    axiosInstance
+        .post(path, payload)
         .then((res) => {
           router.push(res.data.redirect);
         });
-    }
-    if (titulo == "Agregar sala") {
-      axiosInstance
-        .post(apiEndPoint + "/room", {
-          nombre: nombre,
-          systemId: systemId,
-        })
-        .then((res) => {
-          router.push(res.data.redirect);
-        });
-    }
-    if (titulo == "Agregar cama") {
-      axiosInstance
-        .post(apiEndPoint + "/bed", {
-          nombre: nombre,
-          roomId: roomId,
-        })
-        .then((res) => {
-          router.push(res.data.redirect);
-        });
-    }
-    if (titulo == "Modificar sistema") {
-      axiosInstance
-        .put(apiEndPoint + "/system", {
-          value: nombre,
-          systemId: systemId,
-          key: "name",
-        })
-        .then((res) => {
-          router.push(res.data.redirect);
-        });
-    }
-    if (titulo == "Modificar sala") {
-      console.log(roomId);
-      axiosInstance
-        .put(apiEndPoint + "/room", {
-          nombre: nombre,
-          roomId: roomId,
-        })
-        .then((res) => {
-          router.push(res.data.redirect);
-        });
-    }
-    if (titulo == "Modificar cama") {
-      axiosInstance
-        .put(apiEndPoint + "/bed", {
-          nombre: nombre,
-          bedId: bedId,
-        })
-        .then((res) => {
-          router.push(res.data.redirect);
-        });
-    }
   };
   const onFinishFailed = () => {
     console.log("el boton funciona pero no se cargo bien el formilario");
