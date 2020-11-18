@@ -4,8 +4,9 @@ export const UserContext = createContext();
 const UserProvider = (props) => {
   const [jwt, setJwt] = useState(null);
   const [dniPatient, setDniPatient] = useState(null);
-  const apiEndPoint = "http://localhost:9000";
+  const apiEndPoint = "https://localhost:9000";
   const [patientData, setPatientData] = useState({});
+  const [userData, setUserData] = useState({});
 
   return (
     <UserContext.Provider
@@ -17,6 +18,8 @@ const UserProvider = (props) => {
         setDniPatient,
         patientData,
         setPatientData,
+        userData,
+        setUserData,
       }}
     >
       {props.children}

@@ -1,7 +1,7 @@
 import Navbar from "../../../components/header/Navbar";
 import { Layout } from "antd";
 import React, { useState, useContext } from "react";
-import axios from "axios";
+import axiosInstance from "../../../components/axios";
 import { useRouter } from "next/router";
 import { UserContext } from "../../../contexts/UserContext";
 import { useTranslation } from "react-i18next";
@@ -9,23 +9,19 @@ import { Space, Typography, InputNumber, Alert, Form, Button } from "antd";
 
 const AddPatients = () => {
   const { Header, Content } = Layout;
-  const [state, setstate] = useState({});
   const router = useRouter();
   const { Title } = Typography;
   const { t } = useTranslation();
   const [msg, setErr] = useState(null);
-  const { apiEndPoint, setDniPatient, setPatientData } = useContext(
-    UserContext
-  );
+  const { setDniPatient } = useContext(UserContext);
 
   const onFinish = (e) => {
     setDniPatient(e.dni);
-    axios
-      .post(apiEndPoint + "/addPatient", {
+    axiosInstance
+      .post("/searchPatient", {
         dni: e.dni,
       })
       .then((res) => {
-        setPatientData(res.data.data);
         router.push(res.data.redirect);
       })
       .catch((err) => {
@@ -37,7 +33,7 @@ const AddPatients = () => {
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
-        <Navbar info={state.user} />
+        <Navbar info={null} />
       </Header>
       <Content>
         <Space direction="vertical" style={{ width: "100%" }}>

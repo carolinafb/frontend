@@ -7,15 +7,15 @@ import {
 } from "@ant-design/icons";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
 import getConfig from "next/config";
 import { useRouter } from "next/router";
 import { UserContext } from "../../contexts/UserContext";
+import axiosInstance from "../axios";
 
 const Login = () => {
   const [user, setUser] = useState(null);
   const router = useRouter();
-  const { setJwt, apiEndPoint } = useContext(UserContext);
+  const { setJwt, setUserData } = useContext(UserContext);
 
   const [msg, setErr] = useState(null);
 
@@ -37,13 +37,14 @@ const Login = () => {
   };
 
   const onFinish = () => {
-    axios
-      .post(apiEndPoint + "/authenticate", {
+    axiosInstance
+      .post("/authenticate", {
         email: user.email,
         password: user.password,
       })
       .then((res) => {
         setJwt(res.data.jwt);
+        setUserData(res.data.user);
         router.push(res.data.redirect);
       })
       .catch((err) => {

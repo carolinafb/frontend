@@ -1,14 +1,13 @@
 import React, { Fragment, useContext, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../axios";
 import { Steps, Button, Row, Col, Form, Result, Alert } from "antd";
 import AffiliateData from "./AffiliateData";
 import PersonalHistory from "./PersonalHistory";
 import ContactPerson from "./ContactPerson";
-import { UserContext } from "../../contexts/UserContext";
+
 import { useRouter } from "next/router";
 
 const AddPatientData = () => {
-  const { apiEndPoint, setPatientData } = useContext(UserContext);
   const [current, setCurrent] = useState(0);
   const [data, setData] = useState({});
   const [form] = Form.useForm();
@@ -43,13 +42,12 @@ const AddPatientData = () => {
         if (current < 2) {
           next();
         } else {
-          axios
-            .post(apiEndPoint + "/validatePatient", newData)
+          axiosInstance
+            .post("/validatePatient", newData)
             .then((res) => {
               if (res.status) {
                 setSucess(true);
                 setRedirect(res.data.redirect);
-                setPatientData(res.data.data);
               }
             })
             .catch((err) => {

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
 import SystemsAdmin from "../../components/adminsys/SystemsAdmin";
-import axios from "axios";
+import axiosInstance from "../../components/axios";
 
 const adminsys = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:9000/adminsys").then((res) => setstate(res.data));
+    axiosInstance.get("/adminsys").then((res) => setstate(res.data));
   }, []);
 
   return (

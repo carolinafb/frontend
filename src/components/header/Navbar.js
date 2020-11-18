@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Drawer, Button, List } from "antd";
 import TopDrawer from "./TopDrawer";
 import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
-import axios from "axios";
+import axiosInstance from "../axios";
 import { UserContext } from "../../contexts/UserContext";
 import { useRouter } from "next/router";
 
@@ -20,7 +20,7 @@ const Navbar = ({ info }) => {
   };
   const logOut = () => {
     // Make a request for a user with a given ID
-    axios
+    axiosInstance
       .get(apiEndPoint + "/logOut", { jwt })
       .then((res) => {
         setJwt({});
