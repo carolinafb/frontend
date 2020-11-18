@@ -15,7 +15,7 @@ import axiosInstance from "../axios";
 const Login = () => {
   const [user, setUser] = useState(null);
   const router = useRouter();
-  const { setJwt, apiEndPoint } = useContext(UserContext);
+  const { setJwt, setDBUser } = useContext(UserContext);
 
   const [msg, setErr] = useState(null);
 
@@ -44,6 +44,7 @@ const Login = () => {
       })
       .then((res) => {
         setJwt(res.data.jwt);
+        setDBUser(res.data.user);
         router.push(res.data.redirect);
       })
       .catch((err) => {
