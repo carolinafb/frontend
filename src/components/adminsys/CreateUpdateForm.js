@@ -12,7 +12,8 @@ const CreateForm = ({
   titulo,
   systemId,
   roomId,
-  bedId
+  bedId,
+  action = 'create'
 }) => {
   const router = useRouter();
   const { apiEndPoint } = useContext(UserContext);
@@ -24,7 +25,7 @@ const CreateForm = ({
     setName({ ...(name ? name : {}), [e.target.name]: e.target.value });
   };
 
-  const onFinish = () => {
+  const onFinish = (event) => {
     const nombre = name.itemName;
     console.log(
       "antes",
@@ -42,9 +43,16 @@ const CreateForm = ({
       roomId,
       bedId
     };
-    const path = systemId ? '/system' : roomId ? '/room' : '/bed';
+    const url = systemId ? '/system' : roomId ? '/room' : '/bed';
+    const method = (action === 'create') ? 'post' : 'put';
     axiosInstance
-      .post(path, payload)
+      .request(
+        {
+          method,
+          url,
+          data: payload
+        }
+      )
       .then((res) => {
         router.push(res.data.redirect);
       });
