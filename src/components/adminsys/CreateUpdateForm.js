@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import axiosInstance from "../axios";
-import {  Modal, Form, Input } from "antd";
+import { Modal, Form, Input } from "antd";
 import { useRouter } from "next/router";
 import { UserContext } from "../../contexts/UserContext";
 
@@ -38,16 +38,16 @@ const CreateForm = ({
     );
     const payload = {
       nombre,
-      systemId, // estos son parametros opcionales, si no se pasan quedan
+      systemId, // estos son parametros opcionales, si no se pasan NO quedan 
       roomId,
       bedId
     };
     const path = systemId ? '/system' : roomId ? '/room' : '/bed';
     axiosInstance
-        .post(path, payload)
-        .then((res) => {
-          router.push(res.data.redirect);
-        });
+      .post(path, payload)
+      .then((res) => {
+        router.push(res.data.redirect);
+      });
   };
   const onFinishFailed = () => {
     console.log("el boton funciona pero no se cargo bien el formilario");
