@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import Rooms from "../../components/adminsys/RoomsAdmin";
-import CreateForm from "../../components/adminsys/Load";
+import CreateForm from "./LoadEdit";
+import axiosInstance from "../axios";
+
+import { useRouter } from "next/router";
+import { UserContext } from "../../contexts/UserContext";
+
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+
 import {
   Row,
   Typography,
@@ -20,12 +27,39 @@ const red = 75;
 
 const Systems = ({ systems }) => {
   const [visible, setVisible] = useState(false);
-  const [roomId, setRoomId] = useState(null);
-  const [systemId, setSystemId] = useState(null);
+  const [roomId, setRoomId] = useState(0);
+  const [systemId, setSystemId] = useState(0);
   const [titulo, setTitulo] = useState(false);
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
     setVisible(false);
+  };
+
+  const router = useRouter();
+  const { apiEndPoint } = useContext(UserContext);
+
+  const onDeleteSystem = (systemId) => {
+    axiosInstance
+      .delete(apiEndPoint + "/system", {
+        data: { systemId },
+      })
+      .then((res) => {
+        router.push(res.data.redirect);
+      });
+  };
+
+  const onChangeInfinitBedsOfSystem = (systemId, infinitBeds) => {
+    console.log("antes", systemId, infinitBeds);
+
+    axiosInstance
+      .put(apiEndPoint + "/system", {
+        value: infinitBeds,
+        systemId: systemId,
+        key: "infinitBeds",
+      })
+      .then((res) => {
+        router.push(res.data.redirect);
+      });
   };
 
   return (
@@ -37,19 +71,46 @@ const Systems = ({ systems }) => {
               header={
                 <div>
                   <Row gutter={8}>
-                    <Col className="gutter-row" span={11}>
+                    <Col className="gutter-row" span={12}>
                       <div>
                         <h1>{system.name}</h1>
                       </div>
                     </Col>
-                    <Col className="gutter-row" span={12}>
+                    <Col className="gutter-row" span={4}>
                       <div>
-                        {system.retirable == true ? (
-                          <Button type="danger">Borrar</Button>
+                        {system.retirable == true &&
+                        system.rooms.length == 0 ? (
+                          <Button
+                            onClick={() => {
+                              onDeleteSystem(system.id);
+                            }}
+                            type="danger"
+                          >
+                            <DeleteOutlined />
+                          </Button>
                         ) : (
                           <p></p>
                         )}
                       </div>
+                    </Col>
+
+                    <Col className="gutter-row" span={4}>
+                      {system.retirable == true ? (
+                        <div>
+                          <Button
+                            onClick={() => {
+                              setVisible(true);
+                              setSystemId(system.id);
+                              setTitulo("Modificar sistema");
+                            }}
+                            type="primary"
+                          >
+                            <EditOutlined />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
                     </Col>
                   </Row>
                 </div>
@@ -117,9 +178,20 @@ const Systems = ({ systems }) => {
                             <Col className="gutter-row" span={8}>
                               <div>
                                 <Switch
+                                  checked={system.infinitBeds === 1}
                                   checkedChildren="on"
                                   unCheckedChildren="off"
-                                  defaultChecked
+                                  onClick={() => {
+                                    system.infinitBeds === 1
+                                      ? onChangeInfinitBedsOfSystem(
+                                          system.id,
+                                          0
+                                        )
+                                      : onChangeInfinitBedsOfSystem(
+                                          system.id,
+                                          1
+                                        );
+                                  }}
                                 />
                               </div>
                             </Col>
@@ -207,7 +279,6 @@ const Systems = ({ systems }) => {
                     onClick={() => {
                       setVisible(true);
                       setSystemId(system.id);
-                      setRoomId(null);
                       setTitulo("Agregar sala");
                     }}
                     type="primary"
@@ -235,8 +306,6 @@ const Systems = ({ systems }) => {
           <Button
             onClick={() => {
               setVisible(true);
-              setRoomId(0);
-              setSystemId(0);
               setTitulo("Agregar sistema");
             }}
             type="primary"
