@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useState } from "react";
 import Rooms from "../../components/adminsys/RoomsAdmin";
 import CreateForm from "./LoadEdit";
-import axios from "axios";
+import axiosInstance from "../axios";
 
 import { useRouter } from "next/router";
 import { UserContext } from "../../contexts/UserContext";
@@ -39,7 +39,7 @@ const Systems = ({ systems }) => {
   const { apiEndPoint } = useContext(UserContext);
 
   const onDeleteSystem = (systemId) => {
-    axios
+    axiosInstance
       .delete(apiEndPoint + "/system", {
         data: { systemId },
       })
@@ -51,7 +51,7 @@ const Systems = ({ systems }) => {
   const onChangeInfinitBedsOfSystem = (systemId, infinitBeds) => {
     console.log("antes", systemId, infinitBeds);
 
-    axios
+    axiosInstance
       .put(apiEndPoint + "/system", {
         value: infinitBeds,
         systemId: systemId,

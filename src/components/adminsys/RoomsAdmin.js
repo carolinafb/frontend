@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { useState } from "react";
 import { Table, Icon, Button, Row, Col, Space, Collapse } from "antd";
 import CreateForm from "./LoadEdit";
-import axios from "axios";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { UserContext } from "../../contexts/UserContext";
+import axiosInstance from "../axios";
 const { Panel } = Collapse;
 
 const RoomsAdmin = ({ rooms }) => {
@@ -23,7 +23,7 @@ const RoomsAdmin = ({ rooms }) => {
   const { apiEndPoint } = useContext(UserContext);
 
   const onDeleteRoom = (roomId) => {
-    axios
+    axiosInstance
       .delete(apiEndPoint + "/room", {
         data: { roomId },
       })
@@ -33,7 +33,7 @@ const RoomsAdmin = ({ rooms }) => {
   };
 
   const onDeleteBed = (bedId) => {
-    axios
+    axiosInstance
       .delete(apiEndPoint + "/bed", {
         data: { bedId },
       })

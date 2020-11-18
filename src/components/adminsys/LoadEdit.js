@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../axios";
 import getConfig from "next/config";
 import { Button, Modal, Form, Input, Radio } from "antd";
 import { useRouter } from "next/router";
@@ -39,7 +39,7 @@ const CreateForm = ({
     );
 
     if (titulo == "Agregar sistema") {
-      axios
+      axiosInstance
         .post(apiEndPoint + "/system", {
           nombre: nombre,
         })
@@ -48,7 +48,7 @@ const CreateForm = ({
         });
     }
     if (titulo == "Agregar sala") {
-      axios
+      axiosInstance
         .post(apiEndPoint + "/room", {
           nombre: nombre,
           systemId: systemId,
@@ -58,7 +58,7 @@ const CreateForm = ({
         });
     }
     if (titulo == "Agregar cama") {
-      axios
+      axiosInstance
         .post(apiEndPoint + "/bed", {
           nombre: nombre,
           roomId: roomId,
@@ -68,7 +68,7 @@ const CreateForm = ({
         });
     }
     if (titulo == "Modificar sistema") {
-      axios
+      axiosInstance
         .put(apiEndPoint + "/system", {
           value: nombre,
           systemId: systemId,
@@ -80,7 +80,7 @@ const CreateForm = ({
     }
     if (titulo == "Modificar sala") {
       console.log(roomId);
-      axios
+      axiosInstance
         .put(apiEndPoint + "/room", {
           nombre: nombre,
           roomId: roomId,
@@ -90,7 +90,7 @@ const CreateForm = ({
         });
     }
     if (titulo == "Modificar cama") {
-      axios
+      axiosInstance
         .put(apiEndPoint + "/bed", {
           nombre: nombre,
           bedId: bedId,
