@@ -13,14 +13,14 @@ const UserProvider = (props) => {
   const [jwt, _setJwt] = useState(defaultJWT);
   const setJwt = (data) => {
     if (sessionStorage) {
-      sessionStorage.setItem(JSON.stringify(data));
+      sessionStorage.setItem('jwt', JSON.stringify(data));
     };
     _setJwt(data);
   };
   const [DBUser, _setDBUser] = useState(defaultUser);
   const setDBUser = (data) => {
     if (sessionStorage) {
-      sessionStorage.setItem(JSON.stringify(data));
+      sessionStorage.setItem('user', JSON.stringify(data));
     };
     _setDBUser(data);
   };
