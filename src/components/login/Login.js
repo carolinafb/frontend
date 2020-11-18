@@ -48,7 +48,11 @@ const Login = () => {
         router.push(res.data.redirect);
       })
       .catch((err) => {
-        setErr(err.response.data);
+        if (err.response) {
+          setErr(err.response.data);
+        } else {
+          setErr(err.message);
+        }
       });
   };
 
