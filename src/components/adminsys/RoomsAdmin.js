@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import { Table, Icon, Button, Row, Col, Space, Collapse } from "antd";
-import CreateForm from "./LoadEdit";
+import CreateForm from "./CreateUpdateForm";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { UserContext } from "../../contexts/UserContext";
@@ -14,6 +14,9 @@ const RoomsAdmin = ({ rooms }) => {
   const [bedId, setBedId] = useState(null);
   const [systemId, setSystemId] = useState(null);
   const [titulo, setTitulo] = useState(false);
+  const [path, setPath] = useState(false);
+  const [action, setAction] = useState(false);
+
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
     setVisible(false);
@@ -78,6 +81,8 @@ const RoomsAdmin = ({ rooms }) => {
               setVisible(true);
               setBedId(record.id);
               setTitulo("Modificar cama");
+              setAction("update");
+              setPath("cama");
             }}
             type="primary"
           >
@@ -96,6 +101,8 @@ const RoomsAdmin = ({ rooms }) => {
         bedId={bedId}
         titulo={titulo}
         visible={visible}
+        path={path}
+        action={action}
         onCreate={onCreate}
         onCancel={() => {
           setVisible(false);
@@ -136,6 +143,8 @@ const RoomsAdmin = ({ rooms }) => {
                             setVisible(true);
                             setRoomId(room.id);
                             setTitulo("Modificar sala");
+                            setAction("update");
+                            setPath("sala");
                           }}
                           type="primary"
                         >
@@ -161,6 +170,8 @@ const RoomsAdmin = ({ rooms }) => {
                       setVisible(true);
                       setRoomId(room.id);
                       setTitulo("Agregar cama");
+                      setAction("create");
+                      setPath("cama");
                     }}
                     type="primary"
                   >
