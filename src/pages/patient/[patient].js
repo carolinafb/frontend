@@ -5,7 +5,6 @@ import { Typography } from "antd";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
 import { UserContext } from "../../contexts/UserContext";
-import MsgFeed from "../../components/feedback/msgFeed";
 
 const Patient = () => {
   const router = useRouter();
@@ -13,7 +12,7 @@ const Patient = () => {
   const [patientData, setPatientData] = useState(null);
   const [err, setErr] = useState(false);
   const { Title } = Typography;
-  const { jwt, DBUser } = useContext(UserContext);
+  const { DBUser } = useContext(UserContext);
 
   useEffect(() => {
     axiosInstance
@@ -37,12 +36,16 @@ const Patient = () => {
       })
       .catch((err) => {
         if (err.response) setErr(err.response.data);
-        else setErr("algo salio mal! No se pudo buscar el paciente.");
+        else setErr("algo salio mal! No se pudo crear la internacion.");
       });
   };
 
   const btnErr = () => {
-    router.push("/"); //aca dependiendo del rol la pagina "home" cambia
+    if (info && info.role == "DOCTOR") {
+      router.push("/patients");
+    } else {
+      router.push("/systems");
+    }
   };
 
   return (
@@ -52,20 +55,25 @@ const Patient = () => {
       </Header>
       <Content>
         {err && (
-          <MsgFeed
-            type="error"
-            msg="no se puede crear la internacion.
+          <Result
+            status="error"
+            title="no se puede crear la internacion.
                   NO HAY CAMAS DISPONIBLES"
-            btnFun={btnErr}
-            btnMsn="CERRAR"
+            extra={
+              <Button
+                type="primary"
+                style={{ backgroundColor: "#D51A1A", border: "#D51A1A" }}
+                onClick={btnErr}
+              ></Button>
+            }
           />
         )}
         {!(patientData == null || Object.keys(patientData).length === 0) && (
           <Row justify="start">
             <Col
               xs={24}
-              sm={{ span: 15, offset: 1 }}
-              lg={{ span: 10, offset: 1 }}
+              sm={{ span: 13, offset: 3 }}
+              lg={{ span: 13, offset: 3 }}
               xl={{ span: 6, offset: 1 }}
             >
               <Divider orientation="left">Paciente:</Divider>

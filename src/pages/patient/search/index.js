@@ -13,7 +13,7 @@ const AddPatients = () => {
   const { Title } = Typography;
   const { t } = useTranslation();
   const [msg, setErr] = useState(null);
-  const { setDniPatient } = useContext(UserContext);
+  const { setDniPatient, DBUser } = useContext(UserContext);
 
   const onFinish = (e) => {
     setDniPatient(e.dni);
@@ -29,10 +29,11 @@ const AddPatients = () => {
         else setErr("algo salio mal! No se pudo buscar el paciente.");
       });
   };
+  console.log("DBUSER:", DBUser);
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
-        <Navbar info={null} />
+        <Navbar info={DBUser} />
       </Header>
       <Content>
         <Space direction="vertical" style={{ width: "100%" }}>

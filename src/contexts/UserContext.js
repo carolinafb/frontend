@@ -31,15 +31,15 @@ const UserProvider = (props) => {
   return (
     <UserContext.Provider
       value={{
-        //jwt,
-        //setJwt,
+        jwt,
+        setJwt,
         apiEndPoint,
         dniPatient,
         setDniPatient,
         patientData,
         setPatientData,
-        // setDBUser,
-        //DBUser,
+        setDBUser,
+        DBUser,
       }}
     >
       {props.children}

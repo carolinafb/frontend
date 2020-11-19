@@ -11,6 +11,14 @@ const Navbar = ({ info }) => {
   let buttonsToShow = [];
   const [visible, setVisible] = useState(false);
   const { jwt, setJwt, apiEndPoint } = useContext(UserContext);
+  const routes = {
+    ALERTAS: "",
+    "INGRESAR PACIENTE": "patient/search",
+    "PACIENTES NUEVOS": "",
+    SISTEMAS: "",
+    "JEFES/MEDICOS": "",
+    EVALUACIONES: "",
+  };
 
   const showDrawer = () => {
     setVisible(true);
@@ -35,7 +43,7 @@ const Navbar = ({ info }) => {
   //loads user actions depending on role into array
   if (info && info.role == ("DOCTOR" || "SYSTEMCHIEF")) {
     buttonsToShow.push("ALERTAS");
-    if (info && info.system == "GUARDIA") {
+    if (info && info.systemName == "GUARDIA") {
       buttonsToShow.push("INGRESAR PACIENTE");
     }
   }
@@ -69,7 +77,14 @@ const Navbar = ({ info }) => {
           dataSource={buttonsToShow}
           renderItem={(item) => (
             <List.Item>
-              <Button type="text">{item}</Button>
+              <Button
+                type="text"
+                onClick={() => {
+                  router.push(routes[item]);
+                }}
+              >
+                {item}
+              </Button>
             </List.Item>
           )}
         />
