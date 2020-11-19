@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import Rooms from "../../components/adminsys/RoomsAdmin";
-import CreateForm from "./LoadEdit";
+import CreateForm from "./CreateUpdateForm";
 import axiosInstance from "../axios";
 
 import { useRouter } from "next/router";
@@ -30,6 +30,9 @@ const Systems = ({ systems }) => {
   const [roomId, setRoomId] = useState(0);
   const [systemId, setSystemId] = useState(0);
   const [titulo, setTitulo] = useState(false);
+  const [path, setPath] = useState(false);
+  const [action, setAction] = useState(false);
+  const [clave, setClave] = useState(false);
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
     setVisible(false);
@@ -53,9 +56,9 @@ const Systems = ({ systems }) => {
 
     axiosInstance
       .put(apiEndPoint + "/system", {
-        value: infinitBeds,
+        nombre: infinitBeds,
         systemId: systemId,
-        key: "infinitBeds",
+        clave: "infinitBeds",
       })
       .then((res) => {
         router.push(res.data.redirect);
@@ -102,6 +105,9 @@ const Systems = ({ systems }) => {
                               setVisible(true);
                               setSystemId(system.id);
                               setTitulo("Modificar sistema");
+                              setAction("update");
+                              setPath("sistema");
+                              setClave("name");
                             }}
                             type="primary"
                           >
@@ -280,6 +286,8 @@ const Systems = ({ systems }) => {
                       setVisible(true);
                       setSystemId(system.id);
                       setTitulo("Agregar sala");
+                      setAction("create");
+                      setPath("sala");
                     }}
                     type="primary"
                   >
@@ -297,6 +305,9 @@ const Systems = ({ systems }) => {
             systemId={systemId}
             titulo={titulo}
             visible={visible}
+            action={action}
+            path={path}
+            clave={clave}
             onCreate={onCreate}
             onCancel={() => {
               setVisible(false);
@@ -307,6 +318,8 @@ const Systems = ({ systems }) => {
             onClick={() => {
               setVisible(true);
               setTitulo("Agregar sistema");
+              setAction("create");
+              setPath("sistema");
             }}
             type="primary"
           >

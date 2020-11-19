@@ -13,12 +13,15 @@ const CreateForm = ({
   systemId,
   roomId,
   bedId,
-  action = 'create'
+  path,
+  action,
+  clave,
 }) => {
   const router = useRouter();
   const { apiEndPoint } = useContext(UserContext);
 
   const [name, setName] = useState(null);
+  const [value, setValue] = useState(null);
   const [form] = Form.useForm();
 
   const onChange = (e) => {
@@ -27,32 +30,22 @@ const CreateForm = ({
 
   const onFinish = (event) => {
     const nombre = name.itemName;
-    console.log(
-      "antes",
-      titulo,
-      "nombre",
-      nombre,
-      "bedid",
-      bedId,
-      systemId,
-      roomId
-    );
     const payload = {
       nombre,
-      systemId, // estos son parametros opcionales, si no se pasan NO quedan 
+      systemId, // estos son parametros opcionales, si no se pasan NO quedan
       roomId,
-      bedId
+      bedId,
+      clave,
     };
-    const url = systemId ? '/system' : roomId ? '/room' : '/bed';
-    const method = (action === 'create') ? 'post' : 'put';
+    const url =
+      path === "sistema" ? "/system" : path === "sala" ? "/room" : "/bed";
+    const method = action === "create" ? "post" : "put";
     axiosInstance
-      .request(
-        {
-          method,
-          url,
-          data: payload
-        }
-      )
+      .request({
+        method,
+        url,
+        data: payload,
+      })
       .then((res) => {
         router.push(res.data.redirect);
       });
