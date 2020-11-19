@@ -43,8 +43,8 @@ const Login = () => {
         password: user.password,
       })
       .then((res) => {
-        setJwt(res.data.jwt);
-        setDBUser(res.data.user);
+        //setJwt(res.data.jwt);
+        //setDBUser(res.data.user);
         router.push(res.data.redirect);
       })
       .catch((err) => {

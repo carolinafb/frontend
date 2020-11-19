@@ -2,8 +2,9 @@ import React, { createContext, useState } from "react";
 export const UserContext = createContext();
 
 const UserProvider = (props) => {
-  let defaultJWT = null;
+  /* let defaultJWT = null;
   let defaultUser = null;
+
   if (sessionStorage) {
     defaultJWT = JSON.parse(sessionStorage.getItem("jwt"));
     defaultUser = JSON.parse(sessionStorage.getItem("user"));
@@ -22,24 +23,22 @@ const UserProvider = (props) => {
     }
     _setDBUser(data);
   };
+*/
   const apiEndPoint = "https://localhost:9000";
   const [patientData, setPatientData] = useState({});
-  const [userData, setUserData] = useState({});
-
+  const [dniPatient, setDniPatient] = useState({});
   return (
     <UserContext.Provider
       value={{
-        jwt,
-        setJwt,
+        //jwt,
+        //setJwt,
         apiEndPoint,
         dniPatient,
         setDniPatient,
         patientData,
         setPatientData,
-        userData,
-        setUserData,
-        setDBUser,
-        DBUser,
+        // setDBUser,
+        //DBUser,
       }}
     >
       {props.children}

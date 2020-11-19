@@ -29,7 +29,6 @@ const AddPatients = () => {
         else setErr("algo salio mal! No se pudo buscar el paciente.");
       });
   };
-
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>

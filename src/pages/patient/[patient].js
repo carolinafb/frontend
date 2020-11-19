@@ -5,15 +5,17 @@ import { Typography } from "antd";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
 import { UserContext } from "../../contexts/UserContext";
+import MsgFeed from "../../components/feedback/msgFeed";
 
 const Patient = () => {
   const router = useRouter();
   const { Header, Content } = Layout;
   const [patientData, setPatientData] = useState(null);
+  const [err, setErr] = useState(false);
   const { Title } = Typography;
-  const { jwt, userData } = useContext(UserContext);
+  const { jwt, DBUser } = useContext(UserContext);
+
   useEffect(() => {
-    console.log("jwt:", jwt, "userData:", userData);
     axiosInstance
       .get("/infoPatient", {
         params: {
@@ -24,13 +26,40 @@ const Patient = () => {
         setPatientData(res.data.data);
       });
   }, []);
+
+  const createHospitalization = () => {
+    axiosInstance
+      .post("/createHospitalization", {
+        patientID: id,
+      })
+      .then((res) => {
+        router.push(res.data.redirect);
+      })
+      .catch((err) => {
+        if (err.response) setErr(err.response.data);
+        else setErr("algo salio mal! No se pudo buscar el paciente.");
+      });
+  };
+
+  const btnErr = () => {
+    router.push("/"); //aca dependiendo del rol la pagina "home" cambia
+  };
+
   return (
     <Layout>
-      {console.log("jwt:", jwt, "userData:", userData)}
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
-        <Navbar info={null} />
+        <Navbar info={DBUser} />
       </Header>
       <Content>
+        {err && (
+          <MsgFeed
+            type="error"
+            msg="no se puede crear la internacion.
+                  NO HAY CAMAS DISPONIBLES"
+            btnFun={btnErr}
+            btnMsn="CERRAR"
+          />
+        )}
         {!(patientData == null || Object.keys(patientData).length === 0) && (
           <Row justify="start">
             <Col
@@ -99,7 +128,11 @@ const Patient = () => {
               </label>
               {patientData.contactPerson.phone}
               <br />
-              <Button type="primary" style={{ margin: "3%" }}>
+              <Button
+                type="primary"
+                style={{ margin: "3%" }}
+                onClick={createHospitalization}
+              >
                 CREAR INTERNACION
               </Button>
             </Col>
