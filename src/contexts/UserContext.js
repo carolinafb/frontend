@@ -6,9 +6,11 @@ const UserProvider = (props) => {
   const HAS_STORAGE = !IS_SERVER && window.sessionStorage;
   let defaultJWT = null;
   let defaultUser = null;
+  let defaultDNIPatient = null;
   if (HAS_STORAGE) {
     defaultJWT = JSON.parse(sessionStorage.getItem("jwt"));
     defaultUser = JSON.parse(sessionStorage.getItem("user"));
+    defaultDNIPatient = JSON.parse(sessionStorage.getItem("dniPatient"));
   }
   const [jwt, _setJwt] = useState(defaultJWT);
   const setJwt = (data) => {
@@ -25,9 +27,15 @@ const UserProvider = (props) => {
     _setDBUser(data);
   };
 
+  const [dniPatient, _setDniPatient] = useState(defaultDNIPatient);
+  const setDniPatient = (data) => {
+    if (HAS_STORAGE) {
+      sessionStorage.setItem("dniPatient", JSON.stringify(data));
+    }
+    _setDniPatient;
+  };
+
   const apiEndPoint = "https://localhost:9000";
-  const [patientData, setPatientData] = useState({});
-  const [dniPatient, setDniPatient] = useState({});
   return (
     <UserContext.Provider
       value={{
@@ -36,8 +44,6 @@ const UserProvider = (props) => {
         apiEndPoint,
         dniPatient,
         setDniPatient,
-        patientData,
-        setPatientData,
         setDBUser,
         DBUser,
       }}

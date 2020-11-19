@@ -18,15 +18,14 @@ const AddPatients = () => {
   const onFinish = (e) => {
     setDniPatient(e.dni);
     axiosInstance
-      .post("/searchPatient", {
+      .post("/patient", {
         dni: e.dni,
       })
       .then((res) => {
         router.push(res.data.redirect);
       })
       .catch((err) => {
-        if (err.response) setErr(err.response.data);
-        else setErr("algo salio mal! No se pudo buscar el paciente.");
+        setErr(err);
       });
   };
   console.log("DBUSER:", DBUser);

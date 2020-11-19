@@ -1,6 +1,6 @@
 import Navbar from "../../components/header/Navbar";
-import { Divider, Button, Layout, Row, Col } from "antd";
-import React, { useState, useEffect, useContext } from "react";
+import { Divider, Button, Layout, Row, Col, Result } from "antd";
+import React, { useState, useEffect, useContext, Fragment } from "react";
 import { Typography } from "antd";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
@@ -13,20 +13,26 @@ const Patient = () => {
   const [err, setErr] = useState(false);
   const { Title } = Typography;
   const { DBUser } = useContext(UserContext);
+  const [rerender, setRerender] = useState(true);
 
   useEffect(() => {
     axiosInstance
-      .get("/infoPatient", {
+      .get("/patient", {
         params: {
           id: router.query.patient,
         },
       })
       .then((res) => {
-        setPatientData(res.data.data);
+        setErr(false);
+        setPatientData(res.data);
+      })
+      .catch((e) => {
+        setErr(e.message);
+        setPatientData(null);
       });
-  }, []);
+  }, [router.query.patient]);
 
-  const createHospitalization = () => {
+  /*const createHospitalization = () => {
     axiosInstance
       .post("/createHospitalization", {
         patientID: id,
@@ -36,12 +42,12 @@ const Patient = () => {
       })
       .catch((err) => {
         if (err.response) setErr(err.response.data);
-        else setErr("algo salio mal! No se pudo crear la internacion.");
+        else setErr("Algo salio mal! No se pudo crear la internacion.");
       });
-  };
+  };*/
 
   const btnErr = () => {
-    if (info && info.role == "DOCTOR") {
+    if (DBUser && DBUser.role == "DOCTOR") {
       router.push("/patients");
     } else {
       router.push("/systems");
@@ -54,97 +60,99 @@ const Patient = () => {
         <Navbar info={DBUser} />
       </Header>
       <Content>
-        {err && (
+        {err ? (
           <Result
             status="error"
-            title="no se puede crear la internacion.
-                  NO HAY CAMAS DISPONIBLES"
+            title={err}
             extra={
               <Button
                 type="primary"
-                style={{ backgroundColor: "#D51A1A", border: "#D51A1A" }}
+                style={{ backgroundColor: "#FF4D4F", border: "#FF4D4F" }}
                 onClick={btnErr}
-              ></Button>
+              >
+                CONTINUAR
+              </Button>
             }
           />
-        )}
-        {!(patientData == null || Object.keys(patientData).length === 0) && (
-          <Row justify="start">
-            <Col
-              xs={24}
-              sm={{ span: 13, offset: 3 }}
-              lg={{ span: 13, offset: 3 }}
-              xl={{ span: 6, offset: 1 }}
-            >
-              <Divider orientation="left">Paciente:</Divider>
-              <Title level={4}>
-                {patientData.lastName + " " + patientData.lastName}
-              </Title>
-              <label>
-                <strong> DNI:</strong>
-              </label>
-              {patientData.dni}
-              <br />
-              <label>
-                <strong>Fecha de nacimiento: </strong>
-              </label>
-              {patientData.birthDate.slice(0, 10)}
-              <br />
-              <label>
-                <strong> Direccion: </strong>
-              </label>
-              {patientData.direction}
-              <br />
-              <label>
-                <strong>Telefono:</strong>
-              </label>
-              {patientData.phone}
-              <br />
-              <label>
-                <strong>Email: </strong>
-              </label>
-              {patientData.email}
-              <br />
-              <label>
-                <strong> Obra Social: </strong>
-              </label>
-              {patientData.socialSecurity}
-              <br />
-              <label>
-                <strong> Antecedente Personales: </strong>
-              </label>
-              {patientData.background_clinical}
-              <br />
-              <Divider orientation="left">Persona de contacto: </Divider>
-              <label>
-                <strong> Nombre: </strong>
-              </label>
-              {patientData.contactPerson.name}
-              <br />
-              <label>
-                <strong> Apellido: </strong>
-              </label>
-              {patientData.contactPerson.lastName}
-              <br />
-              <label>
-                <strong> Parentesco/Relacion: </strong>
-              </label>
-              {patientData.contactPerson.relationship}
-              <br />
-              <label>
-                <strong> Telefono: </strong>
-              </label>
-              {patientData.contactPerson.phone}
-              <br />
-              <Button
-                type="primary"
-                style={{ margin: "3%" }}
-                onClick={createHospitalization}
-              >
-                CREAR INTERNACION
-              </Button>
-            </Col>
-          </Row>
+        ) : (
+          !(patientData == null || Object.keys(patientData).length === 0) && (
+            <Fragment>
+              <Row justify="start">
+                <Col
+                  xs={{ span: 14, offset: 3 }}
+                  sm={{ span: 13, offset: 3 }}
+                  lg={{ span: 13, offset: 3 }}
+                  xl={{ span: 6, offset: 1 }}
+                >
+                  <Divider orientation="left">Paciente:</Divider>
+                  <Title level={4}>
+                    {patientData.name + " " + patientData.lastName}
+                  </Title>
+                  <label>
+                    <strong> DNI:</strong>
+                  </label>
+                  {patientData.dni}
+                  <br />
+                  <label>
+                    <strong>Fecha de nacimiento: </strong>
+                  </label>
+                  {patientData.birthDate.slice(0, 10)}
+                  <br />
+                  <label>
+                    <strong> Direccion: </strong>
+                  </label>
+                  {patientData.direction}
+                  <br />
+                  <label>
+                    <strong>Telefono:</strong>
+                  </label>
+                  {patientData.phone}
+                  <br />
+                  <label>
+                    <strong>Email: </strong>
+                  </label>
+                  {patientData.email}
+                  <br />
+                  <label>
+                    <strong> Obra Social: </strong>
+                  </label>
+                  {patientData.socialSecurity}
+                  <br />
+                  <label>
+                    <strong> Antecedente Personales: </strong>
+                  </label>
+                  {patientData.background_clinical
+                    ? patientData.background_clinical
+                    : "ninguno"}
+                  <br />
+                  <Divider orientation="left">Persona de contacto: </Divider>
+                  <label>
+                    <strong> Nombre: </strong>
+                  </label>
+                  {patientData.contactPerson.name}
+                  <br />
+                  <label>
+                    <strong> Apellido: </strong>
+                  </label>
+                  {patientData.contactPerson.lastName}
+                  <br />
+                  <label>
+                    <strong> Parentesco/Relacion: </strong>
+                  </label>
+                  {patientData.contactPerson.relationship}
+                  <br />
+                  <label>
+                    <strong> Telefono: </strong>
+                  </label>
+                  {patientData.contactPerson.phone}
+                  <br />
+                  <Button type="primary" style={{ margin: "3%" }}>
+                    CREAR INTERNACION
+                  </Button>
+                </Col>
+              </Row>
+            </Fragment>
+          )
         )}
       </Content>
     </Layout>

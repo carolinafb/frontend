@@ -43,7 +43,7 @@ const AddPatientData = () => {
           next();
         } else {
           axiosInstance
-            .post("/validatePatient", newData)
+            .put("/patient", newData)
             .then((res) => {
               if (res.status) {
                 setSucess(true);
