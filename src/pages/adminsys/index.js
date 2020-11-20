@@ -7,20 +7,25 @@ import { UserContext } from "../../../contexts/UserContext";
 
 const adminsys = () => {
   const { Header, Content } = Layout;
-  const [state, setstate] = useState({});
   const { DBUser } = useContext(UserContext);
 
+  const [systems, _setSystems] = useState([]);
+  const getSystems = async () =>
+    (await axiosInstance.get("/adminsys")).data.systems;
+  const setSystems = async () => {
+    _setSystems(await getSystems());
+  };
+  const refreshSystems = () => setSystems();
   useEffect(() => {
-    axiosInstance.get("/adminsys").then((res) => setstate(res.data));
+    setSystems();
   }, []);
-
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
         <Navbar user={DBUser} />
       </Header>
       <Content>
-        <SystemsAdmin systems={state.systems} />
+        <SystemsAdmin systems={systems} refreshData={refreshSystems} />
       </Content>
     </Layout>
   );

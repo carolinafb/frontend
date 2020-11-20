@@ -7,11 +7,11 @@ import { UserContext } from "../../contexts/UserContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   const router = useRouter();
   let buttonsToShow = [];
   const [visible, setVisible] = useState(false);
-  const { setJwt } = useContext(UserContext);
+  const { DBUser: user } = useContext(UserContext);
   const routes = {
     ALERTAS: "",
     "INGRESAR PACIENTE": "/patient/search",
@@ -32,7 +32,6 @@ const Navbar = ({ user }) => {
     axiosInstance
       .get("/logOut")
       .then((res) => {
-        setJwt({});
         router.push(res.data.redirect);
       })
       .catch(function (error) {
