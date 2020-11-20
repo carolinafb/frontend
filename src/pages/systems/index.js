@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
 import SystemsAdmin from "../../components/systems/Systems";
-import { UserContext } from "../../../contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import axiosInstance from "../../components/axios";
 
 const systems = () => {

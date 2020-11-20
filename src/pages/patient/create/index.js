@@ -1,6 +1,6 @@
 import Navbar from "../../../components/header/Navbar";
 import { Layout } from "antd";
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import AddPatientData from "../../../components/createPatient/AddPatientData";
 import { UserContext } from "../../../contexts/UserContext";
 

@@ -17,6 +17,7 @@ const AddPatients = () => {
 
   const onFinish = (e) => {
     setDniPatient(e.dni);
+    console.log("e", e);
     axiosInstance
       .post("/patient", {
         dni: e.dni,
@@ -25,7 +26,7 @@ const AddPatients = () => {
         router.push(res.data.redirect);
       })
       .catch((err) => {
-        setErr(err);
+        setErr(err.message);
       });
   };
   console.log("DBUSER:", DBUser);
@@ -52,7 +53,10 @@ const AddPatients = () => {
               label="Ingrese el DNI: "
               name="dni"
               rules={[
-                { required: true, message: "Ingrese el DNI de la persona" },
+                {
+                  required: true,
+                  message: "Ingrese el DNI de la persona",
+                },
               ]}
             >
               <InputNumber style={{ width: "50%" }} />

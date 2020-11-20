@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useState } from "react";
 import axiosInstance from "../axios";
 import { Steps, Button, Row, Col, Form, Result, Alert } from "antd";
 import AffiliateData from "./AffiliateData";
@@ -47,15 +47,17 @@ const AddPatientData = () => {
             .then((res) => {
               if (res.status) {
                 setSucess(true);
+                setError(false);
                 setRedirect(res.data.redirect);
               }
             })
             .catch((err) => {
-              setError(err.response.data.error);
+              setError(err.message);
             });
         }
       })
       .catch((info) => {
+        setError(err.message);
         console.log("Validate Failed:", info);
       });
   };

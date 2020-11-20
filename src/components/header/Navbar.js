@@ -5,6 +5,7 @@ import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
 import axiosInstance from "../axios";
 import { UserContext } from "../../contexts/UserContext";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Navbar = ({ info }) => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const Navbar = ({ info }) => {
   const { jwt, setJwt, apiEndPoint } = useContext(UserContext);
   const routes = {
     ALERTAS: "",
-    "INGRESAR PACIENTE": "patient/search",
+    "INGRESAR PACIENTE": "/patient/search",
     "PACIENTES NUEVOS": "",
     SISTEMAS: "",
     "JEFES/MEDICOS": "",
@@ -41,13 +42,13 @@ const Navbar = ({ info }) => {
   };
 
   //loads user actions depending on role into array
-  if (info && info.role == ("DOCTOR" || "SYSTEMCHIEF")) {
+  if ((info && info.role == "DOCTOR") || info.role == "JEFE DE SISTEMA") {
     buttonsToShow.push("ALERTAS");
     if (info && info.systemName == "GUARDIA") {
       buttonsToShow.push("INGRESAR PACIENTE");
     }
   }
-  if (info && info.role == "SYSTEMCHIEF") {
+  if (info && info.role == "JEFE DE SISTEMA") {
     buttonsToShow.push("PACIENTES NUEVOS");
   }
   if (info && info.role == "ADMIN") {
@@ -77,14 +78,9 @@ const Navbar = ({ info }) => {
           dataSource={buttonsToShow}
           renderItem={(item) => (
             <List.Item>
-              <Button
-                type="text"
-                onClick={() => {
-                  router.push(routes[item]);
-                }}
-              >
-                {item}
-              </Button>
+              <Link href={routes[item]}>
+                <a>{item}</a>
+              </Link>
             </List.Item>
           )}
         />
