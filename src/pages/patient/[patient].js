@@ -1,7 +1,6 @@
 import Navbar from "../../components/header/Navbar";
-import { Divider, Button, Layout, Row, Col, Result } from "antd";
+import { Divider, Button, Layout, Row, Col, Result, Typography } from "antd";
 import React, { useState, useEffect, useContext, Fragment } from "react";
-import { Typography } from "antd";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
 import { UserContext } from "../../contexts/UserContext";

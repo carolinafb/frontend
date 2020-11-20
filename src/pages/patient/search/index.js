@@ -1,11 +1,18 @@
 import Navbar from "../../../components/header/Navbar";
-import { Layout } from "antd";
 import React, { useState, useContext } from "react";
 import axiosInstance from "../../../components/axios";
 import { useRouter } from "next/router";
 import { UserContext } from "../../../contexts/UserContext";
 import { useTranslation } from "react-i18next";
-import { Space, Typography, InputNumber, Alert, Form, Button } from "antd";
+import {
+  Space,
+  Typography,
+  InputNumber,
+  Alert,
+  Form,
+  Button,
+  Layout,
+} from "antd";
 
 const AddPatients = () => {
   const { Header, Content } = Layout;
@@ -17,7 +24,6 @@ const AddPatients = () => {
 
   const onFinish = (e) => {
     setDniPatient(e.dni);
-    console.log("e", e);
     axiosInstance
       .post("/patient", {
         dni: e.dni,
@@ -29,7 +35,7 @@ const AddPatients = () => {
         setErr(err.message);
       });
   };
-  console.log("DBUSER:", DBUser);
+
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
