@@ -7,12 +7,10 @@ import axiosInstance from "../../components/axios";
 const adminsys = () => {
   const { Header, Content } = Layout;
   const [systems, _setSystems] = useState([]);
-  const [refresh, setRefresh] = useState(0);
   const getSystems = async () => (await axiosInstance.get("/adminsys")).data.systems;
   const setSystems = async () => { _setSystems(await getSystems()) };
   const refreshSystems = () => setSystems();
   useEffect(() => {
-    console.log('use effect');
     setSystems();
   }, []);
   return (
