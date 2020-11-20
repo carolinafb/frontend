@@ -17,7 +17,7 @@ const Patients = () => {
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
-        <Navbar info={DBUser} />
+        <Navbar user={DBUser} />
       </Header>
       <Content>
         <Rooms rooms={state.rooms} />

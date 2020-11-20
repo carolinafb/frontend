@@ -7,11 +7,11 @@ import { UserContext } from "../../contexts/UserContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const Navbar = ({ info }) => {
+const Navbar = ({ user }) => {
   const router = useRouter();
   let buttonsToShow = [];
   const [visible, setVisible] = useState(false);
-  const { jwt, setJwt, apiEndPoint } = useContext(UserContext);
+  const { setJwt } = useContext(UserContext);
   const routes = {
     ALERTAS: "",
     "INGRESAR PACIENTE": "/patient/search",
@@ -30,7 +30,7 @@ const Navbar = ({ info }) => {
   const logOut = () => {
     // Make a request for a user with a given ID
     axiosInstance
-      .get(apiEndPoint + "/logOut", { jwt })
+      .get("/logOut")
       .then((res) => {
         setJwt({});
         router.push(res.data.redirect);
@@ -42,16 +42,16 @@ const Navbar = ({ info }) => {
   };
 
   //loads user actions depending on role into array
-  if ((info && info.role == "DOCTOR") || info.role == "JEFE DE SISTEMA") {
+  if ((user && user.role == "DOCTOR") || user.role == "JEFE DE SISTEMA") {
     buttonsToShow.push("ALERTAS");
-    if (info && info.systemName == "GUARDIA") {
+    if (user && user.systemName == "GUARDIA") {
       buttonsToShow.push("INGRESAR PACIENTE");
     }
   }
-  if (info && info.role == "JEFE DE SISTEMA") {
+  if (user && user.role == "JEFE DE SISTEMA") {
     buttonsToShow.push("PACIENTES NUEVOS");
   }
-  if (info && info.role == "ADMIN") {
+  if (user && user.role == "ADMIN") {
     buttonsToShow.push("SISTEMAS");
     buttonsToShow.push("JEFES/MEDICOS");
     buttonsToShow.push("EVALUACIONES");
@@ -61,7 +61,7 @@ const Navbar = ({ info }) => {
     <div className="nav-color">
       <Button type="text" onClick={showDrawer} icon={<MenuOutlined />}></Button>
       <Drawer
-        title={<TopDrawer userInfo={info} />}
+        title={<TopDrawer userInfo={user} />}
         placement="left"
         closable={true}
         onClose={onClose}
@@ -86,9 +86,9 @@ const Navbar = ({ info }) => {
         />
       </Drawer>
 
-      {info ? (
+      {user ? (
         <label className="title2">
-          <strong> {info.name} </strong>/ {info.role}
+          <strong> {user.name} </strong>/ {user.role}
         </label>
       ) : null}
 
