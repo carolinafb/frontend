@@ -13,10 +13,12 @@ Taller de Tecnologías de Producción de Software
 First, run the development server:
 
 ```bash
-npm run dev
+npm run dev-https
 # or
-yarn dev
+yarn dev-https
 ```
+Important!
+install ssl certificates under ./certificates
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
