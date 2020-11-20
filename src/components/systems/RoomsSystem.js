@@ -1,8 +1,7 @@
 import React from "react";
-import { Table,Typography, Space, Collapse, Button } from "antd";
+import { Table, Typography, Space, Collapse, Button } from "antd";
 const { Panel } = Collapse;
-const { Text} = Typography;
-
+const { Text } = Typography;
 
 const RoomsSystem = ({ rooms }) => {
   const columns = [
@@ -14,9 +13,14 @@ const RoomsSystem = ({ rooms }) => {
     {
       title: "Paciente",
       render: (text, record) => (
-
         <Space size="middle">
-            {record["patient_name"] ? <p>{record["patient_name"]} {record["patient_last_name"]}</p>: <Text type="success">Libre</Text>}
+          {record["patient_name"] ? (
+            <p>
+              {record["patient_name"]} {record["patient_last_name"]}
+            </p>
+          ) : (
+            <Text type="success">Libre</Text>
+          )}
         </Space>
       ),
       key: "patient_last_name",

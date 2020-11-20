@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
 import HomeSystemRule from "../../components/home/HomeSystemRule";
-import axios from "axios";
+import axiosInstance from "../axios";
+import { UserContext } from "../../../contexts/UserContext";
 
 const Home = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
+  const { DBUser } = useContext(UserContext);
 
   /* useEffect(() => {
-    axios.get("http://localhost:9000/init").then((res) => setstate(res.data));
+    axiosInstance.get("http://localhost:9000/init").then((res) => setstate(res.data));
   }, [setstate]);
 */
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
-        <Navbar info={state.user} />
+        <Navbar user={DBUser} />
       </Header>
       <Content>
         <HomeSystemRule />

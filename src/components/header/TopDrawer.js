@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, Typography, Switch } from "antd";
 
 const TopDrower = ({ userInfo }) => {
-  const { role, name, lastname, system } = userInfo;
+  const { role, name, lastname, systemName } = userInfo;
   const { Title } = Typography;
   // ROLES TO COMPARE: "ADMIN" "DOCTOR" "SYSTEMCHIEF" "SYSTEMRULES"
 
@@ -14,7 +14,7 @@ const TopDrower = ({ userInfo }) => {
       }}
       bordered={false}
     >
-      <Title level={5}>SISTEMA {system}</Title>
+      <Title level={5}>SISTEMA {systemName}</Title>
       <Title level={3}>
         {name}
         <br />

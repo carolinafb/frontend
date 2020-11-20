@@ -2,17 +2,24 @@ import React, { useState, useContext } from "react";
 import { Drawer, Button, List } from "antd";
 import TopDrawer from "./TopDrawer";
 import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
-import axios from "axios";
+import axiosInstance from "../axios";
 import { UserContext } from "../../contexts/UserContext";
 import { useRouter } from "next/router";
-import axiosInstance from "../axios";
+import Link from "next/link";
 
 const Navbar = () => {
   const router = useRouter();
   let buttonsToShow = [];
   const [visible, setVisible] = useState(false);
-  // @TODO renombrar info a algo que se entienda. Es el user
-  const { DBUser: info } = useContext(UserContext);
+  const { DBUser: user } = useContext(UserContext);
+  const routes = {
+    ALERTAS: "",
+    "INGRESAR PACIENTE": "/patient/search",
+    "PACIENTES NUEVOS": "",
+    SISTEMAS: "",
+    "JEFES/MEDICOS": "",
+    EVALUACIONES: "",
+  };
 
   const showDrawer = () => {
     setVisible(true);
@@ -34,16 +41,16 @@ const Navbar = () => {
   };
 
   //loads user actions depending on role into array
-  if (info && info.role == ("DOCTOR" || "SYSTEMCHIEF")) {
+  if ((user && user.role == "DOCTOR") || user.role == "JEFE DE SISTEMA") {
     buttonsToShow.push("ALERTAS");
-    if (info && info.system == "GUARDIA") {
+    if (user && user.systemName == "GUARDIA") {
       buttonsToShow.push("INGRESAR PACIENTE");
     }
   }
-  if (info && info.role == "SYSTEMCHIEF") {
+  if (user && user.role == "JEFE DE SISTEMA") {
     buttonsToShow.push("PACIENTES NUEVOS");
   }
-  if (info && info.role == "ADMIN") {
+  if (user && user.role == "ADMIN") {
     buttonsToShow.push("SISTEMAS");
     buttonsToShow.push("JEFES/MEDICOS");
     buttonsToShow.push("EVALUACIONES");
@@ -53,7 +60,7 @@ const Navbar = () => {
     <div className="nav-color">
       <Button type="text" onClick={showDrawer} icon={<MenuOutlined />}></Button>
       <Drawer
-        title={<TopDrawer userInfo={info} />}
+        title={<TopDrawer userInfo={user} />}
         placement="left"
         closable={true}
         onClose={onClose}
@@ -70,15 +77,17 @@ const Navbar = () => {
           dataSource={buttonsToShow}
           renderItem={(item) => (
             <List.Item>
-              <Button type="text">{item}</Button>
+              <Link href={routes[item]}>
+                <a>{item}</a>
+              </Link>
             </List.Item>
           )}
         />
       </Drawer>
 
-      {info ? (
+      {user ? (
         <label className="title2">
-          <strong> {info.name} </strong>/ {info.role}
+          <strong> {user.name} </strong>/ {user.role}
         </label>
       ) : null}
 
