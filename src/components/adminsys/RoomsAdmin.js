@@ -1,14 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
-import { Table, Icon, Button, Row, Col, Space, Collapse } from "antd";
+import { Table, Button, Row, Col, Space, Collapse } from "antd";
 import CreateForm from "./CreateUpdateForm";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useRouter } from "next/router";
-import { UserContext } from "../../contexts/UserContext";
 import axiosInstance from "../axios";
 const { Panel } = Collapse;
 
-const RoomsAdmin = ({ rooms }) => {
+const RoomsAdmin = ({ rooms, refreshData }) => {
   const [visible, setVisible] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [bedId, setBedId] = useState(null);
@@ -21,27 +19,23 @@ const RoomsAdmin = ({ rooms }) => {
     console.log("Received values of form: ", values);
     setVisible(false);
   };
-
-  const router = useRouter();
-  const { apiEndPoint } = useContext(UserContext);
-
   const onDeleteRoom = (roomId) => {
     axiosInstance
-      .delete(apiEndPoint + "/room", {
+      .delete("/room", {
         data: { roomId },
       })
       .then((res) => {
-        router.push(res.data.redirect);
+        refreshData();
       });
   };
 
   const onDeleteBed = (bedId) => {
     axiosInstance
-      .delete(apiEndPoint + "/bed", {
+      .delete("/bed", {
         data: { bedId },
       })
       .then((res) => {
-        router.push(res.data.redirect);
+        refreshData();
       });
   };
 
@@ -59,15 +53,15 @@ const RoomsAdmin = ({ rooms }) => {
           {record["patientId"] ? (
             <p>Asignada</p>
           ) : (
-            <Button
-              onClick={() => {
-                onDeleteBed(record.id);
-              }}
-              type="danger"
-            >
-              <DeleteOutlined />
-            </Button>
-          )}
+              <Button
+                onClick={() => {
+                  onDeleteBed(record.id);
+                }}
+                type="danger"
+              >
+                <DeleteOutlined />
+              </Button>
+            )}
         </Space>
       ),
     },
@@ -132,8 +126,8 @@ const RoomsAdmin = ({ rooms }) => {
                             <DeleteOutlined />
                           </Button>
                         ) : (
-                          <p></p>
-                        )}
+                            <p></p>
+                          )}
                       </div>
                     </Col>
                     <Col className="gutter-row" span={4}>

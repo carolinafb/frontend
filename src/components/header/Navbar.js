@@ -5,12 +5,14 @@ import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
 import { useRouter } from "next/router";
+import axiosInstance from "../axios";
 
-const Navbar = ({ info }) => {
+const Navbar = () => {
   const router = useRouter();
   let buttonsToShow = [];
   const [visible, setVisible] = useState(false);
-  const { jwt, setJwt, apiEndPoint } = useContext(UserContext);
+  // @TODO renombrar info a algo que se entienda. Es el user
+  const { DBUser: info } = useContext(UserContext);
 
   const showDrawer = () => {
     setVisible(true);
@@ -20,10 +22,9 @@ const Navbar = ({ info }) => {
   };
   const logOut = () => {
     // Make a request for a user with a given ID
-    axios
-      .get(apiEndPoint + "/logOut", { jwt })
+    axiosInstance
+      .get("/logOut")
       .then((res) => {
-        setJwt({});
         router.push(res.data.redirect);
       })
       .catch(function (error) {

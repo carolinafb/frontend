@@ -1,12 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import Rooms from "../../components/adminsys/RoomsAdmin";
 import CreateForm from "./CreateUpdateForm";
 import axiosInstance from "../axios";
-
-import { useRouter } from "next/router";
-import { UserContext } from "../../contexts/UserContext";
-
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import {
@@ -25,7 +21,7 @@ const { Text } = Typography;
 const orange = 45;
 const red = 75;
 
-const Systems = ({ systems }) => {
+const Systems = ({ systems, refreshData }) => {
   const [visible, setVisible] = useState(false);
   const [roomId, setRoomId] = useState(0);
   const [systemId, setSystemId] = useState(0);
@@ -33,35 +29,32 @@ const Systems = ({ systems }) => {
   const [path, setPath] = useState(false);
   const [action, setAction] = useState(false);
   const [clave, setClave] = useState(false);
+
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
+    refreshData();
     setVisible(false);
   };
 
-  const router = useRouter();
-  const { apiEndPoint } = useContext(UserContext);
-
   const onDeleteSystem = (systemId) => {
     axiosInstance
-      .delete(apiEndPoint + "/system", {
+      .delete("/system", {
         data: { systemId },
       })
       .then((res) => {
-        router.push(res.data.redirect);
+         refreshData();
       });
   };
 
   const onChangeInfinitBedsOfSystem = (systemId, infinitBeds) => {
     console.log("antes", systemId, infinitBeds);
-
     axiosInstance
-      .put(apiEndPoint + "/system", {
+      .put("/system", {
         nombre: infinitBeds,
         systemId: systemId,
-        clave: "infinitBeds",
-      })
-      .then((res) => {
-        router.push(res.data.redirect);
+        clave: "infinitBeds", // nombre y clave deberían estar en inglés
+      }).then((res) => {
+         refreshData();
       });
   };
 
@@ -82,18 +75,18 @@ const Systems = ({ systems }) => {
                     <Col className="gutter-row" span={4}>
                       <div>
                         {system.retirable == true &&
-                        system.rooms.length == 0 ? (
-                          <Button
-                            onClick={() => {
-                              onDeleteSystem(system.id);
-                            }}
-                            type="danger"
-                          >
-                            <DeleteOutlined />
-                          </Button>
-                        ) : (
-                          <p></p>
-                        )}
+                          system.rooms.length == 0 ? (
+                            <Button
+                              onClick={() => {
+                                onDeleteSystem(system.id);
+                              }}
+                              type="danger"
+                            >
+                              <DeleteOutlined />
+                            </Button>
+                          ) : (
+                            <p></p>
+                          )}
                       </div>
                     </Col>
 
@@ -115,8 +108,8 @@ const Systems = ({ systems }) => {
                           </Button>
                         </div>
                       ) : (
-                        <div></div>
-                      )}
+                          <div></div>
+                        )}
                     </Col>
                   </Row>
                 </div>
@@ -155,13 +148,13 @@ const Systems = ({ systems }) => {
                                         status="exception"
                                       />
                                     ) : (
-                                      <Progress
-                                        type="circle"
-                                        percent={system.occupancy}
-                                        strokeColor="red"
-                                        width={40}
-                                      />
-                                    )
+                                        <Progress
+                                          type="circle"
+                                          percent={system.occupancy}
+                                          strokeColor="red"
+                                          width={40}
+                                        />
+                                      )
                                   ) : system.occupancy >= orange ? (
                                     <Progress
                                       type="circle"
@@ -170,13 +163,13 @@ const Systems = ({ systems }) => {
                                       width={40}
                                     />
                                   ) : (
-                                    <Progress
-                                      type="circle"
-                                      percent={system.occupancy}
-                                      strokeColor="green"
-                                      width={40}
-                                    />
-                                  )}
+                                        <Progress
+                                          type="circle"
+                                          percent={system.occupancy}
+                                          strokeColor="green"
+                                          width={40}
+                                        />
+                                      )}
                                 </Space>
                               </div>
                             </Col>
@@ -190,13 +183,13 @@ const Systems = ({ systems }) => {
                                   onClick={() => {
                                     system.infinitBeds === 1
                                       ? onChangeInfinitBedsOfSystem(
-                                          system.id,
-                                          0
-                                        )
+                                        system.id,
+                                        0
+                                      )
                                       : onChangeInfinitBedsOfSystem(
-                                          system.id,
-                                          1
-                                        );
+                                        system.id,
+                                        1
+                                      );
                                   }}
                                 />
                               </div>
@@ -205,53 +198,53 @@ const Systems = ({ systems }) => {
                         </div>
                       </div>
                     ) : (
-                      <div className="align-column-center margin__middle">
-                        <Row gutter={22}>
-                          <Col className="gutter-row" span={12}>
-                            <div>Porcentaje ocupacional</div>
-                          </Col>
+                        <div className="align-column-center margin__middle">
+                          <Row gutter={22}>
+                            <Col className="gutter-row" span={12}>
+                              <div>Porcentaje ocupacional</div>
+                            </Col>
 
-                          <Col className="gutter-row" span={12}>
-                            <div>
-                              <Space size="middle">
-                                {system.occupancy >= red ? (
-                                  system.occupancy == 100 ? (
+                            <Col className="gutter-row" span={12}>
+                              <div>
+                                <Space size="middle">
+                                  {system.occupancy >= red ? (
+                                    system.occupancy == 100 ? (
+                                      <Progress
+                                        type="circle"
+                                        percent={system.occupancy}
+                                        strokeColor="red"
+                                        width={40}
+                                        status="exception"
+                                      />
+                                    ) : (
+                                        <Progress
+                                          type="circle"
+                                          percent={system.occupancy}
+                                          strokeColor="red"
+                                          width={40}
+                                        />
+                                      )
+                                  ) : system.occupancy >= orange ? (
                                     <Progress
                                       type="circle"
                                       percent={system.occupancy}
-                                      strokeColor="red"
+                                      strokeColor="orange"
                                       width={40}
-                                      status="exception"
                                     />
                                   ) : (
-                                    <Progress
-                                      type="circle"
-                                      percent={system.occupancy}
-                                      strokeColor="red"
-                                      width={40}
-                                    />
-                                  )
-                                ) : system.occupancy >= orange ? (
-                                  <Progress
-                                    type="circle"
-                                    percent={system.occupancy}
-                                    strokeColor="orange"
-                                    width={40}
-                                  />
-                                ) : (
-                                  <Progress
-                                    type="circle"
-                                    percent={system.occupancy}
-                                    strokeColor="green"
-                                    width={40}
-                                  />
-                                )}
-                              </Space>
-                            </div>
-                          </Col>
-                        </Row>
-                      </div>
-                    )}
+                                        <Progress
+                                          type="circle"
+                                          percent={system.occupancy}
+                                          strokeColor="green"
+                                          width={40}
+                                        />
+                                      )}
+                                </Space>
+                              </div>
+                            </Col>
+                          </Row>
+                        </div>
+                      )}
 
                     <div className="align-column-center margin__big">
                       <Row gutter={2}>
@@ -278,7 +271,7 @@ const Systems = ({ systems }) => {
                 </Collapse>
               </header>
               <div></div>
-              <Rooms rooms={system.rooms} />
+              <Rooms rooms={system.rooms} refreshData={refreshData} />
               <footer>
                 <div className="align-column-center margin__big">
                   <Button

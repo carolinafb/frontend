@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axiosInstance from "../axios";
 import { Modal, Form, Input } from "antd";
@@ -17,11 +17,13 @@ const CreateForm = ({
   action,
   clave,
 }) => {
-  const router = useRouter();
-  const { apiEndPoint } = useContext(UserContext);
-
   const [name, setName] = useState(null);
-  const [value, setValue] = useState(null);
+  const [visibility, setVisibility] = useState(visible);
+  useEffect(() => {
+    setVisibility(visible)
+  }, [visible]);
+  // esto no se está usando. ?
+  // const [value, setValue] = useState(null);
   const [form] = Form.useForm();
 
   const onChange = (e) => {
@@ -47,7 +49,7 @@ const CreateForm = ({
         data: payload,
       })
       .then((res) => {
-        router.push(res.data.redirect);
+        setVisibility(false);
       });
   };
   const onFinishFailed = () => {
@@ -56,7 +58,7 @@ const CreateForm = ({
 
   return (
     <Modal
-      visible={visible}
+      visible={visibility}
       title={titulo}
       okText="Comfirmar"
       cancelText="Cancelar"
