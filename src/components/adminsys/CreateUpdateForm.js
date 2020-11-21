@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import axiosInstance from "../axios";
 import { Modal, Form, Input } from "antd";
-import { useRouter } from "next/router";
-import { UserContext } from "../../contexts/UserContext";
 
 const CreateForm = ({
   visible,
@@ -20,7 +18,7 @@ const CreateForm = ({
   const [name, setName] = useState(null);
   const [visibility, setVisibility] = useState(visible);
   useEffect(() => {
-    setVisibility(visible)
+    setVisibility(visible);
   }, [visible]);
   // esto no se está usando. ?
   // const [value, setValue] = useState(null);
