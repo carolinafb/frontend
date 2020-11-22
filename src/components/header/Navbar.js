@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Drawer, Button, List } from "antd";
 import TopDrawer from "./TopDrawer";
 import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
@@ -11,7 +11,8 @@ const Navbar = () => {
   const router = useRouter();
   let buttonsToShow = [];
   const [visible, setVisible] = useState(false);
-  const { DBUser: user } = useContext(UserContext);
+  var { DBUser: user } = useContext(UserContext);
+
   const routes = {
     ALERTAS: "",
     "INGRESAR PACIENTE": "/patient/search",
@@ -41,21 +42,22 @@ const Navbar = () => {
   };
 
   //loads user actions depending on role into array
-  if ((user && user.role == "DOCTOR") || user.role == "JEFE DE SISTEMA") {
-    buttonsToShow.push("ALERTAS");
-    if (user && user.systemName == "GUARDIA") {
-      buttonsToShow.push("INGRESAR PACIENTE");
+  if (user != null) {
+    if ((user && user.role == "DOCTOR") || user.role == "JEFE DE SISTEMA") {
+      buttonsToShow.push("ALERTAS");
+      if (user && user.systemName == "GUARDIA") {
+        buttonsToShow.push("INGRESAR PACIENTE");
+      }
+    }
+    if (user && user.role == "JEFE DE SISTEMA") {
+      buttonsToShow.push("PACIENTES NUEVOS");
+    }
+    if (user && user.role == "ADMIN") {
+      buttonsToShow.push("SISTEMAS");
+      buttonsToShow.push("JEFES/MEDICOS");
+      buttonsToShow.push("EVALUACIONES");
     }
   }
-  if (user && user.role == "JEFE DE SISTEMA") {
-    buttonsToShow.push("PACIENTES NUEVOS");
-  }
-  if (user && user.role == "ADMIN") {
-    buttonsToShow.push("SISTEMAS");
-    buttonsToShow.push("JEFES/MEDICOS");
-    buttonsToShow.push("EVALUACIONES");
-  }
-
   return (
     <div className="nav-color">
       <Button type="text" onClick={showDrawer} icon={<MenuOutlined />}></Button>
