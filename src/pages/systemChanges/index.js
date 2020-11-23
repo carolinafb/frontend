@@ -1,23 +1,21 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 import Navbar from "../../components/header/Navbar";
-import SystemsAdmin from "../../components/systems/Systems";
-import { UserContext } from "../../contexts/Context";
+import SystemsAdmin from "../../components/adminsys/SystemsAdmin";
 import axiosInstance from "../../components/axios";
 
-const systems = () => {
+const adminsys = () => {
   const { Header, Content } = Layout;
   const [state, setstate] = useState({});
-  const { DBUser } = useContext(UserContext);
 
-  useEffect(() => {
-    axiosInstance.get("/systems").then((res) => setstate(res.data));
-  }, []);
+  //useEffect(() => {
+  //  axiosInstance.get("/adminsys").then((res) => setstate(res.data));
+  //}, []);
 
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
-        <Navbar user={DBUser} />
+        <Navbar info={state.user} />
       </Header>
       <Content>
         <SystemsAdmin systems={state.systems} />
@@ -26,4 +24,4 @@ const systems = () => {
   );
 };
 
-export default systems;
+export default adminsys;

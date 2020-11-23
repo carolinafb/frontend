@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Form, Input, DatePicker, InputNumber } from "antd";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/Context";
 
 const AffiliateData = ({ form }) => {
   const { dniPatient } = useContext(UserContext);
