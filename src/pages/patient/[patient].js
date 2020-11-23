@@ -3,7 +3,7 @@ import { Divider, Button, Layout, Row, Col, Result, Typography } from "antd";
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/Context";
 
 const Patient = () => {
   const router = useRouter();

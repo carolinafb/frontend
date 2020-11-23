@@ -1,8 +1,8 @@
-import React, { createContext, useState } from "react";
-export const UserContext = createContext();
+import React, { createContext, useEffect, useState } from "react";
+const UserContext = createContext();
 
 const UserProvider = (props) => {
-  const IS_SERVER = typeof window === "undefined";
+  let IS_SERVER = true;
   const HAS_STORAGE = !IS_SERVER && window.sessionStorage;
   let defaultUser = null;
 
@@ -17,7 +17,12 @@ const UserProvider = (props) => {
     _setDBUser(data);
   };
 
+  useEffect(() => {
+    IS_SERVER = typeof window === "undefined";
+  }, []);
+
   const [dniPatient, setDniPatient] = useState(null);
+
   return (
     <UserContext.Provider
       value={{
@@ -32,4 +37,4 @@ const UserProvider = (props) => {
   );
 };
 
-export default UserProvider;
+export { UserContext, UserProvider };

@@ -2,7 +2,7 @@ import Navbar from "../../../components/header/Navbar";
 import React, { useState, useContext } from "react";
 import axiosInstance from "../../../components/axios";
 import { useRouter } from "next/router";
-import { UserContext } from "../../../contexts/UserContext";
+import { UserContext } from "../../../contexts/Context";
 import { useTranslation } from "react-i18next";
 import {
   Space,

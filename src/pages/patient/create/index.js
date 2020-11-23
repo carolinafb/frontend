@@ -2,7 +2,7 @@ import Navbar from "../../../components/header/Navbar";
 import { Layout } from "antd";
 import React, { useContext } from "react";
 import AddPatientData from "../../../components/createPatient/AddPatientData";
-import { UserContext } from "../../../contexts/UserContext";
+import { UserContext } from "../../../contexts/Context";
 
 const AddPatientsData = () => {
   const { Header, Content } = Layout;

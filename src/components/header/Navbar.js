@@ -3,7 +3,7 @@ import { Drawer, Button, List } from "antd";
 import TopDrawer from "./TopDrawer";
 import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
 import axiosInstance from "../axios";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/Context";
 import { useRouter } from "next/router";
 import Link from "next/link";
 

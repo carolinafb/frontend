@@ -9,7 +9,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import getConfig from "next/config";
 import { useRouter } from "next/router";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/Context";
 import axiosInstance from "../axios";
 
 const Login = () => {

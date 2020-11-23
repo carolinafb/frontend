@@ -42,7 +42,7 @@ const Systems = ({ systems, refreshData }) => {
         data: { systemId },
       })
       .then((res) => {
-         refreshData();
+        refreshData();
       });
   };
 
@@ -53,8 +53,9 @@ const Systems = ({ systems, refreshData }) => {
         nombre: infinitBeds,
         systemId: systemId,
         clave: "infinitBeds", // nombre y clave deberían estar en inglés
-      }).then((res) => {
-         refreshData();
+      })
+      .then((res) => {
+        refreshData();
       });
   };
 
@@ -74,19 +75,26 @@ const Systems = ({ systems, refreshData }) => {
                     </Col>
                     <Col className="gutter-row" span={4}>
                       <div>
-                        {system.retirable == true &&
-                          system.rooms.length == 0 ? (
-                            <Button
-                              onClick={() => {
-                                onDeleteSystem(system.id);
-                              }}
-                              type="danger"
-                            >
-                              <DeleteOutlined />
-                            </Button>
-                          ) : (
-                            <p></p>
-                          )}
+                        {system.removable ? (
+                          <Button
+                            onClick={() => {
+                              onDeleteSystem(system.id);
+                            }}
+                            type="danger"
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        ) : (
+                          <Button
+                            disabled={true}
+                            onClick={() => {
+                              onDeleteSystem(system.id);
+                            }}
+                            type="danger"
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        )}
                       </div>
                     </Col>
 
@@ -108,8 +116,8 @@ const Systems = ({ systems, refreshData }) => {
                           </Button>
                         </div>
                       ) : (
-                          <div></div>
-                        )}
+                        <div></div>
+                      )}
                     </Col>
                   </Row>
                 </div>
@@ -148,13 +156,13 @@ const Systems = ({ systems, refreshData }) => {
                                         status="exception"
                                       />
                                     ) : (
-                                        <Progress
-                                          type="circle"
-                                          percent={system.occupancy}
-                                          strokeColor="red"
-                                          width={40}
-                                        />
-                                      )
+                                      <Progress
+                                        type="circle"
+                                        percent={system.occupancy}
+                                        strokeColor="red"
+                                        width={40}
+                                      />
+                                    )
                                   ) : system.occupancy >= orange ? (
                                     <Progress
                                       type="circle"
@@ -163,13 +171,13 @@ const Systems = ({ systems, refreshData }) => {
                                       width={40}
                                     />
                                   ) : (
-                                        <Progress
-                                          type="circle"
-                                          percent={system.occupancy}
-                                          strokeColor="green"
-                                          width={40}
-                                        />
-                                      )}
+                                    <Progress
+                                      type="circle"
+                                      percent={system.occupancy}
+                                      strokeColor="green"
+                                      width={40}
+                                    />
+                                  )}
                                 </Space>
                               </div>
                             </Col>
@@ -183,13 +191,13 @@ const Systems = ({ systems, refreshData }) => {
                                   onClick={() => {
                                     system.infinitBeds === 1
                                       ? onChangeInfinitBedsOfSystem(
-                                        system.id,
-                                        0
-                                      )
+                                          system.id,
+                                          0
+                                        )
                                       : onChangeInfinitBedsOfSystem(
-                                        system.id,
-                                        1
-                                      );
+                                          system.id,
+                                          1
+                                        );
                                   }}
                                 />
                               </div>
@@ -198,53 +206,53 @@ const Systems = ({ systems, refreshData }) => {
                         </div>
                       </div>
                     ) : (
-                        <div className="align-column-center margin__middle">
-                          <Row gutter={22}>
-                            <Col className="gutter-row" span={12}>
-                              <div>Porcentaje ocupacional</div>
-                            </Col>
+                      <div className="align-column-center margin__middle">
+                        <Row gutter={22}>
+                          <Col className="gutter-row" span={12}>
+                            <div>Porcentaje ocupacional</div>
+                          </Col>
 
-                            <Col className="gutter-row" span={12}>
-                              <div>
-                                <Space size="middle">
-                                  {system.occupancy >= red ? (
-                                    system.occupancy == 100 ? (
-                                      <Progress
-                                        type="circle"
-                                        percent={system.occupancy}
-                                        strokeColor="red"
-                                        width={40}
-                                        status="exception"
-                                      />
-                                    ) : (
-                                        <Progress
-                                          type="circle"
-                                          percent={system.occupancy}
-                                          strokeColor="red"
-                                          width={40}
-                                        />
-                                      )
-                                  ) : system.occupancy >= orange ? (
+                          <Col className="gutter-row" span={12}>
+                            <div>
+                              <Space size="middle">
+                                {system.occupancy >= red ? (
+                                  system.occupancy == 100 ? (
                                     <Progress
                                       type="circle"
                                       percent={system.occupancy}
-                                      strokeColor="orange"
+                                      strokeColor="red"
                                       width={40}
+                                      status="exception"
                                     />
                                   ) : (
-                                        <Progress
-                                          type="circle"
-                                          percent={system.occupancy}
-                                          strokeColor="green"
-                                          width={40}
-                                        />
-                                      )}
-                                </Space>
-                              </div>
-                            </Col>
-                          </Row>
-                        </div>
-                      )}
+                                    <Progress
+                                      type="circle"
+                                      percent={system.occupancy}
+                                      strokeColor="red"
+                                      width={40}
+                                    />
+                                  )
+                                ) : system.occupancy >= orange ? (
+                                  <Progress
+                                    type="circle"
+                                    percent={system.occupancy}
+                                    strokeColor="orange"
+                                    width={40}
+                                  />
+                                ) : (
+                                  <Progress
+                                    type="circle"
+                                    percent={system.occupancy}
+                                    strokeColor="green"
+                                    width={40}
+                                  />
+                                )}
+                              </Space>
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+                    )}
 
                     <div className="align-column-center margin__big">
                       <Row gutter={2}>
