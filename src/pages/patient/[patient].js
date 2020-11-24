@@ -14,38 +14,32 @@ const Patient = () => {
   const { DBUser } = useContext(UserContext);
   const [rerender, setRerender] = useState(true);
 
+  function calledBack(url, method) {
+    axiosInstance
+      .request({ method, url, params: { id: router.query.patient } })
+      .then((res) => {
+        method == "post"
+          ? router.push(res.data.redirect)
+          : setPatientData(res.data);
+        setErr(false);
+      })
+      .catch((e) => {
+        setErr(e.message);
+        setPatientData(null);
+      });
+  }
+
   useEffect(() => {
     if (router.query.patient) {
-      axiosInstance
-        .get("/patient", {
-          params: {
-            id: router.query.patient,
-          },
-        })
-        .then((res) => {
-          setErr(false);
-          setPatientData(res.data);
-        })
-        .catch((e) => {
-          setErr(e.message);
-          setPatientData(null);
-        });
+      calledBack("/patient", "get");
     }
   }, [router.query.patient]);
 
-  /*const createHospitalization = () => {
-    axiosInstance
-      .post("/createHospitalization", {
-        patientID: id,
-      })
-      .then((res) => {
-        router.push(res.data.redirect);
-      })
-      .catch((err) => {
-        if (err.response) setErr(err.response.data);
-        else setErr("Algo salio mal! No se pudo crear la internacion.");
-      });
-  };*/
+  const createHospitalization = () => {
+    if (router.query.patient) {
+      calledBack("/internment", "post");
+    }
+  };
 
   const btnErr = () => {
     if (DBUser && DBUser.role == "DOCTOR") {
@@ -149,7 +143,11 @@ const Patient = () => {
                   <br />
                   {console.log(DBUser)}
                   {DBUser && DBUser.systemId === 1 && (
-                    <Button type="primary" style={{ margin: "3%" }}>
+                    <Button
+                      type="primary"
+                      style={{ margin: "3%" }}
+                      onClick={createHospitalization}
+                    >
                       CREAR INTERNACION
                     </Button>
                   )}
