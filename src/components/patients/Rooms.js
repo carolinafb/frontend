@@ -1,8 +1,12 @@
 import React from "react";
 import { Table, Button, Space, Collapse } from "antd";
+import { useRouter } from "next/router";
+
+import axiosInstance from "../axios";
 const { Panel } = Collapse;
 
 const Rooms = ({ rooms }) => {
+  const router = useRouter();
   const columns = [
     {
       title: "Cama",
@@ -12,9 +16,8 @@ const Rooms = ({ rooms }) => {
     {
       title: "Paciente",
       render: (text, record) => (
-
         <Space size="middle">
-            {record["patientName"]} {record["patientLastName"]}
+          {record["patientName"]} {record["patientLastName"]}
         </Space>
       ),
       key: "patientName",
@@ -24,7 +27,16 @@ const Rooms = ({ rooms }) => {
       key: "Acciones",
       render: (text, record) => (
         <Space size="middle">
-          {record["patientId"] && <Button type="primary">Ver</Button>}
+          {record["patientId"] && (
+            <Button
+              onClick={() => {
+                router.push("/internment/" + record["patientId"]);
+              }}
+              type="primary"
+            >
+              Ver
+            </Button>
+          )}
           {record["patientId"] && <Button type="primary">Evolucionar</Button>}
         </Space>
       ),

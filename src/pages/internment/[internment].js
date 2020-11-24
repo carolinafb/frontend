@@ -73,139 +73,200 @@ const internment = () => {
             }
           />
         ) : data === null ? (
-          console.log("f5")
+          <div></div>
         ) : (
           /////////////////////////////
           <Fragment>
+            {console.log({ DBUser })}
             <div>
-              <Row gutter={12}>
-                <Col className="gutter-row" span={22}>
-                  <div>
-                    <Row gutter={12}>
-                      <Col className="gutter-row" span={333}>
-                        <div>
-                          <h2>{data.internmentData.patient.name}</h2>
-                        </div>
-                      </Col>
-                      <Col className="gutter-row" span={12}>
-                        <div>
-                          <h2>{data.internmentData.patient.lastName}</h2>
-                        </div>
-                      </Col>
-                    </Row>
+              <div className="align-column-center margin__small">
+                <h2>
+                  {"  Paciente:  " +
+                    data.internmentData.patient.name +
+                    " " +
+                    data.internmentData.patient.lastName}
+                </h2>
+              </div>
+              <Row gutter={[16, 4]}>
+                <Col className="gutter-row" span={8}>
+                  <div className="align-column-center margin__small">
+                    <h3>Sistema</h3>
                   </div>
                 </Col>
-                <Col className="gutter-row" span={4}>
-                  <div>
-                    <Row gutter={8}>
-                      <Col className="gutter-row" span={12}>
-                        <div>
-                          <h2>{data.internmentData.systemName}</h2>
-                        </div>
-                      </Col>
-                      <Col className="gutter-row" span={4}>
-                        <div></div>
-                      </Col>
-                    </Row>
+                <Col className="gutter-row" span={8}>
+                  <div className="align-column-center margin__small">
+                    <h3>Sala</h3>
+                  </div>
+                </Col>
+                <Col className="gutter-row" span={8}>
+                  <div className="align-column-center margin__small">
+                    <h3>Cama</h3>
+                  </div>
+                </Col>
+
+                <Col className="gutter-row" span={8}>
+                  <div className="align-column-center margin__small">
+                    {data.internmentData.location.systemName}
+                  </div>
+                </Col>
+                <Col className="gutter-row" span={8}>
+                  <div className="align-column-center margin__small">
+                    {data.internmentData.location.roomName}
+                  </div>
+                </Col>
+                <Col className="gutter-row" span={8}>
+                  <div className="align-column-center margin__small">
+                    {data.internmentData.location.bedName}
                   </div>
                 </Col>
               </Row>
             </div>
-
             <Collapse accordion>
-              <Panel header={<h2>Datos de la internación </h2>}></Panel>
+              <Panel header={<h2>Datos de la internación </h2>}>
+                <p>
+                  Fecha de inicio de los sintomas:
+                  {data.internmentData.dateOfSymptoms}
+                </p>
+                <p>
+                  Fecha de diagnostico: {data.internmentData.dateOfDiagnosis}
+                </p>
+                <p>
+                  Fecha de Hospitalizacion:
+                  {data.internmentData.dateOfHospitalization}
+                </p>
+                <p>Comorbilidades: {data.internmentData.historyOfDisease}</p>
+              </Panel>
               <Panel header={<h2>Cambio de sistemas con evoluciones</h2>}>
                 {data.internmentData.systemChanges === null ? (
                   <div>No hay cambios de sistemna </div>
                 ) : (
-                  <Timeline>
-                    {data.internmentData.systemChanges &&
-                      data.internmentData.systemChanges.map(
-                        (systemChange, index) => (
-                          <Timeline.Item color="blue">
-                            <div>
-                              <Row gutter={8}>
-                                <Col className="gutter-row" span={12}>
-                                  <div>
-                                    <h2>{systemChange.systemName}</h2>
-                                  </div>
-                                </Col>
-                                <Col className="gutter-row" span={22}>
-                                  <div>{systemChange.createTime}</div>
-                                </Col>
-                                <Col className="gutter-row" span={22}>
-                                  {systemChange.finish === null &&
-                                  systemChange.systemId ===
-                                    systemChange.systemId ? (
-                                    <div></div>
-                                  ) : (
-                                    <div>
-                                      <Button
-                                        /*   onClick={() => {
+                  <div>
+                    <div className="align-column-center margin__big">
+                      <Button
+                        /*   onClick={() => {
                                       
                                                 }}
                                             */
-                                        type="primary"
-                                      >
-                                        Agregar evolucion
-                                      </Button>
-                                    </div>
-                                  )}
-                                </Col>
-                              </Row>
-                            </div>
+                        type="primary"
+                      >
+                        Cambiar de sistema
+                      </Button>
+                    </div>
 
-                            <Collapse accordion>
-                              <Panel>
-                                {systemChange.evaluations === null ? (
-                                  <div>No hay evoluciones </div>
-                                ) : (
-                                  <Timeline>
-                                    {systemChange.evaluations &&
-                                      systemChange.evaluations.map(
-                                        (evaluation, index) => (
-                                          <Timeline.Item color="blue">
+                    <Timeline>
+                      {data.internmentData.systemChanges &&
+                        data.internmentData.systemChanges.map(
+                          (systemChange) => (
+                            <Timeline.Item color="blue">
+                              <div>
+                                <Row gutter={4}>
+                                  <Col className="gutter-row" span={12}>
+                                    <div>
+                                      <h2>{systemChange.systemName}</h2>
+                                    </div>
+                                  </Col>
+                                  <Col className="gutter-row" span={12}>
+                                    <div>
+                                      <h2>
+                                        {systemChange.createTime.slice(0, -14) +
+                                          " " +
+                                          systemChange.createTime.slice(11, -8)}
+                                      </h2>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </div>
+
+                              <Collapse accordion>
+                                <Panel
+                                  header={
+                                    <div>
+                                      <Row gutter={4}>
+                                        <Col className="gutter-row" span={10}>
+                                          <div>
+                                            <h3>Evaluaciones</h3>
+                                          </div>
+                                        </Col>
+
+                                        <Col className="gutter-row" span={4}>
+                                          {systemChange.finish === null ? (
                                             <div>
-                                              <Row gutter={8}>
-                                                <Col
-                                                  className="gutter-row"
-                                                  span={12}
-                                                >
-                                                  <div>
-                                                    <h2>
-                                                      {evaluation.createTime}
-                                                    </h2>
-                                                  </div>
-                                                </Col>
-                                                <Col
-                                                  className="gutter-row"
-                                                  span={12}
-                                                >
-                                                  <div>
-                                                    <Button
-                                                      /*   onClick={() => {
+                                              <Button
+                                                /*   onClick={() => {
                                       
                                                 }}
                                             */
-                                                      type="primary"
-                                                    >
-                                                      Ver mas
-                                                    </Button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
+                                                type="primary"
+                                              >
+                                                Agregar evolucion
+                                              </Button>
                                             </div>
-                                          </Timeline.Item>
-                                        )
-                                      )}
-                                  </Timeline>
-                                )}
-                              </Panel>
-                            </Collapse>
-                          </Timeline.Item>
-                        )
-                      )}
-                  </Timeline>
+                                          ) : (
+                                            <div></div>
+                                          )}
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  }
+                                >
+                                  {systemChange.evaluations === null ? (
+                                    <div>No hay evoluciones </div>
+                                  ) : (
+                                    <Timeline>
+                                      {systemChange.evaluations &&
+                                        systemChange.evaluations.map(
+                                          (evaluation) => (
+                                            <Timeline.Item color="blue">
+                                              <div>
+                                                <Row gutter={8}>
+                                                  <Col
+                                                    className="gutter-row"
+                                                    span={12}
+                                                  >
+                                                    <div>
+                                                      <h3>
+                                                        {evaluation.createTime.slice(
+                                                          0,
+                                                          -14
+                                                        ) +
+                                                          " " +
+                                                          evaluation.createTime.slice(
+                                                            11,
+                                                            -8
+                                                          )}
+                                                      </h3>
+                                                    </div>
+                                                  </Col>
+                                                  <Col
+                                                    className="gutter-row"
+                                                    span={12}
+                                                  >
+                                                    <div>
+                                                      <Button
+                                                        /*   onClick={() => {
+                                      
+                                                }}
+                                            */
+                                                        type="primary"
+                                                      >
+                                                        Ver mas
+                                                      </Button>
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+                                              </div>
+                                            </Timeline.Item>
+                                          )
+                                        )}
+                                    </Timeline>
+                                  )}
+                                </Panel>
+                              </Collapse>
+                            </Timeline.Item>
+                          )
+                        )}
+                    </Timeline>
+                  </div>
                 )}
               </Panel>
             </Collapse>
