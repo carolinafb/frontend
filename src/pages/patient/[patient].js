@@ -15,20 +15,22 @@ const Patient = () => {
   const [rerender, setRerender] = useState(true);
 
   useEffect(() => {
-    axiosInstance
-      .get("/patient", {
-        params: {
-          id: router.query.patient,
-        },
-      })
-      .then((res) => {
-        setErr(false);
-        setPatientData(res.data);
-      })
-      .catch((e) => {
-        setErr(e.message);
-        setPatientData(null);
-      });
+    if (router.query.patient) {
+      axiosInstance
+        .get("/patient", {
+          params: {
+            id: router.query.patient,
+          },
+        })
+        .then((res) => {
+          setErr(false);
+          setPatientData(res.data);
+        })
+        .catch((e) => {
+          setErr(e.message);
+          setPatientData(null);
+        });
+    }
   }, [router.query.patient]);
 
   /*const createHospitalization = () => {
@@ -145,9 +147,12 @@ const Patient = () => {
                   </label>
                   {patientData.contactPerson.phone}
                   <br />
-                  <Button type="primary" style={{ margin: "3%" }}>
-                    CREAR INTERNACION
-                  </Button>
+                  {console.log(DBUser)}
+                  {DBUser && DBUser.systemId === 1 && (
+                    <Button type="primary" style={{ margin: "3%" }}>
+                      CREAR INTERNACION
+                    </Button>
+                  )}
                 </Col>
               </Row>
             </Fragment>
