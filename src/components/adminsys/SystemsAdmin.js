@@ -85,13 +85,7 @@ const Systems = ({ systems, refreshData }) => {
                             <DeleteOutlined />
                           </Button>
                         ) : (
-                          <Button
-                            disabled={true}
-                            onClick={() => {
-                              onDeleteSystem(system.id);
-                            }}
-                            type="danger"
-                          >
+                          <Button disabled={true} type="danger">
                             <DeleteOutlined />
                           </Button>
                         )}
@@ -99,7 +93,7 @@ const Systems = ({ systems, refreshData }) => {
                     </Col>
 
                     <Col className="gutter-row" span={4}>
-                      {system.retirable == true ? (
+                      {system.removable == true ? (
                         <div>
                           <Button
                             onClick={() => {
@@ -116,7 +110,11 @@ const Systems = ({ systems, refreshData }) => {
                           </Button>
                         </div>
                       ) : (
-                        <div></div>
+                        <div>
+                          <Button disabled={true} type="primary">
+                            <EditOutlined />
+                          </Button>
+                        </div>
                       )}
                     </Col>
                   </Row>

@@ -1,9 +1,11 @@
 import React from "react";
 import { Table, Typography, Space, Collapse, Button } from "antd";
+import { useRouter } from "next/router";
 const { Panel } = Collapse;
 const { Text } = Typography;
 
 const RoomsSystem = ({ rooms }) => {
+  const router = useRouter();
   const columns = [
     {
       title: "Cama",
@@ -30,7 +32,17 @@ const RoomsSystem = ({ rooms }) => {
       key: "Acciones",
       render: (text, record) => (
         <Space size="middle">
-          {record["patient_id"] && <Button type="primary">Ver</Button>}
+          {record["patient_id"] && (
+            <Button
+              type="primary"
+              onClick={() => {
+                router.push("/internment/" + record["patientId"]);
+              }}
+              type="primary"
+            >
+              Ver
+            </Button>
+          )}
           {record["patient_id"] && <Button type="primary">Asignar</Button>}
         </Space>
       ),
