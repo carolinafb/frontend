@@ -9,21 +9,23 @@ import {
   Form,
   DatePicker,
   Input,
+  Select,
 } from "antd";
-import React, { useState, useEffect, useContext, Fragment } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-//import axiosInstance from "../../components/axios";
+import axiosInstance from "../../../components/axios";
 import { UserContext } from "../../../contexts/Context";
 
 const CreateInternment = () => {
   const router = useRouter();
   const { Header, Content } = Layout;
   const { TextArea } = Input;
-  const [createInternmentData, setcreateInternmentData] = useState(null);
+  const [infoRooms, setInfoRooms] = useState(null);
+  const [infoBeds, setInfoBeds] = useState(null);
   const [err, setErr] = useState(false);
   const { Title } = Typography;
-  const { DBUser } = useContext(UserContext);
-  const [rerender, setRerender] = useState(true);
+  const { DBUser, needCreateBeds, idPatient } = useContext(UserContext);
+  const { Option } = Select;
 
   const btnErr = () => {
     if (DBUser && DBUser.role == "DOCTOR") {
@@ -33,20 +35,44 @@ const CreateInternment = () => {
     }
   };
 
-  useEffect(() => {
+  const callToBack = (method, url, param) => {
     axiosInstance
-      .get("/system")
+      .request({ method, url, params: param })
       .then((res) => {
-        setErr(false);
-        setData(res.data);
+        switch (url) {
+          case "/beds/withSpace":
+            setInfoBeds(res.data);
+            break;
+          case "/rooms/withSpace":
+            setInfoRooms(res.data);
+            break;
+          default:
+            router.push(res.data.redirect);
+            break;
+        }
       })
       .catch((e) => {
         setErr(e.message);
-        setData(null);
       });
-  }),
-    [];
+  };
 
+  const onFinish = (values) => {
+    console.log("Success:", values);
+    values.idPatient = idPatient;
+    callToBack("put", "/internment", values);
+  };
+
+  const onRoomSelect = (room) => {
+    console.log("se selecciono:", room);
+    if (!needCreateBeds) {
+      callToBack("get", "/beds/withSpace", { id: room });
+    }
+  };
+  useEffect(() => {
+    callToBack("get", "/rooms/withSpace", { id: 1 });
+  }, []);
+
+  console.log("necesito crear camas????:", needCreateBeds);
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
@@ -89,13 +115,14 @@ const CreateInternment = () => {
               <Form
                 layout="vertical"
                 name="createInternment"
+                onFinish={onFinish}
                 initialValues={{
                   remember: true,
                 }}
               >
                 <Form.Item
                   label="Fecha de inicio de sintomas:"
-                  name="DateSymptom "
+                  name="dateOfSymptoms"
                   rules={[
                     {
                       required: true,
@@ -108,7 +135,7 @@ const CreateInternment = () => {
 
                 <Form.Item
                   label="Fecha de inicio diagnostico:"
-                  name="DateDiagnosticStart"
+                  name="dateOfDiagnosis"
                   rules={[
                     {
                       required: true,
@@ -119,8 +146,79 @@ const CreateInternment = () => {
                   <DatePicker placeholder="Fecha de inicio diagnostico" />
                 </Form.Item>
 
-                <Form.Item label="Comorbilidades: " name="comorbidities">
+                <Form.Item
+                  label="Comorbilidades: "
+                  name="historyOfDisease"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Campo obligatorio!",
+                    },
+                  ]}
+                >
                   <TextArea placeholder="Leve descripcion" />
+                </Form.Item>
+                {infoRooms && (
+                  <Form.Item
+                    label="Salas: "
+                    name="room"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor ingrese la sala!",
+                      },
+                    ]}
+                  >
+                    <Select onSelect={onRoomSelect}>
+                      {infoRooms.map((element) => {
+                        return (
+                          <Option value={element.id} key={element.id}>
+                            {element.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                )}
+                {needCreateBeds ? (
+                  <Form.Item
+                    label="Nombre de la cama:"
+                    name="bed"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor ingrese el nombre!",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="Nombre de la cama" />
+                  </Form.Item>
+                ) : (
+                  infoBeds && (
+                    <Form.Item
+                      label="Camas libres: "
+                      name="bed"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Por favor ingrese la cama!",
+                        },
+                      ]}
+                    >
+                      <Select>
+                        {infoBeds.map((element) => {
+                          return (
+                            <Option key={element.id}>{element.name}</Option>
+                          );
+                        })}
+                      </Select>
+                    </Form.Item>
+                  )
+                )}
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    CREAR INTERNACION
+                  </Button>
                 </Form.Item>
               </Form>
             </Col>

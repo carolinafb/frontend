@@ -22,10 +22,8 @@ const Patient = () => {
   const [err, setErr] = useState(false);
   const { Title } = Typography;
   const { DBUser, setNeedCreateBeds, setIdPatient } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
 
   function calledBack(url, method) {
-    setLoading(true);
     axiosInstance
       .request({ method, url, params: { id: router.query.patient } })
       .then((res) => {
@@ -36,22 +34,6 @@ const Patient = () => {
         } else {
           setPatientData(res.data);
         }
-        setErr(false);
-      })
-      .catch((e) => {
-        setErr(e.message);
-        setPatientData(null);
-      });
-    setLoading(false);
-  }
-
-  function calledBack(url, method) {
-    axiosInstance
-      .request({ method, url, params: { id: router.query.patient } })
-      .then((res) => {
-        method == "post"
-          ? router.push(res.data.redirect)
-          : setPatientData(res.data);
         setErr(false);
       })
       .catch((e) => {
@@ -107,89 +89,86 @@ const Patient = () => {
           />
         ) : (
           !(patientData == null || Object.keys(patientData).length === 0) && (
-            <Fragment>
-              <Row justify="start">
-                <Col
-                  xs={{ span: 14, offset: 3 }}
-                  sm={{ span: 13, offset: 3 }}
-                  lg={{ span: 13, offset: 3 }}
-                  xl={{ span: 6, offset: 1 }}
-                >
-                  <Divider orientation="left">Paciente:</Divider>
-                  <Title level={4}>
-                    {patientData.name + " " + patientData.lastName}
-                  </Title>
-                  <label>
-                    <strong> DNI:</strong>
-                  </label>
-                  {patientData.dni}
-                  <br />
-                  <label>
-                    <strong>Fecha de nacimiento: </strong>
-                  </label>
-                  {patientData.birthDate.slice(0, 10)}
-                  <br />
-                  <label>
-                    <strong> Direccion: </strong>
-                  </label>
-                  {patientData.direction}
-                  <br />
-                  <label>
-                    <strong>Telefono:</strong>
-                  </label>
-                  {patientData.phone}
-                  <br />
-                  <label>
-                    <strong>Email: </strong>
-                  </label>
-                  {patientData.email}
-                  <br />
-                  <label>
-                    <strong> Obra Social: </strong>
-                  </label>
-                  {patientData.socialSecurity}
-                  <br />
-                  <label>
-                    <strong> Antecedente Personales: </strong>
-                  </label>
-                  {patientData.background_clinical
-                    ? patientData.background_clinical
-                    : "ninguno"}
-                  <br />
-                  <Divider orientation="left">Persona de contacto: </Divider>
-                  <label>
-                    <strong> Nombre: </strong>
-                  </label>
-                  {patientData.contactPerson.name}
-                  <br />
-                  <label>
-                    <strong> Apellido: </strong>
-                  </label>
-                  {patientData.contactPerson.lastName}
-                  <br />
-                  <label>
-                    <strong> Parentesco/Relacion: </strong>
-                  </label>
-                  {patientData.contactPerson.relationship}
-                  <br />
-                  <label>
-                    <strong> Telefono: </strong>
-                  </label>
-                  {patientData.contactPerson.phone}
-                  <br />
-                  {console.log(DBUser)}
-                  {DBUser && DBUser.systemId === 1 && (
-                    <Button
-                      type="primary"
-                      style={{ margin: "3%" }}
-                      onClick={createHospitalization}
-                    >
-                      CREAR INTERNACION
-                    </Button>
-                  )}
-                </Col>
-              </Row>
-            </Fragment>
+            <Row justify="start">
+              <Col
+                xs={{ span: 14, offset: 3 }}
+                sm={{ span: 13, offset: 3 }}
+                lg={{ span: 13, offset: 3 }}
+                xl={{ span: 6, offset: 1 }}
+              >
+                <Divider orientation="left">Paciente:</Divider>
+                <Title level={4}>
+                  {patientData.name + " " + patientData.lastName}
+                </Title>
+                <label>
+                  <strong> DNI:</strong>
+                </label>
+                {patientData.dni}
+                <br />
+                <label>
+                  <strong>Fecha de nacimiento: </strong>
+                </label>
+                {patientData.birthDate.slice(0, 10)}
+                <br />
+                <label>
+                  <strong> Direccion: </strong>
+                </label>
+                {patientData.direction}
+                <br />
+                <label>
+                  <strong>Telefono:</strong>
+                </label>
+                {patientData.phone}
+                <br />
+                <label>
+                  <strong>Email: </strong>
+                </label>
+                {patientData.email}
+                <br />
+                <label>
+                  <strong> Obra Social: </strong>
+                </label>
+                {patientData.socialSecurity}
+                <br />
+                <label>
+                  <strong> Antecedente Personales: </strong>
+                </label>
+                {patientData.background_clinical
+                  ? patientData.background_clinical
+                  : "ninguno"}
+                <br />
+                <Divider orientation="left">Persona de contacto: </Divider>
+                <label>
+                  <strong> Nombre: </strong>
+                </label>
+                {patientData.contactPerson.name}
+                <br />
+                <label>
+                  <strong> Apellido: </strong>
+                </label>
+                {patientData.contactPerson.lastName}
+                <br />
+                <label>
+                  <strong> Parentesco/Relacion: </strong>
+                </label>
+                {patientData.contactPerson.relationship}
+                <br />
+                <label>
+                  <strong> Telefono: </strong>
+                </label>
+                {patientData.contactPerson.phone}
+                <br />
+                {DBUser && DBUser.systemId === 1 && (
+                  <Button
+                    type="primary"
+                    style={{ margin: "3%" }}
+                    onClick={createHospitalization}
+                  >
+                    CREAR INTERNACION
+                  </Button>
+                )}
+              </Col>
+            </Row>
           )
         )}
       </Content>
