@@ -39,9 +39,8 @@ const CreateInternment = () => {
     axiosInstance
       .request({ method, url, params: param })
       .then((res) => {
-        url === "/beds/withSpace"
-          ? setInfoBeds(res.data)
-          : setInfoRooms(res.data);
+        url === "/beds/withSpace" && setInfoBeds(res.data);
+        setInfoRooms(res.data);
       })
       .catch((e) => {
         setErr(e.message);
@@ -64,7 +63,6 @@ const CreateInternment = () => {
   };
 
   const onRoomSelect = (room) => {
-    console.log("se selecciono:", room);
     if (!needCreateBeds) {
       callToBackForInfo("get", "/beds/withSpace", { id: room });
     }
