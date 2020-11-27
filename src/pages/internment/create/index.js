@@ -47,7 +47,7 @@ const CreateInternment = () => {
         setErr(err.message);
       });
   }
-  const callToBackForInfo = (method, url, param) => {
+  const callToBackForInfo = (url, param) => {
     axiosInstance
       .request({ method, url, params: param })
       .then((res) => {
@@ -80,7 +80,6 @@ const CreateInternment = () => {
     callToBackForInfo("get", "/rooms/withSpace", { id: IdGuard });
   }, []);
 
-  console.log("necesito crear camas????:", needCreateBeds);
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
