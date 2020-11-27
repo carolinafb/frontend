@@ -26,6 +26,7 @@ const CreateInternment = () => {
   const { Title } = Typography;
   const { DBUser, needCreateBeds, idPatient } = useContext(UserContext);
   const { Option } = Select;
+  const IdGuard = 1;
 
   const btnErr = () => {
     if (DBUser && DBUser.role == "DOCTOR") {
@@ -34,24 +35,9 @@ const CreateInternment = () => {
       router.push("/systems");
     }
   };
-
-  const callToBackForInfo = (method, url, param) => {
+  function callToBackToAddData(url, values) {
     axiosInstance
-      .request({ method, url, params: param })
-      .then((res) => {
-        url === "/beds/withSpace" && setInfoBeds(res.data);
-        setInfoRooms(res.data);
-      })
-      .catch((e) => {
-        setErr(e.message);
-      });
-  };
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    values.idPatient = idPatient;
-    axiosInstance
-      .put("/internment", values)
+      .put(url, values)
       .then((res) => {
         if (res.status) {
           router.push(res.data.redirect);
@@ -60,6 +46,29 @@ const CreateInternment = () => {
       .catch((err) => {
         setErr(err.message);
       });
+  }
+  const callToBackForInfo = (method, url, param) => {
+    axiosInstance
+      .request({ method, url, params: param })
+      .then((res) => {
+        url === "/beds/withSpace" && setInfoBeds(res.data);
+        if (res.data.length === 0) {
+          callToBackForInfo("get", "/system", { id: IdGuard });
+        }
+        setInfoRooms(res.data);
+      })
+      .catch((e) => {
+        setErr(e.message);
+      });
+  };
+
+  const onFinish = (values) => {
+    values.idPatient = idPatient;
+    if (!needCreateBeds) {
+      callToBackToAddData("/internment", values);
+    } else {
+      callToBackToAddData("/internmentWithNewBed", values);
+    }
   };
 
   const onRoomSelect = (room) => {
@@ -68,7 +77,7 @@ const CreateInternment = () => {
     }
   };
   useEffect(() => {
-    callToBackForInfo("get", "/rooms/withSpace", { id: 1 });
+    callToBackForInfo("get", "/rooms/withSpace", { id: IdGuard });
   }, []);
 
   console.log("necesito crear camas????:", needCreateBeds);
