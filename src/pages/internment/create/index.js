@@ -35,21 +35,13 @@ const CreateInternment = () => {
     }
   };
 
-  const callToBack = (method, url, param) => {
+  const callToBackForInfo = (method, url, param) => {
     axiosInstance
       .request({ method, url, params: param })
       .then((res) => {
-        switch (url) {
-          case "/beds/withSpace":
-            setInfoBeds(res.data);
-            break;
-          case "/rooms/withSpace":
-            setInfoRooms(res.data);
-            break;
-          default:
-            router.push(res.data.redirect);
-            break;
-        }
+        url === "/beds/withSpace"
+          ? setInfoBeds(res.data)
+          : setInfoRooms(res.data);
       })
       .catch((e) => {
         setErr(e.message);
@@ -59,17 +51,26 @@ const CreateInternment = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
     values.idPatient = idPatient;
-    callToBack("put", "/internment", values);
+    axiosInstance
+      .put("/internment", values)
+      .then((res) => {
+        if (res.status) {
+          router.push(res.data.redirect);
+        }
+      })
+      .catch((err) => {
+        setErr(err.message);
+      });
   };
 
   const onRoomSelect = (room) => {
     console.log("se selecciono:", room);
     if (!needCreateBeds) {
-      callToBack("get", "/beds/withSpace", { id: room });
+      callToBackForInfo("get", "/beds/withSpace", { id: room });
     }
   };
   useEffect(() => {
-    callToBack("get", "/rooms/withSpace", { id: 1 });
+    callToBackForInfo("get", "/rooms/withSpace", { id: 1 });
   }, []);
 
   console.log("necesito crear camas????:", needCreateBeds);
