@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import axiosInstance from "../axios";
-import { Steps, Button, Row, Col, Form, Result, Alert } from "antd";
+import { Steps, Button, Row, Col, Form, Result, Alert, Spin } from "antd";
 import AffiliateData from "./AffiliateData";
 import PersonalHistory from "./PersonalHistory";
 import ContactPerson from "./ContactPerson";
@@ -15,6 +15,7 @@ const AddPatientData = () => {
   const [sucess, setSucess] = useState(false);
   const [error, setError] = useState(false);
   const [redir, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -42,6 +43,7 @@ const AddPatientData = () => {
         if (current < 2) {
           next();
         } else {
+          setLoading(true);
           axiosInstance
             .put("/patient", newData)
             .then((res) => {
@@ -112,6 +114,11 @@ const AddPatientData = () => {
                   type="error"
                   style={{ alignContent: "center" }}
                 />
+              )}
+              {loading && (
+                <div className="align-column-center margin__big">
+                  <Spin size="large" tip="Loading..." />
+                </div>
               )}
               {steps[current].content}
             </Col>
