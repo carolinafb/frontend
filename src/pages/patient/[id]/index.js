@@ -1,6 +1,16 @@
 import Navbar from "../../components/header/Navbar";
-import { Divider, Button, Layout, Row, Col, Result, Typography } from "antd";
-import React, { useState, useEffect, useContext, Fragment } from "react";
+import {
+  Divider,
+  Button,
+  Layout,
+  Row,
+  Col,
+  Result,
+  Typography,
+  Space,
+  Spin,
+} from "antd";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
 import { UserContext } from "../../contexts/Context";
@@ -12,8 +22,10 @@ const Patient = () => {
   const [err, setErr] = useState(false);
   const { Title } = Typography;
   const { DBUser, setNeedCreateBeds, setIdPatient } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   function calledBack(url, method) {
+    setLoading(true);
     axiosInstance
       .request({ method, url, params: { id: router.query.patient } })
       .then((res) => {
@@ -30,6 +42,7 @@ const Patient = () => {
         setErr(e.message);
         setPatientData(null);
       });
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -58,6 +71,11 @@ const Patient = () => {
         <Navbar user={DBUser} />
       </Header>
       <Content>
+        {loading && (
+          <div className="align-column-center margin__big">
+            <Spin size="large" tip="Loading..." />
+          </div>
+        )}
         {err ? (
           <Result
             status="error"
