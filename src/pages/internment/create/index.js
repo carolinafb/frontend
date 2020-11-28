@@ -10,6 +10,7 @@ import {
   DatePicker,
   Input,
   Select,
+  Spin,
 } from "antd";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
@@ -23,17 +24,20 @@ const CreateInternment = () => {
   const [infoRooms, setInfoRooms] = useState(null);
   const [infoBeds, setInfoBeds] = useState(null);
   const [err, setErr] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { Title } = Typography;
   const { DBUser, needCreateBeds, idPatient } = useContext(UserContext);
   const { Option } = Select;
 
   const btnErr = () => {
+    setLoading(true);
     if (DBUser && DBUser.role == "DOCTOR") {
       router.push("/patients");
     } else {
       router.push("/systems");
     }
   };
+<<<<<<< HEAD
 
   const callToBack = (method, url, param) => {
     axiosInstance
@@ -50,6 +54,32 @@ const CreateInternment = () => {
             router.push(res.data.redirect);
             break;
         }
+=======
+  function callToBackToAddData(url, values) {
+    setLoading(true);
+    axiosInstance
+      .put(url, values)
+      .then((res) => {
+        if (res.status) {
+          router.push(res.data.redirect);
+        }
+      })
+      .catch((err) => {
+        setErr(err.message);
+      });
+  }
+  const callToBackForInfo = (method, url, param) => {
+    setLoading(true);
+    axiosInstance
+      .request({ method, url, params: param })
+      .then((res) => {
+        url === "/beds/withSpace" && setInfoBeds(res.data);
+        if (res.data.length === 0) {
+          callToBackForInfo("get", "/system", { id: 1 });
+        }
+        setInfoRooms(res.data);
+        setLoading(false);
+>>>>>>> agrego spiners
       })
       .catch((e) => {
         setErr(e.message);
@@ -57,7 +87,11 @@ const CreateInternment = () => {
   };
 
   const onFinish = (values) => {
+<<<<<<< HEAD
     console.log("Success:", values);
+=======
+    setLoading(true);
+>>>>>>> agrego spiners
     values.idPatient = idPatient;
     callToBack("put", "/internment", values);
   };
@@ -69,7 +103,11 @@ const CreateInternment = () => {
     }
   };
   useEffect(() => {
+<<<<<<< HEAD
     callToBack("get", "/rooms/withSpace", { id: 1 });
+=======
+    callToBackForInfo("get", "/rooms/withSpace", { id: 1 });
+>>>>>>> agrego spiners
   }, []);
 
   console.log("necesito crear camas????:", needCreateBeds);
@@ -104,14 +142,11 @@ const CreateInternment = () => {
               <Title align="center" level={3} style={{ marginTop: "3%" }}>
                 CREAR INTERNACION
               </Title>
-              {err && (
-                <Alert
-                  message={err}
-                  type="error"
-                  style={{ alignContent: "center" }}
-                />
+              {loading && (
+                <div className="align-column-center margin__big">
+                  <Spin size="large" tip="Loading..." />
+                </div>
               )}
-
               <Form
                 layout="vertical"
                 name="createInternment"

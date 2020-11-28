@@ -22,8 +22,10 @@ const Patient = () => {
   const [err, setErr] = useState(false);
   const { Title } = Typography;
   const { DBUser, setNeedCreateBeds, setIdPatient } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   function calledBack(url, method) {
+    setLoading(true);
     axiosInstance
       .request({ method, url, params: { id: router.query.patient } })
       .then((res) => {
@@ -40,6 +42,7 @@ const Patient = () => {
         setErr(e.message);
         setPatientData(null);
       });
+    setLoading(false);
   }
 
   useEffect(() => {
