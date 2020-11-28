@@ -10,6 +10,7 @@ import {
   DatePicker,
   Input,
   Select,
+  Spin,
 } from "antd";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
@@ -23,12 +24,13 @@ const CreateInternment = () => {
   const [infoRooms, setInfoRooms] = useState(null);
   const [infoBeds, setInfoBeds] = useState(null);
   const [err, setErr] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { Title } = Typography;
   const { DBUser, needCreateBeds, idPatient } = useContext(UserContext);
   const { Option } = Select;
-  const IdGuard = 1;
 
   const btnErr = () => {
+    setLoading(true);
     if (DBUser && DBUser.role == "DOCTOR") {
       router.push("/patients");
     } else {
@@ -36,6 +38,7 @@ const CreateInternment = () => {
     }
   };
   function callToBackToAddData(url, values) {
+    setLoading(true);
     axiosInstance
       .put(url, values)
       .then((res) => {
@@ -47,15 +50,17 @@ const CreateInternment = () => {
         setErr(err.message);
       });
   }
-  const callToBackForInfo = (url, param) => {
+  const callToBackForInfo = (method, url, param) => {
+    setLoading(true);
     axiosInstance
       .request({ method, url, params: param })
       .then((res) => {
         url === "/beds/withSpace" && setInfoBeds(res.data);
         if (res.data.length === 0) {
-          callToBackForInfo("get", "/system", { id: IdGuard });
+          callToBackForInfo("get", "/system", { id: 1 });
         }
         setInfoRooms(res.data);
+        setLoading(false);
       })
       .catch((e) => {
         setErr(e.message);
@@ -63,6 +68,7 @@ const CreateInternment = () => {
   };
 
   const onFinish = (values) => {
+    setLoading(true);
     values.idPatient = idPatient;
     if (!needCreateBeds) {
       callToBackToAddData("/internment", values);
@@ -77,7 +83,7 @@ const CreateInternment = () => {
     }
   };
   useEffect(() => {
-    callToBackForInfo("get", "/rooms/withSpace", { id: IdGuard });
+    callToBackForInfo("get", "/rooms/withSpace", { id: 1 });
   }, []);
 
   return (
@@ -111,14 +117,11 @@ const CreateInternment = () => {
               <Title align="center" level={3} style={{ marginTop: "3%" }}>
                 CREAR INTERNACION
               </Title>
-              {err && (
-                <Alert
-                  message={err}
-                  type="error"
-                  style={{ alignContent: "center" }}
-                />
+              {loading && (
+                <div className="align-column-center margin__big">
+                  <Spin size="large" tip="Loading..." />
+                </div>
               )}
-
               <Form
                 layout="vertical"
                 name="createInternment"
