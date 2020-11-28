@@ -5,13 +5,14 @@ import { useRouter } from "next/router";
 import { UserContext } from "../../../contexts/Context";
 import { useTranslation } from "react-i18next";
 import {
-  Space,
   Typography,
   InputNumber,
   Alert,
   Form,
   Button,
   Layout,
+  Space,
+  Spin,
 } from "antd";
 
 const AddPatients = () => {
@@ -21,8 +22,10 @@ const AddPatients = () => {
   const { t } = useTranslation();
   const [msg, setErr] = useState(null);
   const { setDniPatient, DBUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   const onFinish = (e) => {
+    setLoading(true);
     setDniPatient(e.dni);
     axiosInstance
       .post("/patient", {
@@ -47,7 +50,11 @@ const AddPatients = () => {
             INGRESAR PACIENTE
           </Title>
           {msg ? <Alert message={t(msg)} type="error" /> : null}
-
+          {loading && (
+            <div className="align-column-center margin__big">
+              <Spin size="large" tip="Loading..." />
+            </div>
+          )}
           <Form
             style={{ marginLeft: "3%" }}
             layout="horizontal"
