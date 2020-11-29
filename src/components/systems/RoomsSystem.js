@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Table, Typography, Space, Collapse, Button } from "antd";
 import { useRouter } from "next/router";
+import CreateSystemchange from "../../components/internment/CreateSystemchange";
+import { UserContext } from "../../contexts/Context";
 const { Panel } = Collapse;
 const { Text } = Typography;
 
-const RoomsSystem = ({ rooms }) => {
+const RoomsSystem = ({ rooms, systemId }) => {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
+  const [patientId, setPatientId] = useState(null);
+  const { DBUser } = useContext(UserContext);
+
+  const onCreate = () => {
+    refreshData();
+    setVisible(false);
+  };
+
   const columns = [
     {
       title: "Cama",
@@ -43,7 +54,23 @@ const RoomsSystem = ({ rooms }) => {
               Ver
             </Button>
           )}
-          {record["patient_id"] && <Button type="primary">Asignar</Button>}
+          {record["patient_id"] && systemId === DBUser.systemId && (
+            <Button type="primary">Asignar</Button>
+          )}
+          {record["patientId"] && systemId === DBUser.systemId && (
+            <Button type="primary">Evolucionar</Button>
+          )}
+          {record["patientId"] && systemId === DBUser.systemId && (
+            <Button
+              onClick={() => {
+                setPatientId(record["patientId"]);
+                setVisible(true);
+              }}
+              type="primary"
+            >
+              Cambiar de sistema
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -64,6 +91,16 @@ const RoomsSystem = ({ rooms }) => {
             </Panel>
           ))}
       </Collapse>
+      <div className="align-column-center margin__big">
+        <CreateSystemchange
+          visible={visible}
+          onCreate={onCreate}
+          patientId={patientId}
+          onCancel={() => {
+            setVisible(false);
+          }}
+        />
+      </div>
     </div>
   );
 };

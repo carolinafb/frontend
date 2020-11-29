@@ -73,50 +73,6 @@ const Systems = ({ systems, refreshData }) => {
                         <h1>{system.name}</h1>
                       </div>
                     </Col>
-                    <Col className="gutter-row" span={4}>
-                      <div>
-                        {system.removable ? (
-                          <Button
-                            onClick={() => {
-                              onDeleteSystem(system.id);
-                            }}
-                            type="danger"
-                          >
-                            <DeleteOutlined />
-                          </Button>
-                        ) : (
-                          <Button disabled={true} type="danger">
-                            <DeleteOutlined />
-                          </Button>
-                        )}
-                      </div>
-                    </Col>
-
-                    <Col className="gutter-row" span={4}>
-                      {system.removable == true ? (
-                        <div>
-                          <Button
-                            onClick={() => {
-                              setVisible(true);
-                              setSystemId(system.id);
-                              setTitulo("Modificar sistema");
-                              setAction("update");
-                              setPath("sistema");
-                              setClave("name");
-                            }}
-                            type="primary"
-                          >
-                            <EditOutlined />
-                          </Button>
-                        </div>
-                      ) : (
-                        <div>
-                          <Button disabled={true} type="primary">
-                            <EditOutlined />
-                          </Button>
-                        </div>
-                      )}
-                    </Col>
                   </Row>
                 </div>
               }
@@ -312,8 +268,18 @@ const Systems = ({ systems, refreshData }) => {
               setVisible(false);
             }}
           />
+        </div>
+      </footer>
+    </div>
+  );
+};
+export default Systems;
 
-          <Button
+/* 
+
+agregar systema
+ <Button
+            display="none"
             onClick={() => {
               setVisible(true);
               setTitulo("Agregar sistema");
@@ -324,9 +290,57 @@ const Systems = ({ systems, refreshData }) => {
           >
             Agregar sistema
           </Button>
-        </div>
-      </footer>
-    </div>
-  );
-};
-export default Systems;
+
+
+editar y eliminar systema en el encabezado del desplegable
+
+
+ <Col className="gutter-row" span={4}>
+                      <div>
+                        {system.removable ? (
+                          <Button
+                            onClick={() => {
+                              onDeleteSystem(system.id);
+                            }}
+                            type="danger"
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        ) : (
+                          <Button disabled={true} type="danger">
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
+                    </Col>
+
+                    <Col className="gutter-row" span={4}>
+                      {system.removable == true ? (
+                        <div>
+                          <Button
+                            onClick={() => {
+                              setVisible(true);
+                              setSystemId(system.id);
+                              setTitulo("Modificar sistema");
+                              setAction("update");
+                              setPath("sistema");
+                              setClave("name");
+                            }}
+                            type="primary"
+                          >
+                            <EditOutlined />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div>
+                          <Button disabled={true} type="primary">
+                            <EditOutlined />
+                          </Button>
+                        </div>
+                      )}
+                    </Col>
+
+
+
+
+*/
