@@ -83,7 +83,7 @@ const internment = () => {
         ) : (
           /////////////////////////////
           <Fragment>
-            {console.log({ DBUser })}
+            {console.log({ data })}
             <div>
               <div className="align-column-center margin__small">
                 <h2>
