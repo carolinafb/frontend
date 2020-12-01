@@ -20,7 +20,12 @@ const AffiliateData = ({ form }) => {
         name="dni"
         rules={[{ required: true, message: "Ingrese el DNI de la persona" }]}
       >
-        <InputNumber placeholder="DNI" style={{ width: "100%" }} />
+        <InputNumber
+          placeholder="DNI"
+          max={2147483647}
+          min={1}
+          style={{ width: "100%" }}
+        />
       </Form.Item>
 
       <Form.Item
