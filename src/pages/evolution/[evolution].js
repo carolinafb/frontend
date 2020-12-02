@@ -1,6 +1,6 @@
 import Navbar from "../../components/header/Navbar";
 import {
-  Divider,
+  Empty,
   Button,
   Layout,
   Row,
@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
 import { UserContext } from "../../contexts/Context";
 import ClinicalStudy from "../../components/evolution/ClinicalStudy";
+import { DownloadOutlined } from "@ant-design/icons";
 
 const Evolution = () => {
   const router = useRouter();
@@ -96,145 +97,138 @@ const Evolution = () => {
                 sm={{ span: 18, offset: 3 }}
                 lg={{ span: 14, offset: 5 }}
               >
-                <Divider orientation="left">
-                  Evolucion: {data.evolution.createTime}
-                </Divider>
+                <Title level={5}>
+                  {data.evolution.createTime.slice(0, -14) +
+                    " " +
+                    data.evolution.createTime.slice(11, -8)}
+                </Title>
                 <Title level={4}>{data.name + " " + data.lastName}</Title>
-                <Collapse accordion>
+                <Collapse accordion bordered={false}>
                   <Panel header="SIGNOS VITALES" key="1">
-                    <label>
+                    <p>
                       <strong>Temperatura: </strong>
-                    </label>
-                    {data.evolution.temperature
-                      ? data.evolution.temperature
-                      : "No cargado"}{" "}
-                    °C
-                    <br />
-                    <label>
+                      {data.evolution.temperature
+                        ? data.evolution.temperature
+                        : "No cargado"}{" "}
+                      °C
+                    </p>
+                    <p>
                       <strong>TA Sistolica: </strong>
-                    </label>
-                    {data.evolution.systolicBloodPressure
-                      ? data.evolution.systolicBloodPressure
-                      : "No cargado"}{" "}
-                    mmHg
-                    <br />
-                    <label>
+                      {data.evolution.systolicBloodPressure
+                        ? data.evolution.systolicBloodPressure + " mmHg"
+                        : "No cargado"}
+                    </p>
+                    <p>
                       <strong>TA Diastolica: </strong>
-                    </label>
-                    {data.evolution.diastolicBloodPressure
-                      ? data.evolution.diastolicBloodPressure
-                      : "No cargado"}{" "}
-                    mmHg
-                    <br />
-                    <label>
+                      {data.evolution.diastolicBloodPressure
+                        ? data.evolution.diastolicBloodPressure + " mmHg"
+                        : "No cargado"}
+                    </p>
+                    <p>
                       <strong>FC: </strong>
-                    </label>
-                    {data.evolution.heartRate
-                      ? data.evolution.heartRate
-                      : "No cargado"}
-                    lpm
-                    <br />
-                    <label>
+                      {data.evolution.heartRate
+                        ? data.evolution.heartRate + " lpm"
+                        : "No cargado"}
+                    </p>
+                    <p>
                       <strong>FR: </strong>
-                    </label>
-                    {data.evolution.breathingFrequency
-                      ? data.evolution.breathingFrequency
-                      : "No cargado"}{" "}
-                    rpm
-                    <br />
+                      {data.evolution.breathingFrequency
+                        ? data.evolution.breathingFrequency + "  rpm"
+                        : "No cargado"}
+                    </p>
                   </Panel>
                   <Panel header="SISTEMA RESPIRATORIO" key="2">
-                    <label>
+                    <p>
                       <strong>Mecanica ventilatoria: </strong>
-                    </label>
-                    {data.evolution.ventilatoryMechanics
-                      ? data.evolution.ventilatoryMechanics
-                      : "No cargado"}
-                    <br />
-                    <label>
+                      {data.evolution.ventilatoryMechanics
+                        ? data.evolution.ventilatoryMechanics
+                        : "No cargado"}
+                    </p>
+
+                    <p>
                       <strong>Requiere O2 suplementario: </strong>
-                    </label>
-                    {data.evolution.requiresSupplementalOxygen
-                      ? data.evolution.requiresSupplementalOxygen
-                      : "No cargado"}
-                    <br />
-                    <label>
+
+                      {data.evolution.requiresSupplementalOxygen
+                        ? data.evolution.requiresSupplementalOxygen
+                        : "No cargado"}
+                    </p>
+
+                    <p>
                       <strong>Tipo: </strong>
-                    </label>
-                    {data.evolution.nasalOxygenCannula
-                      ? data.evolution.nasalOxygenCannula
-                      : "No cargado"}
-                    :{" "}
-                    {data.evolution.litersPerMinute &&
-                      data.evolution.litersPerMinute}{" "}
-                    lts/min
-                    <br />
-                    {data.evolution.maskWithReservoir
-                      ? data.evolution.maskWithReservoir
-                      : "No cargado"}
-                    : {data.evolution.maskValue && data.evolution.maskValue} %O2
-                    <br />
-                    <label>
+                      {data.evolution.nasalOxygenCannula
+                        ? data.evolution.nasalOxygenCannula
+                        : "No cargado"}
+                      :
+                      {data.evolution.litersPerMinute &&
+                        data.evolution.litersPerMinute + " lts/min"}
+                      {data.evolution.maskWithReservoir
+                        ? data.evolution.maskWithReservoir
+                        : "No cargado"}
+                      :
+                      {data.evolution.maskValue &&
+                        data.evolution.maskValue + " %O2"}
+                    </p>
+
+                    <p>
                       <strong>Saturacion de O2: </strong>
-                    </label>
-                    {data.evolution.oxygenSaturation
-                      ? data.evolution.oxygenSaturation
-                      : "No cargado"}
-                    %
-                    <br />
-                    <label>
+                      {data.evolution.oxygenSaturation
+                        ? data.evolution.oxygenSaturation + " %"
+                        : "No cargado"}
+                    </p>
+
+                    <p>
                       <strong>PaFi: </strong>
-                    </label>
-                    {data.evolution.pafi ? data.evolution.pafi : "No cargado"}{" "}
-                    {data.evolution.pafiValue
-                      ? data.evolution.pafiValue
-                      : "No cargado"}{" "}
-                    mmHg
-                    <br />
-                    <label>
+                      {data.evolution.pafi ? data.evolution.pafi : "No cargado"}
+
+                      {data.evolution.pafiValue &&
+                        data.evolution.pafi &&
+                        data.evolution.pafiValue + " mmHg"}
+                    </p>
+
+                    <p>
                       <strong>Tos: </strong>
-                    </label>
-                    {data.evolution.cough ? data.evolution.cough : "No cargado"}{" "}
-                    <br />
-                    <label>
+                      {data.evolution.cough
+                        ? data.evolution.cough
+                        : "No cargado"}
+                    </p>
+
+                    <p>
                       <strong>Disnea: </strong>
-                    </label>
-                    {data.evolution.dyspnoea
-                      ? data.evolution.dyspnoea
-                      : "No cargado"}{" "}
-                    <br />
-                    <label>
+                      {data.evolution.dyspnoea
+                        ? data.evolution.dyspnoea
+                        : "No cargado"}
+                    </p>
+
+                    <p>
                       <strong>
                         Estabilidad/desaparicion de sintomas respiratorios:
                       </strong>
-                    </label>
-                    {data.evolution.respiratorySymptoms
-                      ? data.evolution.respiratorySymptoms
-                      : "No cargado"}{" "}
-                    <br />
+                      {data.evolution.respiratorySymptoms
+                        ? data.evolution.respiratorySymptoms
+                        : "No cargado"}
+                    </p>
                   </Panel>
                   <Panel header="OTROS SINTOMAS" key="3">
-                    <label>
+                    <p>
                       <strong>Somnolencia: </strong>
-                    </label>
-                    {data.evolution.drowsiness
-                      ? data.evolution.drowsiness
-                      : "No cargado"}{" "}
-                    <br />
-                    <label>
+                      {data.evolution.drowsiness
+                        ? data.evolution.drowsiness
+                        : "No cargado"}
+                    </p>
+
+                    <p>
                       <strong>Anosmia: </strong>
-                    </label>
-                    {data.evolution.anosmia
-                      ? data.evolution.anosmia
-                      : "No cargado"}{" "}
-                    <br />
-                    <label>
+                      {data.evolution.anosmia
+                        ? data.evolution.anosmia
+                        : "No cargado"}
+                    </p>
+
+                    <p>
                       <strong>Disgeusia: </strong>
-                    </label>
-                    {data.evolution.disagreement
-                      ? data.evolution.disagreement
-                      : "No cargado"}{" "}
-                    <br />
+                      {data.evolution.disagreement
+                        ? data.evolution.disagreement
+                        : "No cargado"}
+                    </p>
                   </Panel>
                   <Panel header="ESTUDIOS REALIZADOS HOY" key="4">
                     <Tabs defaultActiveKey="1">
@@ -245,7 +239,7 @@ const Evolution = () => {
                             description={data.evolution.chestXRayDescription}
                           />
                         ) : (
-                          "vacio"
+                          <Empty />
                         )}
                       </TabPane>
 
@@ -256,7 +250,7 @@ const Evolution = () => {
                             description={data.evolution.chestCtDescription}
                           />
                         ) : (
-                          "vacio"
+                          <Empty />
                         )}
                       </TabPane>
 
@@ -269,7 +263,7 @@ const Evolution = () => {
                             }
                           />
                         ) : (
-                          "vacio"
+                          <Empty />
                         )}
                       </TabPane>
 
@@ -284,54 +278,61 @@ const Evolution = () => {
                             }
                           />
                         ) : (
-                          "vacio"
+                          <Empty />
                         )}
                       </TabPane>
                     </Tabs>
                   </Panel>
                   <Panel header="OBSERVACIONES" key="5">
-                    <label>
+                    <p>
                       <strong>Observaciones: </strong>
-                    </label>
-                    {data.evolution.observation
-                      ? data.evolution.observation
-                      : "No cargado"}
+
+                      {data.evolution.observation
+                        ? data.evolution.observation
+                        : "No cargado"}
+                    </p>
                   </Panel>
-                  <Panel header="DATOS UTI" key="6">
-                    <label>
-                      <strong>ARM: </strong>
-                    </label>
-                    {data.evolution.arm ? data.evolution.amr : "No cargado"} °C
-                    <br />
-                    <label>
-                      <strong>Descripcion: </strong>
-                    </label>
-                    {data.evolution.armDescription
-                      ? data.evolution.armDescription
-                      : "No cargado"}
-                    <br />
-                    <label>
-                      <strong>Traqueostomia: </strong>
-                    </label>
-                    {data.evolution.tracheostomy
-                      ? data.evolution.tracheostomy
-                      : "No cargado"}
-                    <br />
-                    <label>
-                      <strong>Vasopresores: </strong>
-                    </label>
-                    {data.evolution.vasopressors
-                      ? data.evolution.vasopressors
-                      : "No cargado"}
-                    <br />
-                    <label>
-                      <strong>Descripcion: </strong>
-                    </label>
-                    {data.evolution.vasopressorsDescription
-                      ? data.evolution.vasopressorsDescription
-                      : "No cargado"}{" "}
-                    <br />
-                  </Panel>
+                  {data.system.name === "UTI" && (
+                    <Panel header="DATOS UTI" key="6">
+                      <p>
+                        <strong>ARM: </strong>
+                        {data.evolution.arm
+                          ? data.evolution.amr + " °C"
+                          : "No cargado"}
+                      </p>
+
+                      <p>
+                        <strong>Descripcion: </strong>
+
+                        {data.evolution.armDescription
+                          ? data.evolution.armDescription
+                          : "No cargado"}
+                      </p>
+
+                      <p>
+                        <strong>Traqueostomia: </strong>
+
+                        {data.evolution.tracheostomy
+                          ? data.evolution.tracheostomy
+                          : "No cargado"}
+                      </p>
+
+                      <p>
+                        <strong>Vasopresores: </strong>
+
+                        {data.evolution.vasopressors
+                          ? data.evolution.vasopressors
+                          : "No cargado"}
+                      </p>
+
+                      <p>
+                        <strong>Descripcion: </strong>
+                        {data.evolution.vasopressorsDescription
+                          ? data.evolution.vasopressorsDescription
+                          : "No cargado"}
+                      </p>
+                    </Panel>
+                  )}
                 </Collapse>
                 {
                   data.evolution.userid === DBUser.id && (

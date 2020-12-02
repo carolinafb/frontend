@@ -3,14 +3,14 @@ import React, { Fragment } from "react";
 const ClinicalStudy = ({ type, description }) => {
   return (
     <Fragment>
-      <label>
+      <p>
         <strong>Tipo: </strong>
-      </label>
-      {type ? type : "No cargado"} <br />
-      <label>
+        {type ? type : "No cargado"} <br />
+      </p>
+      <p>
         <strong>Descripcion: </strong>
-      </label>
-      {description ? description : "No cargado"} <br />
+        {description ? description : "No cargado"} <br />
+      </p>
     </Fragment>
   );
 };

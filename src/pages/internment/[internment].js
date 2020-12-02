@@ -1,15 +1,5 @@
 import Navbar from "../../components/header/Navbar";
-import {
-  Divider,
-  Button,
-  Layout,
-  Result,
-  Timeline,
-  Row,
-  Col,
-  Collapse,
-  Typography,
-} from "antd";
+import { Button, Layout, Result, Timeline, Row, Col, Collapse } from "antd";
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
@@ -20,10 +10,7 @@ const internment = () => {
   const router = useRouter();
   const { Header, Content } = Layout;
   const [err, setErr] = useState(false);
-  const { Title } = Typography;
   const { DBUser } = useContext(UserContext);
-  const [rerender, setRerender] = useState(true);
-
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -36,6 +23,7 @@ const internment = () => {
         })
         .then((res) => {
           setErr(false);
+          console.log(res.data);
           setData(res.data);
         })
         .catch((e) => {
@@ -184,7 +172,7 @@ const internment = () => {
                                       <Row gutter={4}>
                                         <Col className="gutter-row" span={10}>
                                           <div>
-                                            <h3>Evaluaciones</h3>
+                                            <h3>Evoluciones</h3>
                                           </div>
                                         </Col>
 
@@ -243,10 +231,12 @@ const internment = () => {
                                                   >
                                                     <div>
                                                       <Button
-                                                        /*   onClick={() => {
-                                      
-                                                }}
-                                            */
+                                                        onClick={() => {
+                                                          router.push(
+                                                            "/evolution/" +
+                                                              evaluation.id
+                                                          );
+                                                        }}
                                                         type="primary"
                                                       >
                                                         Ver mas
