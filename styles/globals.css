@@ -43,6 +43,12 @@ a {
   justify-content: space-between;
   align-items: baseline;
 }
+.span_row_evenly {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: baseline;
+}
 .margin__big {
   margin: 30px;
 }

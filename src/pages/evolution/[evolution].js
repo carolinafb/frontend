@@ -16,7 +16,6 @@ import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
 import { UserContext } from "../../contexts/Context";
 import ClinicalStudy from "../../components/evolution/ClinicalStudy";
-import { DownloadOutlined } from "@ant-design/icons";
 
 const Evolution = () => {
   const router = useRouter();
