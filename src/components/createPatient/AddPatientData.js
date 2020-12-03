@@ -16,7 +16,6 @@ const AddPatientData = () => {
   const [error, setError] = useState(false);
   const [redir, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
   const steps = [
