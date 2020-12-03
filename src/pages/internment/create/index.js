@@ -37,24 +37,6 @@ const CreateInternment = () => {
       router.push("/systems");
     }
   };
-<<<<<<< HEAD
-
-  const callToBack = (method, url, param) => {
-    axiosInstance
-      .request({ method, url, params: param })
-      .then((res) => {
-        switch (url) {
-          case "/beds/withSpace":
-            setInfoBeds(res.data);
-            break;
-          case "/rooms/withSpace":
-            setInfoRooms(res.data);
-            break;
-          default:
-            router.push(res.data.redirect);
-            break;
-        }
-=======
   function callToBackToAddData(url, values) {
     setLoading(true);
     axiosInstance
@@ -79,7 +61,6 @@ const CreateInternment = () => {
         }
         setInfoRooms(res.data);
         setLoading(false);
->>>>>>> agrego spiners
       })
       .catch((e) => {
         setErr(e.message);
@@ -87,11 +68,7 @@ const CreateInternment = () => {
   };
 
   const onFinish = (values) => {
-<<<<<<< HEAD
-    console.log("Success:", values);
-=======
     setLoading(true);
->>>>>>> agrego spiners
     values.idPatient = idPatient;
     callToBack("put", "/internment", values);
   };
@@ -103,11 +80,7 @@ const CreateInternment = () => {
     }
   };
   useEffect(() => {
-<<<<<<< HEAD
-    callToBack("get", "/rooms/withSpace", { id: 1 });
-=======
     callToBackForInfo("get", "/rooms/withSpace", { id: 1 });
->>>>>>> agrego spiners
   }, []);
 
   console.log("necesito crear camas????:", needCreateBeds);
