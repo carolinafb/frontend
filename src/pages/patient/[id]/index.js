@@ -1,4 +1,4 @@
-import Navbar from "../../components/header/Navbar";
+import Navbar from "src/components/header/Navbar";
 import {
   Divider,
   Button,
@@ -7,13 +7,12 @@ import {
   Col,
   Result,
   Typography,
-  Space,
   Spin,
 } from "antd";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-import axiosInstance from "../../components/axios";
-import { UserContext } from "../../contexts/Context";
+import axiosInstance from "src/components/axios";
+import { UserContext } from "src/contexts/Context";
 
 const Patient = () => {
   const router = useRouter();
