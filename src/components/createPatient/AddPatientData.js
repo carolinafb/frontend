@@ -16,7 +16,6 @@ const AddPatientData = () => {
   const [error, setError] = useState(false);
   const [redir, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
   const steps = [
@@ -54,12 +53,12 @@ const AddPatientData = () => {
               }
             })
             .catch((err) => {
-              setError(err.message);
+              setError(err);
             });
         }
       })
       .catch((info) => {
-        setError(err.message);
+        setError(err);
         console.log("Validate Failed:", info);
       });
   };

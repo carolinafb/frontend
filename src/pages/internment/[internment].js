@@ -1,4 +1,5 @@
 import Navbar from "../../components/header/Navbar";
+import CreateSystemchange from "../../components/internment/CreateSystemchange";
 import {
   Divider,
   Button,
@@ -20,11 +21,11 @@ const internment = () => {
   const router = useRouter();
   const { Header, Content } = Layout;
   const [err, setErr] = useState(false);
-  const { Title } = Typography;
   const { DBUser } = useContext(UserContext);
-  const [rerender, setRerender] = useState(true);
 
   const [data, setData] = useState(null);
+
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (router.query.internment) {
@@ -44,6 +45,11 @@ const internment = () => {
         });
     }
   }, [router.query.internment]);
+
+  const onCreate = () => {
+    refreshData();
+    setVisible(false);
+  };
 
   const btnErr = () => {
     if (DBUser && DBUser.role == "DOCTOR") {
@@ -77,7 +83,7 @@ const internment = () => {
         ) : (
           /////////////////////////////
           <Fragment>
-            {console.log({ DBUser })}
+            {console.log({ data })}
             <div>
               <div className="align-column-center margin__small">
                 <h2>
@@ -125,14 +131,16 @@ const internment = () => {
               <Panel header={<h2>Datos de la internación </h2>}>
                 <p>
                   Fecha de inicio de los sintomas:
-                  {data.internmentData.dateOfSymptoms}
+                  {" " + data.internmentData.dateOfSymptoms.slice(0, -14)}
                 </p>
                 <p>
-                  Fecha de diagnostico: {data.internmentData.dateOfDiagnosis}
+                  Fecha de diagnostico:
+                  {" " + data.internmentData.dateOfDiagnosis.slice(0, -14)}
                 </p>
                 <p>
                   Fecha de Hospitalizacion:
-                  {data.internmentData.dateOfHospitalization}
+                  {" " +
+                    data.internmentData.dateOfHospitalization.slice(0, -14)}
                 </p>
                 <p>Comorbilidades: {data.internmentData.historyOfDisease}</p>
               </Panel>
@@ -142,15 +150,20 @@ const internment = () => {
                 ) : (
                   <div>
                     <div className="align-column-center margin__big">
-                      <Button
-                        /*   onClick={() => {
-                                      
-                                                }}
-                                            */
-                        type="primary"
-                      >
-                        Cambiar de sistema
-                      </Button>
+                      {DBUser &&
+                      DBUser.systemId ===
+                        data.internmentData.location.systemId ? (
+                        <Button
+                          onClick={() => {
+                            setVisible(true);
+                          }}
+                          type="primary"
+                        >
+                          Cambiar de sistema
+                        </Button>
+                      ) : (
+                        <div></div>
+                      )}
                     </div>
 
                     <Timeline>
@@ -189,7 +202,11 @@ const internment = () => {
                                         </Col>
 
                                         <Col className="gutter-row" span={4}>
-                                          {systemChange.finish === null ? (
+                                          {systemChange.finish === null &&
+                                          DBUser &&
+                                          DBUser.systemId ===
+                                            data.internmentData.location
+                                              .systemId ? (
                                             <div>
                                               <Button
                                                 /*   onClick={() => {
@@ -270,6 +287,17 @@ const internment = () => {
                 )}
               </Panel>
             </Collapse>
+
+            <div className="align-column-center margin__big">
+              <CreateSystemchange
+                visible={visible}
+                onCreate={onCreate}
+                patientId={data.internmentData.patientId}
+                onCancel={() => {
+                  setVisible(false);
+                }}
+              />
+            </div>
           </Fragment>
           //////////////////////////////////
         )}
