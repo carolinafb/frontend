@@ -34,33 +34,28 @@ const AddPatientData = () => {
   ];
 
   const onOk = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        const newData = { ...data, ...values };
-        setData(newData);
-        if (current < 2) {
-          next();
-        } else {
-          setLoading(true);
-          axiosInstance
-            .put("/patient", newData)
-            .then((res) => {
-              if (res.status) {
-                setSucess(true);
-                setError(false);
-                setRedirect(res.data.redirect);
-              }
-            })
-            .catch((err) => {
-              setError(err);
-            });
-        }
-      })
-      .catch((info) => {
-        setError(err);
-        console.log("Validate Failed:", info);
-      });
+    form.validateFields().then((values) => {
+      const newData = { ...data, ...values };
+      setData(newData);
+      if (current < 2) {
+        next();
+      } else {
+        setLoading(true);
+        axiosInstance
+          .put("/patient", newData)
+          .then((res) => {
+            if (res.status) {
+              setSucess(true);
+              setError(false);
+              setRedirect(res.data.redirect);
+            }
+          })
+          .catch((err) => {
+            setLoading(false);
+            setError(err.message);
+          });
+      }
+    });
   };
 
   const next = () => {
@@ -129,7 +124,7 @@ const AddPatientData = () => {
                 type="primary"
                 onClick={onOk}
               >
-                Next
+                Siguiente
               </Button>
             )}
             {current === steps.length - 1 && (
@@ -138,7 +133,7 @@ const AddPatientData = () => {
                 type="primary"
                 onClick={onOk}
               >
-                Done
+                Continuar
               </Button>
             )}
             {current > 0 && (
@@ -146,7 +141,7 @@ const AddPatientData = () => {
                 style={{ marginBottom: "2%", marginLeft: "3px" }}
                 onClick={prev}
               >
-                Previous
+                Anterior
               </Button>
             )}
           </Fragment>

@@ -72,7 +72,7 @@ const AddPatients = () => {
                 },
               ]}
             >
-              <InputNumber style={{ width: "50%" }} />
+              <InputNumber min={1} max={2147483647} style={{ width: "50%" }} />
             </Form.Item>
 
             <Form.Item>
