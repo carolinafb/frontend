@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Button, Space, Collapse } from "antd";
 import { useRouter } from "next/router";
+import CreateSystemchange from "../../components/internment/CreateSystemchange";
 
-import axiosInstance from "../axios";
 const { Panel } = Collapse;
 
 const Rooms = ({ rooms }) => {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
+  const [patientId, setPatientId] = useState(null);
+
+  const onCreate = () => {
+    refreshData();
+    setVisible(false);
+  };
+
   const columns = [
     {
       title: "Cama",
@@ -38,6 +46,17 @@ const Rooms = ({ rooms }) => {
             </Button>
           )}
           {record["patientId"] && <Button type="primary">Evolucionar</Button>}
+          {record["patientId"] && (
+            <Button
+              onClick={() => {
+                setPatientId(record["patientId"]);
+                setVisible(true);
+              }}
+              type="primary"
+            >
+              Cambiar de sistema
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -58,6 +77,16 @@ const Rooms = ({ rooms }) => {
             </Panel>
           ))}
       </Collapse>
+      <div className="align-column-center margin__big">
+        <CreateSystemchange
+          visible={visible}
+          onCreate={onCreate}
+          patientId={patientId}
+          onCancel={() => {
+            setVisible(false);
+          }}
+        />
+      </div>
     </div>
   );
 };
