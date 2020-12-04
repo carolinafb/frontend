@@ -7,6 +7,7 @@ import Head from "next/head";
 import axiosInstance from "src/components/axios";
 import { useRouter } from "next/router";
 import VitalSignsForm from "src/components/patients/VitalSignsForm";
+import RespiratorySystemForm from "src/components/patients/RespiratorySystemForm";
 
 const Evolve = ({ ...props }) => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const Evolve = ({ ...props }) => {
     },
     {
       title: "Sistema respiratorio",
-      content: "Second-content",
+      content: <RespiratorySystemForm form={form} />,
     },
     {
       title: "Otros síntomas",
