@@ -27,27 +27,27 @@ const RoomsSystem = ({ rooms, systemId }) => {
       title: "Paciente",
       render: (text, record) => (
         <Space size="middle">
-          {record["patient_name"] ? (
+          {record["patientName"] ? (
             <p>
-              {record["patient_name"]} {record["patient_last_name"]}
+              {record["patientName"]} {record["patientLastName"]}
             </p>
           ) : (
             <Text type="success">Libre</Text>
           )}
         </Space>
       ),
-      key: "patient_last_name",
+      key: "patientName",
     },
     {
       title: "Acciones",
       key: "Acciones",
       render: (text, record) => (
         <Space size="middle">
-          {record["patient_id"] && (
+          {record["internmentId"] && (
             <Button
               type="primary"
               onClick={() => {
-                router.push("/internment/" + record["patientId"]);
+                router.push("/internment/" + record["internmentId"]);
               }}
               type="primary"
             >

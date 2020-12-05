@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, Fragment } from "react";
 import axiosInstance from "../axios";
-import { Modal, Select, Button, Form } from "antd";
+import { Modal, Select, Button, Result, Form } from "antd";
+import { UserContext } from "../../contexts/Context";
+import { useRouter } from "next/router";
 
 const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
   const [visibility, setVisibility] = useState(visible);
   const [rooms, setRooms] = useState(null);
   const [err, setErr] = useState(false);
-  const [selecSystems, setSelecSystems] = useState(null);
+  const router = useRouter();
+  const [allowedSystems, setAllowedSystems] = useState(null);
+  const [validRooms, setValidRooms] = useState(false);
+  const { DBUser } = useContext(UserContext);
   const { Option } = Select;
 
   useEffect(() => {
@@ -19,11 +24,11 @@ const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
         })
         .then((res) => {
           setErr(false);
-          setSelecSystems(res.data);
+          setAllowedSystems(res.data.allowedSystems);
         })
         .catch((e) => {
           setErr(e.message);
-          setSelecSystems(null);
+          setAllowedSystems(null);
         });
     }
   }, [patientId]);
@@ -38,7 +43,7 @@ const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
     console.log("system", values.system, "room", values.room);
     const payload = {
       patientId,
-      system: values.system,
+      systemName: values.system,
       room: values.room,
     };
     const url = "/systemChange";
@@ -50,6 +55,7 @@ const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
         data: payload,
       })
       .then((res) => {
+        returnHome();
         setVisibility(false);
       });
   };
@@ -58,17 +64,26 @@ const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
     axiosInstance
       .get("/rooms/WithSpace", {
         params: {
-          id: system,
+          systemName: system,
         },
       })
       .then((res) => {
         setErr(false);
-        setRooms(res.data);
+        setRooms(res.data.rooms);
+        setValidRooms(res.data.validRooms);
       })
       .catch((e) => {
         setErr(e.message);
         setRooms(null);
       });
+  };
+
+  const returnHome = () => {
+    if (DBUser && DBUser.role == "DOCTOR") {
+      router.push("/patients");
+    } else {
+      router.push("/systems");
+    }
   };
 
   return (
@@ -84,7 +99,7 @@ const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
           .then((values) => {
             onFinish(values);
             form.resetFields();
-            onCreate();
+            onCreate(values);
           })
           .catch((info) => {
             console.log("Validate Failed:", info);
@@ -99,7 +114,7 @@ const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
           remember: true,
         }}
       >
-        {selecSystems && (
+        {allowedSystems && (
           <Form.Item
             label="sistemas: "
             name="system"
@@ -111,17 +126,18 @@ const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
             ]}
           >
             <Select onSelect={roomsWithSpace}>
-              {selecSystems.systems.map((element) => {
+              {allowedSystems.map((element, index) => {
                 return (
-                  <Option value={element.id} key={element.id}>
-                    {element.name}
+                  <Option selected={index === 0} value={element} key={index}>
+                    {element}
                   </Option>
                 );
               })}
             </Select>
           </Form.Item>
         )}
-        {rooms && (
+
+        {rooms && validRooms === true && (
           <Form.Item
             label="salas: "
             name="room"
@@ -142,6 +158,9 @@ const CreateForm = ({ visible, onCreate, onCancel, patientId }) => {
               })}
             </Select>
           </Form.Item>
+        )}
+        {rooms && validRooms === false && (
+          <div>No hay camas disponibles en este momento</div>
         )}
       </Form>
     </Modal>
