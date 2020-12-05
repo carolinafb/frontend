@@ -57,7 +57,7 @@ const CreateInternment = () => {
       .then((res) => {
         url === "/beds/withSpace" && setInfoBeds(res.data);
         if (res.data.length === 0) {
-          callToBackForInfo("get", "/system", { id: 1 });
+          callToBackForInfo("get", "/system", { systemName: "GUARDIA" });
         }
         setInfoRooms(res.data);
         setLoading(false);
@@ -83,7 +83,7 @@ const CreateInternment = () => {
     }
   };
   useEffect(() => {
-    callToBackForInfo("get", "/rooms/withSpace", { id: 1 });
+    callToBackForInfo("get", "/rooms/withSpace", { systemName: "GUARDIA" });
   }, []);
 
   return (

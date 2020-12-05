@@ -35,10 +35,10 @@ const Rooms = ({ rooms }) => {
       key: "Acciones",
       render: (text, record) => (
         <Space size="middle">
-          {record["patientId"] && (
+          {record["internmentId"] && (
             <Button
               onClick={() => {
-                router.push("/internment/" + record["patientId"]);
+                router.push("/internment/" + record["internmentId"]);
               }}
               type="primary"
             >

@@ -169,7 +169,7 @@ const internment = () => {
                     <Timeline>
                       {data.internmentData.systemChanges &&
                         data.internmentData.systemChanges.map(
-                          (systemChange) => (
+                          (systemChange, index) => (
                             <Timeline.Item color="blue">
                               <div>
                                 <Row gutter={4}>
@@ -202,7 +202,7 @@ const internment = () => {
                                         </Col>
 
                                         <Col className="gutter-row" span={4}>
-                                          {systemChange.finish === null &&
+                                          {index === 0 &&
                                           DBUser &&
                                           DBUser.systemId ===
                                             data.internmentData.location
