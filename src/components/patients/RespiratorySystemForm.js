@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from "react";
 import { Form, Select, Switch, Radio, InputNumber } from "antd";
-import FormItem from "antd/lib/form/FormItem";
 
 const RespiratorySystemForm = ({ form }) => {
+  const { Option } = Select;
   const [O2suplementary, setO2suplementary] = useState(true);
-  const [O2suplementaryType, setO2suplementaryType] = useState(true);
+  const [O2suplementaryType, setO2suplementaryType] = useState(
+    "nasalOxygenCannula"
+  );
   const [PaFi, setPaFi] = useState(true);
   return (
     <Form
@@ -16,18 +18,18 @@ const RespiratorySystemForm = ({ form }) => {
         remember: true,
       }}
     >
-      <FormItem
+      <Form.Item
         label="Mecanica ventilatoria:"
         name="ventilatoryMechanics"
         rules={[{ required: true, message: "Campo obligatorio" }]}
       >
-        <Select defaultValue="Buena" style={{ width: 120 }}>
+        <Select initialValues="Buena" style={{ width: 120 }}>
           <Option value="Buena">Buena</Option>
           <Option value="Regular">Regular</Option>
           <Option value="Mala">Mala</Option>
         </Select>
-      </FormItem>
-      <FormItem
+      </Form.Item>
+      <Form.Item
         label="Requiere O2 suplementario:"
         name="requiresSupplementalOxygen"
         rules={[{ required: true, message: "Campo obligatorio" }]}
@@ -38,25 +40,26 @@ const RespiratorySystemForm = ({ form }) => {
             setO2suplementary(!O2suplementary);
           }}
         />
-      </FormItem>
+      </Form.Item>
       {O2suplementary && (
         <Fragment>
-          <FormItem
+          <Form.Item
             label="Tipo:"
             name="type"
             rules={[{ required: true, message: "Campo obligatorio" }]}
-            onChange={() => {
-              //setO2suplementaryType(value);
-              console.log("se seleccionno:", value);
-            }}
           >
-            <Radio.Group>
+            <Radio.Group
+              initialValues={"nasalOxygenCannula"}
+              onChange={(e) => {
+                setO2suplementaryType(e.target.value);
+              }}
+            >
               <Radio value="nasalOxygenCannula">Canula Nasal</Radio>
               <Radio value="maskWithReservoir">Mascara con reservorio</Radio>
             </Radio.Group>
-          </FormItem>
+          </Form.Item>
           {O2suplementaryType === "nasalOxygenCannula" ? (
-            <FormItem
+            <Form.Item
               label="lts/min:"
               name="lts/min"
               rules={[{ required: true, message: "Campo obligatorio" }]}
@@ -69,24 +72,24 @@ const RespiratorySystemForm = ({ form }) => {
                 <Radio value={5}>5</Radio>
                 <Radio value={6}>6</Radio>
               </Radio.Group>
-            </FormItem>
+            </Form.Item>
           ) : (
-            <FormItem
+            <Form.Item
               label="%O2:"
               name="maskValue"
               rules={[{ required: true, message: "Campo obligatorio" }]}
             >
               <InputNumber min={0} max={100} step={0.1} />
-            </FormItem>
+            </Form.Item>
           )}
-          <FormItem
+          <Form.Item
             label="Saturacion de O2:"
             name="oxygenSaturation"
             rules={[{ required: true, message: "Campo obligatorio" }]}
           >
             <InputNumber min={0} max={100} />
-          </FormItem>
-          <FormItem
+          </Form.Item>
+          <Form.Item
             label="PaFi:"
             name="pafi"
             rules={[{ required: true, message: "Campo obligatorio" }]}
@@ -97,25 +100,25 @@ const RespiratorySystemForm = ({ form }) => {
                 setPaFi(!PaFi);
               }}
             />
-          </FormItem>
+          </Form.Item>
           {PaFi && (
-            <FormItem
+            <Form.Item
               label="PaFi valor:"
               name="pafiValue"
               rules={[{ required: true, message: "Campo obligatorio" }]}
             >
               <InputNumber min={0} max={100} />
-            </FormItem>
+            </Form.Item>
           )}
 
-          <FormItem
+          <Form.Item
             label="Tos:"
             name="cough"
             rules={[{ required: true, message: "Campo obligatorio" }]}
           >
             <Switch defaultChecked />
-          </FormItem>
-          <FormItem
+          </Form.Item>
+          <Form.Item
             label="Disnea:"
             name="dyspnoea"
             rules={[{ required: true, message: "Campo obligatorio" }]}
@@ -126,14 +129,14 @@ const RespiratorySystemForm = ({ form }) => {
               <Radio value={3}>3</Radio>
               <Radio value={4}>4</Radio>
             </Radio.Group>
-          </FormItem>
-          <FormItem
+          </Form.Item>
+          <Form.Item
             label="Estabilidad/Desaparicion de sintomas respiratorios::"
             name="respiratorySymptoms"
             rules={[{ required: true, message: "Campo obligatorio" }]}
           >
             <Switch defaultChecked />
-          </FormItem>
+          </Form.Item>
         </Fragment>
       )}
     </Form>

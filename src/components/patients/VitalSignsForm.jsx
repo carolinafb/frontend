@@ -1,21 +1,6 @@
 import React, { useRef } from "react";
 import { Form, Input } from "antd";
 
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
-
 const VitalSignsForm = ({ form }) => {
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -28,7 +13,7 @@ const VitalSignsForm = ({ form }) => {
   return (
     <Form
       form={form}
-      {...layout}
+      layout="vertical"
       name="basic"
       initialValues={{
         remember: true,

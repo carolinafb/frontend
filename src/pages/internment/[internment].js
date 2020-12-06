@@ -1,6 +1,5 @@
 import Navbar from "../../components/header/Navbar";
 import {
-  Divider,
   Button,
   Layout,
   Result,

@@ -1,13 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { UserContext } from "src/contexts/Context";
 import Navbar from "src/components/header/Navbar";
-import { Layout, Steps, Button, Form } from "antd";
+import { Layout, Steps, Button, Form, Result, Row, Col } from "antd";
 const { Step } = Steps;
 import Head from "next/head";
 import axiosInstance from "src/components/axios";
 import { useRouter } from "next/router";
 import VitalSignsForm from "src/components/patients/VitalSignsForm";
 import RespiratorySystemForm from "src/components/patients/RespiratorySystemForm";
+import StudiesForm from "src/components/patients/StudiesForm";
+import ObservationsForm from "src/components/patients/ObservationsForm";
+import UTIForm from "src/components/patients/UTIForm";
+import SymptomsForm from "src/components/patients/SymptomsForm";
 
 const Evolve = ({ ...props }) => {
   const router = useRouter();
@@ -15,13 +19,15 @@ const Evolve = ({ ...props }) => {
   const { Header, Content } = Layout;
   const [patientName, setPatientName] = useState();
   const [current, setCurrent] = React.useState(0);
+  const [sucess, setSucess] = useState(false);
+  const [showUTI, setShowUTI] = useState(false);
   const [form] = Form.useForm();
 
   const finishHandler = () => {
     form.validateFields().then((data) => {
       axiosInstance
         .post("/patient/evolve", { ...data })
-        .then(() => router.push("/patients"))
+        .then(() => setSucess(true))
         .catch((err) => console.log(err));
     });
   };
@@ -37,15 +43,15 @@ const Evolve = ({ ...props }) => {
     },
     {
       title: "Otros síntomas",
-      content: "Last-content",
+      content: <SymptomsForm form={form} />,
     },
     {
       title: "Estudios de hoy",
-      content: "Last-content",
+      content: <StudiesForm form={form} />,
     },
     {
       title: "Observaciones",
-      content: "Last-content",
+      content: <ObservationsForm form={form} />,
     },
   ];
 
@@ -58,6 +64,7 @@ const Evolve = ({ ...props }) => {
   };
   useEffect(() => {
     // console.log(router.query.id);
+    DBUser.systemName === "UTI" && setShowUTI(true);
     const patientID = router.query.id;
     if (!patientID) return;
     axiosInstance
@@ -68,6 +75,7 @@ const Evolve = ({ ...props }) => {
     const patientName = "Carlos"; // await axiosInstance.get('/patient');
     setPatientName(patientName);
   }, [router.query.id]);
+
   return (
     <>
       <Head>
@@ -79,29 +87,66 @@ const Evolve = ({ ...props }) => {
           <Navbar user={DBUser} />
         </Header>
         <Content>
-          <h1>{patientName}</h1>
+          {sucess ? (
+            <Result
+              status="success"
+              title="Se agrego al paciente CORRECTAMENTE"
+              extra={
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#4CAF50", border: "#4CAF50" }}
+                  onClick={() => {
+                    router.push("/patients");
+                  }}
+                >
+                  Continuar
+                </Button>
+              }
+            />
+          ) : (
+            <Fragment>
+              <Row justify="start">
+                <Col
+                  xs={{ span: 22, offset: 1 }}
+                  sm={{ span: 20, offset: 2 }}
+                  lg={{ span: 18, offset: 3 }}
+                  xl={{ span: 16, offset: 4 }}
+                >
+                  <h1>{patientName}</h1>
+                  {showUTI &&
+                    steps.push({
+                      title: "UTI",
+                      content: <UTIForm form={form} />,
+                    })}
+                  <Steps size="small" current={current}>
+                    {steps.map((item) => (
+                      <Step key={item.title} title={item.title} />
+                    ))}
+                  </Steps>
+                  <div className="steps-content">{steps[current].content}</div>
+                  <div className="steps-action">
+                    {current < steps.length - 1 && (
+                      <Button type="primary" onClick={() => next()}>
+                        Siguiente
+                      </Button>
+                    )}
+                    <Button type="primary" onClick={finishHandler}>
+                      Finalizar
+                    </Button>
+                    {current > 0 && (
+                      <Button
+                        style={{ margin: "0 8px" }}
+                        onClick={() => prev()}
+                      >
+                        Anterior
+                      </Button>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            </Fragment>
+          )}
         </Content>
-        <Steps size="small" current={current}>
-          {steps.map((item) => (
-            <Step key={item.title} title={item.title} />
-          ))}
-        </Steps>
-        <div className="steps-content">{steps[current].content}</div>
-        <div className="steps-action">
-          {current < steps.length - 1 && (
-            <Button type="primary" onClick={() => next()}>
-              Siguiente
-            </Button>
-          )}
-          <Button type="primary" onClick={finishHandler}>
-            Finalizar
-          </Button>
-          {current > 0 && (
-            <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
-              Anterior
-            </Button>
-          )}
-        </div>
       </Layout>
     </>
   );

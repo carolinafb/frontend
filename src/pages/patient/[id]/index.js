@@ -160,7 +160,7 @@ const Patient = () => {
                 </label>
                 {patientData.contactPerson.phone}
                 <br />
-                {DBUser && DBUser.systemId === 1 && (
+                {DBUser && DBUser.systemName === "GUARDIA" && (
                   <Button
                     type="primary"
                     style={{ margin: "3%" }}
