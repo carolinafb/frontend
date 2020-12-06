@@ -13,47 +13,26 @@ import ObservationsForm from "src/components/patients/ObservationsForm";
 import UTIForm from "src/components/patients/UTIForm";
 import SymptomsForm from "src/components/patients/SymptomsForm";
 
-var objStrToInt = function (obj) {
-  // convierte todas las claves de string a number
-  return Object.keys(obj).reduce(
-    (attrs, key) => ({
-      ...attrs,
-      [key]: parseInt(obj[key]),
-    }),
-    {}
-  );
-};
-
 const Evolve = ({ ...props }) => {
   const router = useRouter();
   const { DBUser } = useContext(UserContext);
   const { Header, Content } = Layout;
   const [patientName, setPatientName] = useState();
   const [current, setCurrent] = React.useState(0);
-<<<<<<< HEAD
   const [sucess, setSucess] = useState(false);
   const [showUTI, setShowUTI] = useState(false);
-=======
   const [patientId, setPatientId] = React.useState(null);
   const [evolution, setEvolution] = React.useState({});
->>>>>>> 6e5ea91e2f515ccf0c33caffa45b851b53bf6cd4
   const [form] = Form.useForm();
 
   const finishHandler = () => {
     form.validateFields().then((data) => {
-      const updatedEvolution = { ...evolution, ...objStrToInt(data) };
-      setEvolution(updatedEvolution);
       axiosInstance
-<<<<<<< HEAD
-        .post("/patient/evolve", { ...data })
-        .then(() => setSucess(true))
-=======
         .post("/patient/evolve", {
           evolution: updatedEvolution,
           patientId,
         })
-        .then(() => router.push("/patients"))
->>>>>>> 6e5ea91e2f515ccf0c33caffa45b851b53bf6cd4
+        .then(() => setSucess(true))
         .catch((err) => console.log(err));
     });
   };
@@ -93,7 +72,6 @@ const Evolve = ({ ...props }) => {
     DBUser.systemName === "UTI" && setShowUTI(true);
     const patientID = router.query.id;
     if (!patientID) return;
-    setPatientId(parseInt(patientID));
     axiosInstance
       .get("/patient", { params: { id: patientID } })
       .then((response) =>

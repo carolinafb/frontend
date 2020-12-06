@@ -31,11 +31,11 @@ const VitalSignsForm = ({ form }) => {
           },
         ]}
       >
-        <Input type="number" />
+        <Input />
       </Form.Item>
       <Form.Item
         label="TA sistólica"
-        name="systolicBloodPressure"
+        name="tasistolic"
         rules={[
           {
             required: true,
@@ -43,11 +43,11 @@ const VitalSignsForm = ({ form }) => {
           },
         ]}
       >
-        <Input type="number" />
+        <Input />
       </Form.Item>
       <Form.Item
         label="TA diastolica"
-        name="diastolicBloodPressure"
+        name="tadistolic"
         rules={[
           {
             required: true,
@@ -55,33 +55,33 @@ const VitalSignsForm = ({ form }) => {
           },
         ]}
       >
-        <Input type="number" />
+        <Input />
       </Form.Item>
 
       <Form.Item
-        label="Frecuencia Cardíaca"
-        name="heartRate"
+        label="FC"
+        name="fc"
         rules={[
           {
             required: true,
-            message: "Por favor ingresa la Frecuencia Cardíaca!",
+            message: "Por favor ingresa la FC!",
           },
         ]}
       >
-        <Input type="number" />
+        <Input />
       </Form.Item>
 
       <Form.Item
-        label="Frecuencia Respiratoria"
-        name="breathingFrequency"
+        label="FR"
+        name="fr"
         rules={[
           {
             required: true,
-            message: "Por favor ingresa la Frecuencia Respiratoria!",
+            message: "Por favor ingresa la FR!",
           },
         ]}
       >
-        <Input type="number" />
+        <Input />
       </Form.Item>
     </Form>
   );
