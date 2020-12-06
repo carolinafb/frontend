@@ -9,18 +9,36 @@ import { useRouter } from "next/router";
 import VitalSignsForm from "src/components/patients/VitalSignsForm";
 import RespiratorySystemForm from "src/components/patients/RespiratorySystemForm";
 
+var objStrToInt = function (obj) {
+  // convierte todas las claves de string a number
+  return Object.keys(obj).reduce(
+    (attrs, key) => ({
+      ...attrs,
+      [key]: parseInt(obj[key]),
+    }),
+    {}
+  );
+};
+
 const Evolve = ({ ...props }) => {
   const router = useRouter();
   const { DBUser } = useContext(UserContext);
   const { Header, Content } = Layout;
   const [patientName, setPatientName] = useState();
   const [current, setCurrent] = React.useState(0);
+  const [patientId, setPatientId] = React.useState(null);
+  const [evolution, setEvolution] = React.useState({});
   const [form] = Form.useForm();
 
   const finishHandler = () => {
     form.validateFields().then((data) => {
+      const updatedEvolution = { ...evolution, ...objStrToInt(data) };
+      setEvolution(updatedEvolution);
       axiosInstance
-        .post("/patient/evolve", { ...data })
+        .post("/patient/evolve", {
+          evolution: updatedEvolution,
+          patientId,
+        })
         .then(() => router.push("/patients"))
         .catch((err) => console.log(err));
     });
@@ -60,6 +78,7 @@ const Evolve = ({ ...props }) => {
     // console.log(router.query.id);
     const patientID = router.query.id;
     if (!patientID) return;
+    setPatientId(parseInt(patientID));
     axiosInstance
       .get("/patient", { params: { id: patientID } })
       .then((response) =>
