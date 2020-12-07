@@ -1,5 +1,6 @@
 import Navbar from "../../components/header/Navbar";
 import CreateSystemchange from "../../components/internment/CreateSystemchange";
+import CreateFormAssingDoctors from "../../components/doctors/AssingDoctors";
 import {
   Divider,
   Button,
@@ -26,6 +27,11 @@ const internment = () => {
   const [data, setData] = useState(null);
 
   const [visible, setVisible] = useState(false);
+
+  const [doctorVisible, setVisibleDoctor] = useState(false);
+  const onCreateDoctor = () => {
+    setVisibleDoctor(false);
+  };
 
   useEffect(() => {
     if (router.query.internment) {
@@ -195,32 +201,50 @@ const internment = () => {
                                   header={
                                     <div>
                                       <Row gutter={4}>
-                                        <Col className="gutter-row" span={10}>
+                                        <Col className="gutter-row" span={6}>
                                           <div>
                                             <h3>Evaluaciones</h3>
                                           </div>
                                         </Col>
 
-                                        <Col className="gutter-row" span={4}>
+                                        <Col className="gutter-row" span={10}>
                                           {index === 0 &&
-                                          DBUser &&
-                                          DBUser.systemId ===
-                                            data.internmentData.location
-                                              .systemId ? (
-                                            <div>
-                                              <Button
-                                                /*   onClick={() => {
+                                            DBUser &&
+                                            DBUser.systemId ===
+                                              data.internmentData.location
+                                                .systemId && (
+                                              <div>
+                                                <Button
+                                                  /*   onClick={() => {
                                       
                                                 }}
                                             */
-                                                type="primary"
-                                              >
-                                                Agregar evolucion
-                                              </Button>
-                                            </div>
-                                          ) : (
-                                            <div></div>
-                                          )}
+                                                  type="primary"
+                                                >
+                                                  Agregar evolucion
+                                                </Button>
+                                              </div>
+                                            )}
+                                        </Col>
+                                        <Col className="gutter-row" span={4}>
+                                          {index === 0 &&
+                                            DBUser &&
+                                            DBUser.systemId ===
+                                              data.internmentData.location
+                                                .systemId &&
+                                            DBUser.role ===
+                                              "JEFE DE SISTEMA" && (
+                                              <div>
+                                                <Button
+                                                  onClick={() => {
+                                                    setVisibleDoctor(true);
+                                                  }}
+                                                  type="primary"
+                                                >
+                                                  Asignar doctores
+                                                </Button>
+                                              </div>
+                                            )}
                                         </Col>
                                       </Row>
                                     </div>
@@ -295,6 +319,14 @@ const internment = () => {
                 patientId={data.internmentData.patientId}
                 onCancel={() => {
                   setVisible(false);
+                }}
+              />
+              <CreateFormAssingDoctors
+                doctorVisible={doctorVisible}
+                onCreateDoctor={onCreateDoctor}
+                patientId={data.internmentData.patientId}
+                onCancelDoctor={() => {
+                  setVisibleDoctor(false);
                 }}
               />
             </div>

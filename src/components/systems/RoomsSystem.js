@@ -2,21 +2,28 @@ import React, { useState, useContext } from "react";
 import { Table, Typography, Space, Collapse, Button } from "antd";
 import { useRouter } from "next/router";
 import CreateSystemchange from "../../components/internment/CreateSystemchange";
+import CreateFormAssingDoctors from "../../components/doctors/AssingDoctors";
 import { UserContext } from "../../contexts/Context";
 const { Panel } = Collapse;
 const { Text } = Typography;
 
 const RoomsSystem = ({ rooms, systemId }) => {
   const router = useRouter();
-  const [visible, setVisible] = useState(false);
   const [patientId, setPatientId] = useState(null);
   const { DBUser } = useContext(UserContext);
 
+  ///////////////////////
+  const [visible, setVisible] = useState(false);
   const onCreate = () => {
-    refreshData();
     setVisible(false);
   };
+  /////////////////////////////////
+  const [doctorVisible, setVisibleDoctor] = useState(false);
+  const onCreateDoctor = () => {
+    setVisibleDoctor(false);
+  };
 
+  ///////////////////////
   const columns = [
     {
       title: "Cama",
@@ -54,8 +61,16 @@ const RoomsSystem = ({ rooms, systemId }) => {
               Ver
             </Button>
           )}
-          {record["patient_id"] && systemId === DBUser.systemId && (
-            <Button type="primary">Asignar</Button>
+          {record["patientId"] && systemId === DBUser.systemId && (
+            <Button
+              onClick={() => {
+                setPatientId(record["patientId"]);
+                setVisibleDoctor(true);
+              }}
+              type="primary"
+            >
+              Asignar doctores
+            </Button>
           )}
           {record["patientId"] && systemId === DBUser.systemId && (
             <Button type="primary">Evolucionar</Button>
@@ -98,6 +113,14 @@ const RoomsSystem = ({ rooms, systemId }) => {
           patientId={patientId}
           onCancel={() => {
             setVisible(false);
+          }}
+        />
+        <CreateFormAssingDoctors
+          doctorVisible={doctorVisible}
+          onCreateDoctor={onCreateDoctor}
+          patientId={patientId}
+          onCancelDoctor={() => {
+            setVisibleDoctor(false);
           }}
         />
       </div>
