@@ -23,6 +23,7 @@ const CreateInternment = () => {
   const { TextArea } = Input;
   const [infoRooms, setInfoRooms] = useState(null);
   const [infoBeds, setInfoBeds] = useState(null);
+  const [validRooms, setValidRooms] = useState(false);
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const { Title } = Typography;
@@ -76,11 +77,40 @@ const CreateInternment = () => {
   const onRoomSelect = (room) => {
     console.log("se selecciono:", room);
     if (!needCreateBeds) {
-      callToBack("get", "/beds/withSpace", { id: room });
+      axiosInstance
+        .get("/beds/withSpace", {
+          params: {
+            id: room,
+          },
+        })
+        .then((res) => {
+          setErr(false);
+          setInfoBeds(res.data);
+        })
+        .catch((e) => {
+          setErr(e.message);
+          setInfoBeds(null);
+        });
     }
   };
+
   useEffect(() => {
-    callToBackForInfo("get", "/rooms/withSpace", { systemName: "GUARDIA" });
+    axiosInstance
+      .get("/rooms/WithSpace", {
+        params: {
+          systemName: "GUARDIA",
+        },
+      })
+      .then((res) => {
+        setErr(false);
+        setInfoRooms(res.data.rooms);
+        setValidRooms(res.data.validRooms);
+      })
+      .catch((e) => {
+        setErr(e.message);
+        setInfoRooms(null);
+        setValidRooms(null);
+      });
   }, []);
 
   console.log("necesito crear camas????:", needCreateBeds);
