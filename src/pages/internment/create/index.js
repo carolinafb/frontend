@@ -23,6 +23,7 @@ const CreateInternment = () => {
   const { TextArea } = Input;
   const [infoRooms, setInfoRooms] = useState(null);
   const [infoBeds, setInfoBeds] = useState(null);
+  const [validRooms, setValidRooms] = useState(false);
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const { Title } = Typography;
@@ -50,22 +51,6 @@ const CreateInternment = () => {
         setErr(err.message);
       });
   }
-  const callToBackForInfo = (method, url, param) => {
-    setLoading(true);
-    axiosInstance
-      .request({ method, url, params: param })
-      .then((res) => {
-        url === "/beds/withSpace" && setInfoBeds(res.data);
-        if (res.data.length === 0) {
-          callToBackForInfo("get", "/system", { systemName: "GUARDIA" });
-        }
-        setInfoRooms(res.data);
-        setLoading(false);
-      })
-      .catch((e) => {
-        setErr(e.message);
-      });
-  };
 
   const onFinish = (values) => {
     setLoading(true);
@@ -79,11 +64,40 @@ const CreateInternment = () => {
 
   const onRoomSelect = (room) => {
     if (!needCreateBeds) {
-      callToBackForInfo("get", "/beds/withSpace", { id: room });
+      axiosInstance
+        .get("/beds/withSpace", {
+          params: {
+            id: room,
+          },
+        })
+        .then((res) => {
+          setErr(false);
+          setInfoBeds(res.data);
+        })
+        .catch((e) => {
+          setErr(e.message);
+          setInfoBeds(null);
+        });
     }
   };
+
   useEffect(() => {
-    callToBackForInfo("get", "/rooms/withSpace", { systemName: "GUARDIA" });
+    axiosInstance
+      .get("/rooms/WithSpace", {
+        params: {
+          systemName: "GUARDIA",
+        },
+      })
+      .then((res) => {
+        setErr(false);
+        setInfoRooms(res.data.rooms);
+        setValidRooms(res.data.validRooms);
+      })
+      .catch((e) => {
+        setErr(e.message);
+        setInfoRooms(null);
+        setValidRooms(null);
+      });
   }, []);
 
   return (
@@ -142,7 +156,6 @@ const CreateInternment = () => {
                 >
                   <DatePicker placeholder="Fecha de inicio de sintomas" />
                 </Form.Item>
-
                 <Form.Item
                   label="Fecha de inicio diagnostico:"
                   name="dateOfDiagnosis"
@@ -155,7 +168,6 @@ const CreateInternment = () => {
                 >
                   <DatePicker placeholder="Fecha de inicio diagnostico" />
                 </Form.Item>
-
                 <Form.Item
                   label="Comorbilidades: "
                   name="historyOfDisease"

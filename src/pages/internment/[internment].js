@@ -321,14 +321,16 @@ const internment = () => {
                   setVisible(false);
                 }}
               />
-              <CreateFormAssingDoctors
-                doctorVisible={doctorVisible}
-                onCreateDoctor={onCreateDoctor}
-                patientId={data.internmentData.patientId}
-                onCancelDoctor={() => {
-                  setVisibleDoctor(false);
-                }}
-              />
+              {DBUser.role == "JEFE DE SISTEMA" && (
+                <CreateFormAssingDoctors
+                  doctorVisible={doctorVisible}
+                  onCreateDoctor={onCreateDoctor}
+                  patientId={data.internmentData.patientId}
+                  onCancelDoctor={() => {
+                    setVisibleDoctor(false);
+                  }}
+                />
+              )}
             </div>
           </Fragment>
           //////////////////////////////////
