@@ -13,9 +13,20 @@ import ObservationsForm from "src/components/patients/ObservationsForm";
 import UTIForm from "src/components/patients/UTIForm";
 import SymptomsForm from "src/components/patients/SymptomsForm";
 
+var objStrToInt = function (obj) {
+  // convierte todas las claves de string a number
+  return Object.keys(obj).reduce(
+    (attrs, key) => ({
+      ...attrs,
+      [key]: parseInt(obj[key]),
+    }),
+    {}
+  );
+};
+
 const Evolve = ({ ...props }) => {
   const router = useRouter();
-  const { DBUser } = useContext(UserContext);
+  const { DBUser, setLastEvolution } = useContext(UserContext);
   const { Header, Content } = Layout;
   const [patientName, setPatientName] = useState();
   const [current, setCurrent] = React.useState(0);
@@ -25,8 +36,29 @@ const Evolve = ({ ...props }) => {
   const [evolution, setEvolution] = React.useState({});
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    DBUser.systemName === "UTI" && setShowUTI(true);
+    const patientID = router.query.id;
+    if (!patientID) return;
+    setPatientId(parseInt(patientID));
+    axiosInstance
+      .get("/lastEvolveAndPatientData", {
+        params: { id: patientID },
+      })
+      .then((response) => {
+        setPatientName(`${response.data.name}, ${response.data.lastName}`);
+        if (evolution != null) setLastEvolution(response.data.lastEvolve);
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [router.query.id]);
+
   const finishHandler = () => {
     form.validateFields().then((data) => {
+      const updatedEvolution = { ...evolution, ...objStrToInt(data) };
+      setEvolution(updatedEvolution);
       axiosInstance
         .post("/patient/evolve", {
           evolution: updatedEvolution,
@@ -67,20 +99,13 @@ const Evolve = ({ ...props }) => {
   const prev = () => {
     setCurrent(current - 1);
   };
-  useEffect(() => {
-    // console.log(router.query.id);
-    DBUser.systemName === "UTI" && setShowUTI(true);
-    const patientID = router.query.id;
-    if (!patientID) return;
-    axiosInstance
-      .get("/patient", { params: { id: patientID } })
-      .then((response) =>
-        setPatientName(`${response.data.name}, ${response.data.lastName}`)
-      );
-    const patientName = "Carlos"; // await axiosInstance.get('/patient');
-    setPatientName(patientName);
-  }, [router.query.id]);
-
+  {
+    showUTI &&
+      steps.push({
+        title: "UTI",
+        content: <UTIForm form={form} />,
+      });
+  }
   return (
     <>
       <Head>
@@ -118,16 +143,12 @@ const Evolve = ({ ...props }) => {
                   xl={{ span: 16, offset: 4 }}
                 >
                   <h1>{patientName}</h1>
-                  {showUTI &&
-                    steps.push({
-                      title: "UTI",
-                      content: <UTIForm form={form} />,
-                    })}
                   <Steps size="small" current={current}>
                     {steps.map((item) => (
                       <Step key={item.title} title={item.title} />
                     ))}
                   </Steps>
+                  {console.log("lastEvolve", evolution)}
                   <div className="steps-content">{steps[current].content}</div>
                   <div className="steps-action">
                     {current < steps.length - 1 && (

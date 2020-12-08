@@ -191,10 +191,14 @@ const internment = () => {
                                           {systemChange.finish === null ? (
                                             <div>
                                               <Button
-                                                /*   onClick={() => {
-                                      
+                                                onClick={() => {
+                                                  router.push(
+                                                    "/patient/" +
+                                                      data.internmentData
+                                                        .patientId +
+                                                      "/evolve"
+                                                  );
                                                 }}
-                                            */
                                                 type="primary"
                                               >
                                                 Agregar evolucion

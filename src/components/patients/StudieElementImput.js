@@ -24,11 +24,10 @@ const StudieElementImput = ({ label, name }) => {
         <Fragment>
           <Form.Item
             label="Tipo:"
-            name={name + "Type"}
+            name={name + "Pathological"}
             rules={[{ required: true, message: "Campo obligatorio" }]}
           >
             <Select
-              initialValues="Patologico"
               style={{ width: 120 }}
               onChange={(value) => {
                 value == "Patologico"
