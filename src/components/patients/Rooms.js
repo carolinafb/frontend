@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Button, Space, Collapse } from "antd";
 import { useRouter } from "next/router";
+import CreateSystemchange from "../../components/internment/CreateSystemchange";
 
-import axiosInstance from "../axios";
 const { Panel } = Collapse;
 
 const Rooms = ({ rooms }) => {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
+  const [patientId, setPatientId] = useState(null);
+
+  const onCreate = () => {
+    refreshData();
+    setVisible(false);
+  };
+
   const columns = [
     {
       title: "Cama",
@@ -27,10 +35,10 @@ const Rooms = ({ rooms }) => {
       key: "Acciones",
       render: (text, record) => (
         <Space size="middle">
-          {record["patientId"] && (
+          {record["internmentId"] && (
             <Button
               onClick={() => {
-                router.push("/internment/" + record["patientId"]);
+                router.push("/internment/" + record["internmentId"]);
               }}
               type="primary"
             >
@@ -41,12 +49,21 @@ const Rooms = ({ rooms }) => {
             <Button
               type="primary"
               onClick={() => {
-                router.push(
-                  "/patient/" + data.internmentData.patientId + "/evolve"
-                );
+                "/patient/" + data.internmentData.patientId + "/evolve";
               }}
             >
               Evolucionar
+            </Button>
+          )}
+          {record["patientId"] && (
+            <Button
+              onClick={() => {
+                setPatientId(record["patientId"]);
+                setVisible(true);
+              }}
+              type="primary"
+            >
+              Cambiar de sistema
             </Button>
           )}
         </Space>
@@ -69,6 +86,16 @@ const Rooms = ({ rooms }) => {
             </Panel>
           ))}
       </Collapse>
+      <div className="align-column-center margin__big">
+        <CreateSystemchange
+          visible={visible}
+          onCreate={onCreate}
+          patientId={patientId}
+          onCancel={() => {
+            setVisible(false);
+          }}
+        />
+      </div>
     </div>
   );
 };

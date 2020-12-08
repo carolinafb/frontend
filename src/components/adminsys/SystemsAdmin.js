@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Rooms from "../../components/adminsys/RoomsAdmin";
 import CreateForm from "./CreateUpdateForm";
+import CreateFormChangeSystemChief from "../../components/doctors/changeSystemChief";
 import axiosInstance from "../axios";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
@@ -35,6 +36,15 @@ const Systems = ({ systems, refreshData }) => {
     refreshData();
     setVisible(false);
   };
+
+  /////////////////////////////////
+  const [systemChiefVisible, setVisibleSystemChief] = useState(false);
+
+  const onCreateSystemChief = () => {
+    setVisibleSystemChief(false);
+  };
+
+  ///////////////////////
 
   const onDeleteSystem = (systemId) => {
     axiosInstance
@@ -72,50 +82,6 @@ const Systems = ({ systems, refreshData }) => {
                       <div>
                         <h1>{system.name}</h1>
                       </div>
-                    </Col>
-                    <Col className="gutter-row" span={4}>
-                      <div>
-                        {system.removable ? (
-                          <Button
-                            onClick={() => {
-                              onDeleteSystem(system.id);
-                            }}
-                            type="danger"
-                          >
-                            <DeleteOutlined />
-                          </Button>
-                        ) : (
-                          <Button disabled={true} type="danger">
-                            <DeleteOutlined />
-                          </Button>
-                        )}
-                      </div>
-                    </Col>
-
-                    <Col className="gutter-row" span={4}>
-                      {system.removable == true ? (
-                        <div>
-                          <Button
-                            onClick={() => {
-                              setVisible(true);
-                              setSystemId(system.id);
-                              setTitulo("Modificar sistema");
-                              setAction("update");
-                              setPath("sistema");
-                              setClave("name");
-                            }}
-                            type="primary"
-                          >
-                            <EditOutlined />
-                          </Button>
-                        </div>
-                      ) : (
-                        <div>
-                          <Button disabled={true} type="primary">
-                            <EditOutlined />
-                          </Button>
-                        </div>
-                      )}
                     </Col>
                   </Row>
                 </div>
@@ -256,10 +222,13 @@ const Systems = ({ systems, refreshData }) => {
                       <Row gutter={2}>
                         <Col className="gutter-row" span={12}>
                           <Button
-                            className="align-column-left margin__small"
+                            onClick={() => {
+                              setSystemId(system.id);
+                              setVisibleSystemChief(true);
+                            }}
                             type="primary"
                           >
-                            Editar jefe
+                            Cambiar jefe
                           </Button>
                         </Col>
 
@@ -312,8 +281,26 @@ const Systems = ({ systems, refreshData }) => {
               setVisible(false);
             }}
           />
+          <CreateFormChangeSystemChief
+            systemChiefVisible={systemChiefVisible}
+            onCreateSystemChief={onCreateSystemChief}
+            systemId={systemId}
+            onCancelSystemChief={() => {
+              setVisibleSystemChief(false);
+            }}
+          />
+        </div>
+      </footer>
+    </div>
+  );
+};
+export default Systems;
 
-          <Button
+/* 
+
+agregar systema
+ <Button
+            display="none"
             onClick={() => {
               setVisible(true);
               setTitulo("Agregar sistema");
@@ -324,9 +311,57 @@ const Systems = ({ systems, refreshData }) => {
           >
             Agregar sistema
           </Button>
-        </div>
-      </footer>
-    </div>
-  );
-};
-export default Systems;
+
+
+editar y eliminar systema en el encabezado del desplegable
+
+
+ <Col className="gutter-row" span={4}>
+                      <div>
+                        {system.removable ? (
+                          <Button
+                            onClick={() => {
+                              onDeleteSystem(system.id);
+                            }}
+                            type="danger"
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        ) : (
+                          <Button disabled={true} type="danger">
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
+                    </Col>
+
+                    <Col className="gutter-row" span={4}>
+                      {system.removable == true ? (
+                        <div>
+                          <Button
+                            onClick={() => {
+                              setVisible(true);
+                              setSystemId(system.id);
+                              setTitulo("Modificar sistema");
+                              setAction("update");
+                              setPath("sistema");
+                              setClave("name");
+                            }}
+                            type="primary"
+                          >
+                            <EditOutlined />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div>
+                          <Button disabled={true} type="primary">
+                            <EditOutlined />
+                          </Button>
+                        </div>
+                      )}
+                    </Col>
+
+
+
+
+*/
