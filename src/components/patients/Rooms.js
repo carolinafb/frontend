@@ -37,7 +37,18 @@ const Rooms = ({ rooms }) => {
               Ver
             </Button>
           )}
-          {record["patientId"] && <Button type="primary">Evolucionar</Button>}
+          {record["patientId"] && (
+            <Button
+              type="primary"
+              onClick={() => {
+                router.push(
+                  "/patient/" + data.internmentData.patientId + "/evolve"
+                );
+              }}
+            >
+              Evolucionar
+            </Button>
+          )}
         </Space>
       ),
     },
