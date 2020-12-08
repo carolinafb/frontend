@@ -13,20 +13,9 @@ import ObservationsForm from "src/components/patients/ObservationsForm";
 import UTIForm from "src/components/patients/UTIForm";
 import SymptomsForm from "src/components/patients/SymptomsForm";
 
-var objStrToInt = function (obj) {
-  // convierte todas las claves de string a number
-  return Object.keys(obj).reduce(
-    (attrs, key) => ({
-      ...attrs,
-      [key]: parseInt(obj[key]),
-    }),
-    {}
-  );
-};
-
 const Evolve = ({ ...props }) => {
   const router = useRouter();
-  const { DBUser, setLastEvolution } = useContext(UserContext);
+  const { DBUser, setLastEvolution, lastEvolution } = useContext(UserContext);
   const { Header, Content } = Layout;
   const [patientName, setPatientName] = useState();
   const [current, setCurrent] = React.useState(0);
@@ -35,6 +24,10 @@ const Evolve = ({ ...props }) => {
   const [patientId, setPatientId] = React.useState(null);
   const [evolution, setEvolution] = React.useState({});
   const [form] = Form.useForm();
+
+  const evaluateStructure = (data) => {
+    setEvolution({ ...evolution, ...data });
+  };
 
   useEffect(() => {
     DBUser.systemName === "UTI" && setShowUTI(true);
@@ -47,7 +40,7 @@ const Evolve = ({ ...props }) => {
       })
       .then((response) => {
         setPatientName(`${response.data.name}, ${response.data.lastName}`);
-        if (evolution != null) setLastEvolution(response.data.lastEvolve);
+        if (lastEvolution != null) setLastEvolution(response.data.lastEvolve);
         console.log(response.data);
       })
       .catch((err) => {
@@ -57,8 +50,9 @@ const Evolve = ({ ...props }) => {
 
   const finishHandler = () => {
     form.validateFields().then((data) => {
-      const updatedEvolution = { ...evolution, ...objStrToInt(data) };
-      setEvolution(updatedEvolution);
+      console.log("data", data);
+      const updatedEvolution = { ...evolution, ...data };
+      console.log("evolucion:", updatedEvolution);
       axiosInstance
         .post("/patient/evolve", {
           evolution: updatedEvolution,
@@ -93,6 +87,9 @@ const Evolve = ({ ...props }) => {
   ];
 
   const next = () => {
+    form.validateFields().then((data) => {
+      evaluateStructure(data);
+    });
     setCurrent(current + 1);
   };
 
@@ -120,7 +117,7 @@ const Evolve = ({ ...props }) => {
           {sucess ? (
             <Result
               status="success"
-              title="Se agrego al paciente CORRECTAMENTE"
+              title="Se agrego la evolucion CORRECTAMENTE"
               extra={
                 <Button
                   type="primary"

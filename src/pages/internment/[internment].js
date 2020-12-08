@@ -1,16 +1,7 @@
 import Navbar from "../../components/header/Navbar";
 import CreateSystemchange from "../../components/internment/CreateSystemchange";
 import CreateFormAssingDoctors from "../../components/doctors/AssingDoctors";
-import {
-  Button,
-  Layout,
-  Result,
-  Timeline,
-  Row,
-  Col,
-  Collapse,
-  Typography,
-} from "antd";
+import { Button, Layout, Result, Timeline, Row, Col, Collapse } from "antd";
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
@@ -287,10 +278,15 @@ const internment = () => {
                                                   >
                                                     <div>
                                                       <Button
-                                                        /*   onClick={() => {
-                                      
-                                                }}
-                                            */
+                                                        onClick={() => {
+                                                          router.push(
+                                                            "/patient/" +
+                                                              data
+                                                                .internmentData
+                                                                .patientId +
+                                                              "/evolve"
+                                                          );
+                                                        }}
                                                         type="primary"
                                                       >
                                                         Ver mas
@@ -324,14 +320,16 @@ const internment = () => {
                   setVisible(false);
                 }}
               />
-              <CreateFormAssingDoctors
-                doctorVisible={doctorVisible}
-                onCreateDoctor={onCreateDoctor}
-                patientId={data.internmentData.patientId}
-                onCancelDoctor={() => {
-                  setVisibleDoctor(false);
-                }}
-              />
+              {DBUser.role == "JEFE DE SISTEMA" && (
+                <CreateFormAssingDoctors
+                  doctorVisible={doctorVisible}
+                  onCreateDoctor={onCreateDoctor}
+                  patientId={data.internmentData.patientId}
+                  onCancelDoctor={() => {
+                    setVisibleDoctor(false);
+                  }}
+                />
+              )}
             </div>
           </Fragment>
           //////////////////////////////////

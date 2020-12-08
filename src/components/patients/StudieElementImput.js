@@ -1,20 +1,20 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import { Switch, Select, Form, Input } from "antd";
+import { UserContext } from "src/contexts/Context";
 
 const StudieElementImput = ({ label, name }) => {
+  const { lastEvolution } = useContext(UserContext);
   const { Option } = Select;
   const { TextArea } = Input;
-  const [selectElement, setSelectElement] = useState(true);
-  const [showDescription, setShowDescription] = useState(true);
+  const [selectElement, setSelectElement] = useState(lastEvolution[name] === 1);
+  const [showDescription, setShowDescription] = useState(
+    lastEvolution[name + "Description"]
+  );
   return (
     <Fragment>
-      <Form.Item
-        label={label + ":"}
-        name={name}
-        rules={[{ required: true, message: "Campo obligatorio" }]}
-      >
+      <Form.Item label={label + ":"} name={name}>
         <Switch
-          defaultChecked
+          defaultChecked={lastEvolution[name] === 1}
           onChange={() => {
             setSelectElement(!selectElement);
           }}
@@ -22,11 +22,7 @@ const StudieElementImput = ({ label, name }) => {
       </Form.Item>
       {selectElement && (
         <Fragment>
-          <Form.Item
-            label="Tipo:"
-            name={name + "Pathological"}
-            rules={[{ required: true, message: "Campo obligatorio" }]}
-          >
+          <Form.Item label="Tipo:" name={name + "Pathological"}>
             <Select
               style={{ width: 120 }}
               onChange={(value) => {

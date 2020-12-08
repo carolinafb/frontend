@@ -37,14 +37,9 @@ const UTIForm = ({ form }) => {
           form={form}
           style={{ width: "100%" }}
           name="UTIForm"
-          initialValues={lastEvolution ? initialValues() : { values }}
         >
-          <Form.Item
-            label="ARM:"
-            name="arm"
-            rules={[{ required: true, message: "Campo obligatorio" }]}
-          >
-            <Switch defaultChecked />
+          <Form.Item label="ARM:" name="arm">
+            <Switch defaultChecked={lastEvolution.arm === 1} />
           </Form.Item>
           <Form.Item label="Descripcion: " name="ARMDescripcion">
             <TextArea
@@ -52,19 +47,11 @@ const UTIForm = ({ form }) => {
               style={{ width: "100%" }}
             />
           </Form.Item>
-          <Form.Item
-            label="Traqueotomia:"
-            name="tracheostomy"
-            rules={[{ required: true, message: "Campo obligatorio" }]}
-          >
-            <Switch defaultChecked />
+          <Form.Item label="Traqueotomia:" name="tracheostomy">
+            <Switch defaultChecked={lastEvolution.tracheostomy === 1} />
           </Form.Item>
-          <Form.Item
-            label="Varopresores:"
-            name="vasopressors"
-            rules={[{ required: true, message: "Campo obligatorio" }]}
-          >
-            <Switch defaultChecked />
+          <Form.Item label="Varopresores:" name="vasopressors">
+            <Switch defaultChecked={lastEvolution.vasopressors === 1} />
           </Form.Item>
           <Form.Item label="Descripcion: " name="vasopressorsDescription">
             <TextArea

@@ -36,26 +36,14 @@ const SymptomsForm = ({ form }) => {
           name="SymptomsForm"
           initialValues={lastEvolution ? initialValues() : { values }}
         >
-          <Form.Item
-            label="Somnolencia:"
-            name="drowsiness"
-            rules={[{ required: true, message: "Campo obligatorio" }]}
-          >
-            <Switch defaultChecked />
+          <Form.Item label="Somnolencia:" name="drowsiness">
+            <Switch defaultChecked={lastEvolution.drowsiness === 1} />
           </Form.Item>
-          <Form.Item
-            label="Anosmia:"
-            name="anosmia"
-            rules={[{ required: true, message: "Campo obligatorio" }]}
-          >
-            <Switch defaultChecked />
+          <Form.Item label="Anosmia:" name="anosmia">
+            <Switch defaultChecked={lastEvolution.anosmia === 1} />
           </Form.Item>
-          <Form.Item
-            label="Disgeusia:"
-            name="disagreement"
-            rules={[{ required: true, message: "Campo obligatorio" }]}
-          >
-            <Switch defaultChecked />
+          <Form.Item label="Disgeusia:" name="disagreement">
+            <Switch defaultChecked={lastEvolution.disagreement === 1} />
           </Form.Item>
         </Form>
       )}

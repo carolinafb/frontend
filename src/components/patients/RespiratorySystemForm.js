@@ -8,32 +8,41 @@ const RespiratorySystemForm = ({ form }) => {
   const values = {
     remember: true,
   };
-  const [O2suplementary, setO2suplementary] = useState(true);
-  const [O2suplementaryType, setO2suplementaryType] = useState(
-    "nasalOxygenCannula"
-  );
-  const [PaFi, setPaFi] = useState(true);
 
   const initialValues = () => {
     if (lastEvolution != null) {
       if (lastEvolution.ventilatoryMechanics != null)
         values.ventilatoryMechanics = lastEvolution.ventilatoryMechanics;
+
       if (lastEvolution.requiresSupplementalOxygen != null)
         values.requiresSupplementalOxygen =
           lastEvolution.requiresSupplementalOxygen;
-      if (lastEvolution.nasalOxygenCannula != null)
-        values.nasalOxygenCannula = lastEvolution.nasalOxygenCannula;
 
-      if (lastEvolution.litersPerMinute != null)
-        values.litersPerMinute = lastEvolution.litersPerMinute;
+      if (lastEvolution.nasalOxygenCannula != null) {
+        values.type = "nasalOxygenCannula";
+        if (lastEvolution.litersPerMinute != null)
+          values.litersPerMinute = lastEvolution.litersPerMinute;
+        values.maskWithReservoir = null;
+        values.maskValue = null;
+      } else {
+        if (lastEvolution.maskWithReservoir != null) {
+          values.type = "maskWithReservoir";
+          if (lastEvolution.maskValue != null)
+            values.maskValue = lastEvolution.maskValue;
+          values.nasalOxygenCannula = null;
+          values.litersPerMinute = null;
+        }
+      }
 
       if (lastEvolution.maskWithReservoir != null)
-        values.maskWithReservoir = lastEvolution.maskWithReservoir;
+        values.type = "maskWithReservoir";
 
       if (lastEvolution.oxygenSaturation != null)
         values.oxygenSaturation = lastEvolution.oxygenSaturation;
 
-      if (lastEvolution.pafi != null) values.pafi = lastEvolution.pafi;
+      if (lastEvolution.pafi != null) {
+        values.pafi = lastEvolution.pafi;
+      }
 
       if (lastEvolution.pafiValue != null)
         values.pafiValue = lastEvolution.pafiValue;
@@ -47,6 +56,19 @@ const RespiratorySystemForm = ({ form }) => {
     console.log("vaaaaalueeessss", values);
     return values;
   };
+
+  const [O2suplementary, setO2suplementary] = useState(
+    lastEvolution.requiresSupplementalOxygen === 1
+  );
+  const [O2suplementaryType, setO2suplementaryType] = useState(
+    lastEvolution.maskWithReservoir === 1
+      ? "maskWithReservoir"
+      : lastEvolution.nasalOxygenCannula === 1
+      ? "nasalOxygenCannula"
+      : null
+  );
+  const [PaFi, setPaFi] = useState(lastEvolution.pafi === 1);
+
   return (
     <Fragment>
       {lastEvolution != false && (
@@ -57,11 +79,7 @@ const RespiratorySystemForm = ({ form }) => {
           name="respiratorySystemForm"
           initialValues={lastEvolution ? initialValues() : { values }}
         >
-          <Form.Item
-            label="Mecanica ventilatoria:"
-            name="ventilatoryMechanics"
-            rules={[{ required: true, message: "Campo obligatorio" }]}
-          >
+          <Form.Item label="Mecanica ventilatoria:" name="ventilatoryMechanics">
             <Select style={{ width: 120 }}>
               <Option value="Buena">Buena</Option>
               <Option value="Regular">Regular</Option>
@@ -71,39 +89,40 @@ const RespiratorySystemForm = ({ form }) => {
           <Form.Item
             label="Requiere O2 suplementario:"
             name="requiresSupplementalOxygen"
-            rules={[{ required: true, message: "Campo obligatorio" }]}
           >
             <Switch
-              defaultChecked
+              defaultChecked={lastEvolution.requiresSupplementalOxygen === 1}
               onChange={() => {
                 setO2suplementary(!O2suplementary);
               }}
             />
           </Form.Item>
-          {O2suplementary && (
+
+          {O2suplementary === true && (
             <Fragment>
-              <Form.Item
-                label="Tipo:"
-                name="litersPerMinute"
-                rules={[{ required: true, message: "Campo obligatorio" }]}
-              >
+              <Form.Item label="Tipo:" name="type">
                 <Radio.Group
                   onChange={(e) => {
+                    console.log("se selecciono:", e.target.value);
                     setO2suplementaryType(e.target.value);
                   }}
                 >
-                  <Radio value="nasalOxygenCannula">Canula Nasal</Radio>
-                  <Radio value="maskWithReservoir">
+                  <Radio
+                    defaultChecked={lastEvolution.nasalOxygenCannula === 1}
+                    value="nasalOxygenCannula"
+                  >
+                    Canula Nasal
+                  </Radio>
+                  <Radio
+                    defaultChecked={lastEvolution.maskWithReservoir === 1}
+                    value="maskWithReservoir"
+                  >
                     Mascara con reservorio
                   </Radio>
                 </Radio.Group>
               </Form.Item>
-              {O2suplementaryType === "nasalOxygenCannula" ? (
-                <Form.Item
-                  label="lts/min:"
-                  name="litersPerMinute"
-                  rules={[{ required: true, message: "Campo obligatorio" }]}
-                >
+              {O2suplementaryType === "nasalOxygenCannula" && (
+                <Form.Item label="lts/min:" name="litersPerMinute">
                   <Radio.Group>
                     <Radio value={1}>1</Radio>
                     <Radio value={2}>2</Radio>
@@ -113,56 +132,34 @@ const RespiratorySystemForm = ({ form }) => {
                     <Radio value={6}>6</Radio>
                   </Radio.Group>
                 </Form.Item>
-              ) : (
-                <Form.Item
-                  label="%O2:"
-                  name="maskValue"
-                  rules={[{ required: true, message: "Campo obligatorio" }]}
-                >
+              )}
+
+              {O2suplementaryType === "maskWithReservoir" && (
+                <Form.Item label="%O2:" name="maskValue">
                   <InputNumber min={0} max={100} step={0.1} />
                 </Form.Item>
               )}
-              <Form.Item
-                label="Saturacion de O2:"
-                name="oxygenSaturation"
-                rules={[{ required: true, message: "Campo obligatorio" }]}
-              >
+              <Form.Item label="Saturacion de O2:" name="oxygenSaturation">
                 <InputNumber min={0} max={100} />
               </Form.Item>
-              <Form.Item
-                label="PaFi:"
-                name="pafi"
-                rules={[{ required: true, message: "Campo obligatorio" }]}
-              >
+              <Form.Item label="PaFi:" name="pafi">
                 <Switch
-                  defaultChecked
+                  defaultChecked={lastEvolution.pafi === 1}
                   onChange={() => {
                     setPaFi(!PaFi);
                   }}
                 />
               </Form.Item>
-              {PaFi && (
-                <Form.Item
-                  label="PaFi valor:"
-                  name="pafiValue"
-                  rules={[{ required: true, message: "Campo obligatorio" }]}
-                >
+              {PaFi != null && (
+                <Form.Item label="PaFi valor:" name="pafiValue">
                   <InputNumber min={0} max={100} />
                 </Form.Item>
               )}
 
-              <Form.Item
-                label="Tos:"
-                name="cough"
-                rules={[{ required: true, message: "Campo obligatorio" }]}
-              >
-                <Switch defaultChecked />
+              <Form.Item label="Tos:" name="cough">
+                <Switch defaultChecked={lastEvolution.cough === 1} />
               </Form.Item>
-              <Form.Item
-                label="Disnea:"
-                name="dyspnoea"
-                rules={[{ required: true, message: "Campo obligatorio" }]}
-              >
+              <Form.Item label="Disnea:" name="dyspnoea">
                 <Radio.Group>
                   <Radio value={1}>1</Radio>
                   <Radio value={2}>2</Radio>
@@ -173,9 +170,10 @@ const RespiratorySystemForm = ({ form }) => {
               <Form.Item
                 label="Estabilidad/Desaparicion de sintomas respiratorios::"
                 name="respiratorySymptoms"
-                rules={[{ required: true, message: "Campo obligatorio" }]}
               >
-                <Switch defaultChecked />
+                <Switch
+                  defaultChecked={lastEvolution.respiratorySymptoms === 1}
+                />
               </Form.Item>
             </Fragment>
           )}

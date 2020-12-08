@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Form, Input } from "antd";
+import { Form, InputNumber } from "antd";
 import { UserContext } from "src/contexts/Context";
 
 const VitalSignsForm = ({ form }) => {
@@ -58,7 +58,7 @@ const VitalSignsForm = ({ form }) => {
               },
             ]}
           >
-            <Input type="number" />
+            <InputNumber min={0} max={100} step={0.1} />
           </Form.Item>
           <Form.Item
             label="TA sistólica"
@@ -70,7 +70,7 @@ const VitalSignsForm = ({ form }) => {
               },
             ]}
           >
-            <Input type="number" />
+            <InputNumber min={0} max={100} />
           </Form.Item>
           <Form.Item
             label="TA diastolica"
@@ -82,7 +82,7 @@ const VitalSignsForm = ({ form }) => {
               },
             ]}
           >
-            <Input type="number" />
+            <InputNumber min={0} max={100} />
           </Form.Item>
 
           <Form.Item
@@ -95,7 +95,7 @@ const VitalSignsForm = ({ form }) => {
               },
             ]}
           >
-            <Input type="number" />
+            <InputNumber min={0} max={100} />
           </Form.Item>
 
           <Form.Item
@@ -108,7 +108,7 @@ const VitalSignsForm = ({ form }) => {
               },
             ]}
           >
-            <Input type="number" />
+            <InputNumber min={0} max={100} />
           </Form.Item>
         </Form>
       )}

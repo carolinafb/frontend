@@ -49,7 +49,7 @@ const Rooms = ({ rooms }) => {
             <Button
               type="primary"
               onClick={() => {
-                "/patient/" + data.internmentData.patientId + "/evolve";
+                router.push("/patient/" + record["patientId"] + "/evolve");
               }}
             >
               Evolucionar
