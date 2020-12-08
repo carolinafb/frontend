@@ -58,16 +58,22 @@ const RespiratorySystemForm = ({ form }) => {
   };
 
   const [O2suplementary, setO2suplementary] = useState(
-    lastEvolution.requiresSupplementalOxygen === 1
+    lastEvolution != null
+      ? lastEvolution.requiresSupplementalOxygen === 1
+      : false
   );
   const [O2suplementaryType, setO2suplementaryType] = useState(
-    lastEvolution.maskWithReservoir === 1
-      ? "maskWithReservoir"
-      : lastEvolution.nasalOxygenCannula === 1
-      ? "nasalOxygenCannula"
-      : null
+    lastEvolution != null
+      ? lastEvolution.maskWithReservoir === 1
+        ? "maskWithReservoir"
+        : lastEvolution.nasalOxygenCannula === 1
+        ? "nasalOxygenCannula"
+        : null
+      : false
   );
-  const [PaFi, setPaFi] = useState(lastEvolution.pafi === 1);
+  const [PaFi, setPaFi] = useState(
+    lastEvolution != null ? lastEvolution.pafi === 1 : false
+  );
 
   return (
     <Fragment>
@@ -91,7 +97,11 @@ const RespiratorySystemForm = ({ form }) => {
             name="requiresSupplementalOxygen"
           >
             <Switch
-              defaultChecked={lastEvolution.requiresSupplementalOxygen === 1}
+              defaultChecked={
+                lastEvolution != null
+                  ? lastEvolution.requiresSupplementalOxygen === 1
+                  : undefined
+              }
               onChange={() => {
                 setO2suplementary(!O2suplementary);
               }}
@@ -108,13 +118,21 @@ const RespiratorySystemForm = ({ form }) => {
                   }}
                 >
                   <Radio
-                    defaultChecked={lastEvolution.nasalOxygenCannula === 1}
+                    defaultChecked={
+                      lastEvolution != null
+                        ? lastEvolution.nasalOxygenCannula === 1
+                        : undefined
+                    }
                     value="nasalOxygenCannula"
                   >
                     Canula Nasal
                   </Radio>
                   <Radio
-                    defaultChecked={lastEvolution.maskWithReservoir === 1}
+                    defaultChecked={
+                      lastEvolution != null
+                        ? lastEvolution.maskWithReservoir === 1
+                        : undefined
+                    }
                     value="maskWithReservoir"
                   >
                     Mascara con reservorio
@@ -144,7 +162,9 @@ const RespiratorySystemForm = ({ form }) => {
               </Form.Item>
               <Form.Item label="PaFi:" name="pafi">
                 <Switch
-                  defaultChecked={lastEvolution.pafi === 1}
+                  defaultChecked={
+                    lastEvolution != null ? lastEvolution.pafi === 1 : undefined
+                  }
                   onChange={() => {
                     setPaFi(!PaFi);
                   }}
@@ -157,7 +177,13 @@ const RespiratorySystemForm = ({ form }) => {
               )}
 
               <Form.Item label="Tos:" name="cough">
-                <Switch defaultChecked={lastEvolution.cough === 1} />
+                <Switch
+                  defaultChecked={
+                    lastEvolution != null
+                      ? lastEvolution.cough === 1
+                      : undefined
+                  }
+                />
               </Form.Item>
               <Form.Item label="Disnea:" name="dyspnoea">
                 <Radio.Group>
@@ -172,7 +198,11 @@ const RespiratorySystemForm = ({ form }) => {
                 name="respiratorySymptoms"
               >
                 <Switch
-                  defaultChecked={lastEvolution.respiratorySymptoms === 1}
+                  defaultChecked={
+                    lastEvolution != null
+                      ? lastEvolution.respiratorySymptoms === 1
+                      : undefined
+                  }
                 />
               </Form.Item>
             </Fragment>

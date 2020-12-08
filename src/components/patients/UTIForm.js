@@ -39,7 +39,11 @@ const UTIForm = ({ form }) => {
           name="UTIForm"
         >
           <Form.Item label="ARM:" name="arm">
-            <Switch defaultChecked={lastEvolution.arm === 1} />
+            <Switch
+              defaultChecked={
+                lastEvolution != null ? lastEvolution.arm === 1 : undefined
+              }
+            />
           </Form.Item>
           <Form.Item label="Descripcion: " name="ARMDescripcion">
             <TextArea
@@ -48,10 +52,22 @@ const UTIForm = ({ form }) => {
             />
           </Form.Item>
           <Form.Item label="Traqueotomia:" name="tracheostomy">
-            <Switch defaultChecked={lastEvolution.tracheostomy === 1} />
+            <Switch
+              defaultChecked={
+                lastEvolution != null
+                  ? lastEvolution.tracheostomy === 1
+                  : undefined
+              }
+            />
           </Form.Item>
           <Form.Item label="Varopresores:" name="vasopressors">
-            <Switch defaultChecked={lastEvolution.vasopressors === 1} />
+            <Switch
+              defaultChecked={
+                lastEvolution != null
+                  ? lastEvolution.vasopressors === 1
+                  : undefined
+              }
+            />
           </Form.Item>
           <Form.Item label="Descripcion: " name="vasopressorsDescription">
             <TextArea

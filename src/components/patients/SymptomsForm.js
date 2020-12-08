@@ -37,13 +37,29 @@ const SymptomsForm = ({ form }) => {
           initialValues={lastEvolution ? initialValues() : { values }}
         >
           <Form.Item label="Somnolencia:" name="drowsiness">
-            <Switch defaultChecked={lastEvolution.drowsiness === 1} />
+            <Switch
+              defaultChecked={
+                lastEvolution != null
+                  ? lastEvolution.drowsiness === 1
+                  : undefined
+              }
+            />
           </Form.Item>
           <Form.Item label="Anosmia:" name="anosmia">
-            <Switch defaultChecked={lastEvolution.anosmia === 1} />
+            <Switch
+              defaultChecked={
+                lastEvolution != null ? lastEvolution.anosmia === 1 : undefined
+              }
+            />
           </Form.Item>
           <Form.Item label="Disgeusia:" name="disagreement">
-            <Switch defaultChecked={lastEvolution.disagreement === 1} />
+            <Switch
+              defaultChecked={
+                lastEvolution != null
+                  ? lastEvolution.disagreement === 1
+                  : undefined
+              }
+            />
           </Form.Item>
         </Form>
       )}

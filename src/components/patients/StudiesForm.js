@@ -51,9 +51,9 @@ const StudiesForm = ({ form }) => {
         values.cReactiveProteinCovidPathological =
           lastEvolution.cReactiveProteinCovidPathological;
 
-      if (lastEvolution.creactiveProteinCovidDescription != null)
-        values.creactiveProteinCovidDescription =
-          lastEvolution.creactiveProteinCovidDescription;
+      if (lastEvolution.cReactiveProteinCovidDescription != null)
+        values.cReactiveProteinCovidDescription =
+          lastEvolution.cReactiveProteinCovidDescription;
     }
     console.log("vaaaaalueeessss", values);
     return values;
