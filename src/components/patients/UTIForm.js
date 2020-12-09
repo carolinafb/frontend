@@ -15,16 +15,15 @@ const UTIForm = ({ form }) => {
 
   const initialValues = () => {
     if (lastEvolution != null) {
-      if (lastEvolution.temperature != null)
-        values.temperature = lastEvolution.temperature;
-      if (lastEvolution.systolicBloodPressure != null)
-        values.systolicBloodPressure = lastEvolution.systolicBloodPressure;
-      if (lastEvolution.diastolicBloodPressure != null)
-        values.diastolicBloodPressure = lastEvolution.diastolicBloodPressure;
-      if (lastEvolution.heartRate != null)
-        values.heartRate = lastEvolution.heartRate;
-      if (lastEvolution.breathingFrequency != null)
-        values.breathingFrequency = lastEvolution.breathingFrequency;
+      if (lastEvolution.arm != null) values.arm = lastEvolution.arm;
+      if (lastEvolution.armDescripcion != null)
+        values.armDescripcion = lastEvolution.armDescripcion;
+      if (lastEvolution.tracheostomy != null)
+        values.tracheostomy = lastEvolution.tracheostomy;
+      if (lastEvolution.vasopressors != null)
+        values.vasopressors = lastEvolution.vasopressors;
+      if (lastEvolution.vasopressorsDescription != null)
+        values.vasopressorsDescription = lastEvolution.vasopressorsDescription;
     }
     console.log("vaaaaalueeessss", values);
     return values;
@@ -37,6 +36,7 @@ const UTIForm = ({ form }) => {
           form={form}
           style={{ width: "100%" }}
           name="UTIForm"
+          initialValues={lastEvolution ? initialValues() : { values }}
         >
           <Form.Item label="ARM:" name="arm">
             <Switch
@@ -45,7 +45,7 @@ const UTIForm = ({ form }) => {
               }
             />
           </Form.Item>
-          <Form.Item label="Descripcion: " name="ARMDescripcion">
+          <Form.Item label="Descripcion: " name="armDescription">
             <TextArea
               placeholder="Leve descripcion"
               style={{ width: "100%" }}

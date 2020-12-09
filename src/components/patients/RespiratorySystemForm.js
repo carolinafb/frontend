@@ -170,7 +170,7 @@ const RespiratorySystemForm = ({ form }) => {
                   }}
                 />
               </Form.Item>
-              {PaFi != null && (
+              {PaFi && (
                 <Form.Item label="PaFi valor:" name="pafiValue">
                   <InputNumber min={0} max={100} />
                 </Form.Item>

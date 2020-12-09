@@ -40,6 +40,7 @@ const Evolve = ({ ...props }) => {
       })
       .then((response) => {
         setPatientName(`${response.data.name}, ${response.data.lastName}`);
+        console.log(response.data);
         if (lastEvolution != null) setLastEvolution(response.data.lastEvolve);
         console.log(response.data);
       })
