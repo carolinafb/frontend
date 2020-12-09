@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { UserContext } from "src/contexts/Context";
 import Navbar from "src/components/header/Navbar";
-import { Layout, Steps, Button, Form, Result, Row, Col } from "antd";
+import { Layout, Steps, Button, Form, Result, Row, Col, Alert } from "antd";
 const { Step } = Steps;
 import Head from "next/head";
 import axiosInstance from "src/components/axios";
@@ -20,6 +20,7 @@ const Evolve = ({ ...props }) => {
   const [patientName, setPatientName] = useState();
   const [current, setCurrent] = React.useState(0);
   const [sucess, setSucess] = useState(false);
+  const [error, setError] = useState(false);
   const [showUTI, setShowUTI] = useState(false);
   const [patientId, setPatientId] = React.useState(null);
   const [evolution, setEvolution] = React.useState({});
@@ -45,6 +46,7 @@ const Evolve = ({ ...props }) => {
         console.log(response.data);
       })
       .catch((err) => {
+        setError(true);
         console.log(err);
       });
   }, [router.query.id]);
@@ -60,7 +62,10 @@ const Evolve = ({ ...props }) => {
           patientId,
         })
         .then(() => setSucess(true))
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setError(err.message);
+          console.log(err);
+        });
     });
   };
 
@@ -146,6 +151,13 @@ const Evolve = ({ ...props }) => {
                       <Step key={item.title} title={item.title} />
                     ))}
                   </Steps>
+                  {error && (
+                    <Alert
+                      message={error}
+                      type="error"
+                      style={{ alignContent: "center" }}
+                    />
+                  )}
                   {console.log("lastEvolve", evolution)}
                   <div className="steps-content">{steps[current].content}</div>
                   <div className="steps-action">
