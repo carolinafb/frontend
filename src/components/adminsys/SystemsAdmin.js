@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Rooms from "../../components/adminsys/RoomsAdmin";
 import CreateForm from "./CreateUpdateForm";
+import CreateFormChangeSystemChief from "../../components/doctors/changeSystemChief";
 import axiosInstance from "../axios";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
@@ -35,6 +36,15 @@ const Systems = ({ systems, refreshData }) => {
     refreshData();
     setVisible(false);
   };
+
+  /////////////////////////////////
+  const [systemChiefVisible, setVisibleSystemChief] = useState(false);
+
+  const onCreateSystemChief = () => {
+    setVisibleSystemChief(false);
+  };
+
+  ///////////////////////
 
   const onDeleteSystem = (systemId) => {
     axiosInstance
@@ -212,10 +222,13 @@ const Systems = ({ systems, refreshData }) => {
                       <Row gutter={2}>
                         <Col className="gutter-row" span={12}>
                           <Button
-                            className="align-column-left margin__small"
+                            onClick={() => {
+                              setSystemId(system.id);
+                              setVisibleSystemChief(true);
+                            }}
                             type="primary"
                           >
-                            Editar jefe
+                            Cambiar jefe
                           </Button>
                         </Col>
 
@@ -266,6 +279,14 @@ const Systems = ({ systems, refreshData }) => {
             onCreate={onCreate}
             onCancel={() => {
               setVisible(false);
+            }}
+          />
+          <CreateFormChangeSystemChief
+            systemChiefVisible={systemChiefVisible}
+            onCreateSystemChief={onCreateSystemChief}
+            systemId={systemId}
+            onCancelSystemChief={() => {
+              setVisibleSystemChief(false);
             }}
           />
         </div>

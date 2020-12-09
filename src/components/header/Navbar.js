@@ -16,7 +16,7 @@ const Navbar = () => {
   const routes = {
     ALERTAS: "",
     "INGRESAR PACIENTE": "/patient/search",
-    "PACIENTES NUEVOS": "",
+    "PACIENTES NUEVOS": "/patients/newInTheSystem",
     SISTEMAS: "",
     "JEFES/MEDICOS": "",
     EVALUACIONES: "",

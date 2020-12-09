@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../axios";
 import { Card, Typography, Switch } from "antd";
 
 const TopDrower = ({ userInfo }) => {
   const { role, name, lastname, systemName } = userInfo;
   const { Title } = Typography;
   // ROLES TO COMPARE: "ADMIN" "DOCTOR" "SYSTEMCHIEF" "SYSTEMRULES"
+
+const onChangeInfinitBedsOfSystem = () => {
+  axiosInstance
+    .put("/user/online-offline", {})
+    .then((res) => {
+      refreshData();
+    });
+};
 
   return (
     <Card
