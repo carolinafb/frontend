@@ -36,6 +36,7 @@ const Evolution = () => {
         if (method == "post") {
           router.push(res.data.redirect);
         } else {
+          console.log("data:", res.data);
           setData(res.data);
         }
         setErr(false);
@@ -154,18 +155,27 @@ const Evolution = () => {
 
                     <p>
                       <strong>Tipo: </strong>
-                      {data.evolution.nasalOxygenCannula
-                        ? data.evolution.nasalOxygenCannula
-                        : "No cargado"}
-                      :
-                      {data.evolution.litersPerMinute &&
-                        data.evolution.litersPerMinute + " lts/min"}
-                      {data.evolution.maskWithReservoir
-                        ? data.evolution.maskWithReservoir
-                        : "No cargado"}
-                      :
-                      {data.evolution.maskValue &&
-                        data.evolution.maskValue + " %O2"}
+                      {data.evolution.nasalOxygenCannula ? (
+                        <>
+                          Canula Nasal
+                          {data.evolution.litersPerMinute && (
+                            <>: {data.evolution.litersPerMinute} lts/min</>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {data.evolution.maskWithReservoir ? (
+                            <>
+                              Mascara con reservorio
+                              {data.evolution.maskValue && (
+                                <> : {data.evolution.maskValue} %O2</>
+                              )}
+                            </>
+                          ) : (
+                            "No cargado"
+                          )}
+                        </>
+                      )}
                     </p>
 
                     <p>
