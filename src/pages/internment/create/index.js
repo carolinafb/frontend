@@ -51,18 +51,31 @@ const CreateInternment = () => {
         setErr(err.message);
       });
   }
+  const callToBackForInfo = (method, url, param) => {
+    setLoading(true);
+    axiosInstance
+      .request({ method, url, params: param })
+      .then((res) => {
+        url === "/beds/withSpace" && setInfoBeds(res.data);
+        if (res.data.length === 0) {
+          callToBackForInfo("get", "/system", { systemName: "GUARDIA" });
+        }
+        setInfoRooms(res.data);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setErr(e.message);
+      });
+  };
 
   const onFinish = (values) => {
     setLoading(true);
     values.idPatient = idPatient;
-    if (!needCreateBeds) {
-      callToBackToAddData("/internment", values);
-    } else {
-      callToBackToAddData("/internmentWithNewBed", values);
-    }
+    callToBack("put", "/internment", values);
   };
 
   const onRoomSelect = (room) => {
+    console.log("se selecciono:", room);
     if (!needCreateBeds) {
       axiosInstance
         .get("/beds/withSpace", {
@@ -100,6 +113,7 @@ const CreateInternment = () => {
       });
   }, []);
 
+  console.log("necesito crear camas????:", needCreateBeds);
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
@@ -156,6 +170,7 @@ const CreateInternment = () => {
                 >
                   <DatePicker placeholder="Fecha de inicio de sintomas" />
                 </Form.Item>
+
                 <Form.Item
                   label="Fecha de inicio diagnostico:"
                   name="dateOfDiagnosis"
@@ -168,6 +183,7 @@ const CreateInternment = () => {
                 >
                   <DatePicker placeholder="Fecha de inicio diagnostico" />
                 </Form.Item>
+
                 <Form.Item
                   label="Comorbilidades: "
                   name="historyOfDisease"

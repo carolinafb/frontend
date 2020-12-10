@@ -27,6 +27,7 @@ const UserProvider = (props) => {
   const [dniPatient, setDniPatient] = useState(null);
   const [needCreateBeds, setNeedCreateBeds] = useState(null);
   const [idPatient, setIdPatient] = useState(null);
+  const [lastEvolution, setLastEvolution] = React.useState(false);
 
   return (
     <UserContext.Provider
@@ -39,6 +40,8 @@ const UserProvider = (props) => {
         setNeedCreateBeds,
         idPatient,
         setIdPatient,
+        lastEvolution,
+        setLastEvolution,
       }}
     >
       {props.children}

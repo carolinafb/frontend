@@ -51,10 +51,6 @@ const Login = () => {
       });
   };
 
-  const onFinishFailed = () => {
-    console.log("el boton funciona pero no se cargo bien el formilario");
-  };
-
   return (
     <Fragment>
       {msg ? <Alert message={t(msg)} type="error" /> : null}
@@ -65,7 +61,6 @@ const Login = () => {
         name="basic"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
       >
         <Form.Item
           label="Email"

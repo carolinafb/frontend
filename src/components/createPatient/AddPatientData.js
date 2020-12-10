@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from "react";
 import axiosInstance from "../axios";
 import { Steps, Button, Row, Col, Form, Result, Alert, Spin } from "antd";
-import AffiliateData from "./AffiliateData";
-import PersonalHistory from "./PersonalHistory";
-import ContactPerson from "./ContactPerson";
+import AffiliateData from "./AffiliateDataForm";
+import PersonalHistory from "./PersonalHistoryForm";
+import ContactPerson from "./ContactPersonForm";
 
 import { useRouter } from "next/router";
 

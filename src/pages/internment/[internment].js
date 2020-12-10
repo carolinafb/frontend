@@ -1,17 +1,7 @@
 import Navbar from "../../components/header/Navbar";
 import CreateSystemchange from "../../components/internment/CreateSystemchange";
 import CreateFormAssingDoctors from "../../components/doctors/AssingDoctors";
-import {
-  Divider,
-  Button,
-  Layout,
-  Result,
-  Timeline,
-  Row,
-  Col,
-  Collapse,
-  Typography,
-} from "antd";
+import { Button, Layout, Result, Timeline, Row, Col, Collapse } from "antd";
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
@@ -89,7 +79,6 @@ const internment = () => {
         ) : (
           /////////////////////////////
           <Fragment>
-            {console.log({ data })}
             <div>
               <div className="align-column-center margin__small">
                 <h2>
@@ -215,10 +204,14 @@ const internment = () => {
                                                 .systemId && (
                                               <div>
                                                 <Button
-                                                  /*   onClick={() => {
-                                      
-                                                }}
-                                            */
+                                                  onClick={() => {
+                                                    router.push(
+                                                      "/patient/" +
+                                                        data.internmentData
+                                                          .patientId +
+                                                        "/evolve"
+                                                    );
+                                                  }}
                                                   type="primary"
                                                 >
                                                   Agregar evolucion
@@ -284,10 +277,15 @@ const internment = () => {
                                                   >
                                                     <div>
                                                       <Button
-                                                        /*   onClick={() => {
-                                      
-                                                }}
-                                            */
+                                                        onClick={() => {
+                                                          router.push(
+                                                            "/patient/" +
+                                                              data
+                                                                .internmentData
+                                                                .patientId +
+                                                              "/evolve"
+                                                          );
+                                                        }}
                                                         type="primary"
                                                       >
                                                         Ver mas
