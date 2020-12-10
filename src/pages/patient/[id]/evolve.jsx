@@ -1,17 +1,17 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { UserContext } from "src/contexts/Context";
-import Navbar from "src/components/header/Navbar";
+import { UserContext } from "../../../contexts/Context";
+import Navbar from "../../../components/header/Navbar";
 import { Layout, Steps, Button, Form, Result, Row, Col, Alert } from "antd";
 const { Step } = Steps;
 import Head from "next/head";
-import axiosInstance from "src/components/axios";
+import axiosInstance from "../../../components/axios";
 import { useRouter } from "next/router";
-import VitalSignsForm from "src/components/patients/VitalSignsForm";
-import RespiratorySystemForm from "src/components/patients/RespiratorySystemForm";
-import StudiesForm from "src/components/patients/StudiesForm";
-import ObservationsForm from "src/components/patients/ObservationsForm";
-import UTIForm from "src/components/patients/UTIForm";
-import SymptomsForm from "src/components/patients/SymptomsForm";
+import VitalSignsForm from "../../../components/patients/VitalSignsForm";
+import RespiratorySystemForm from "../../..//components/patients/RespiratorySystemForm";
+import StudiesForm from "../../../components/patients/StudiesForm";
+import ObservationsForm from "../../../components/patients/ObservationsForm";
+import UTIForm from "../../../components/patients/UTIForm";
+import SymptomsForm from "../../../components/patients/SymptomsForm";
 
 const Evolve = ({ ...props }) => {
   const router = useRouter();

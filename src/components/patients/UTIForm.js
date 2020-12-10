@@ -16,8 +16,8 @@ const UTIForm = ({ form }) => {
   const initialValues = () => {
     if (lastEvolution != null) {
       if (lastEvolution.arm != null) values.arm = lastEvolution.arm;
-      if (lastEvolution.armDescripcion != null)
-        values.armDescripcion = lastEvolution.armDescripcion;
+      if (lastEvolution.armDescription != null)
+        values.armDescription = lastEvolution.armDescription;
       if (lastEvolution.tracheostomy != null)
         values.tracheostomy = lastEvolution.tracheostomy;
       if (lastEvolution.vasopressors != null)

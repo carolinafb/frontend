@@ -1,24 +1,15 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { Fragment, useState } from "react";
 import { Switch, Select, Form, Input } from "antd";
-import { UserContext } from "src/contexts/Context";
 
 const StudieElementImput = ({ label, name }) => {
-  const { lastEvolution } = useContext(UserContext);
   const { Option } = Select;
   const { TextArea } = Input;
-  const [selectElement, setSelectElement] = useState(
-    lastEvolution != null ? lastEvolution[name] === 1 : false
-  );
-  const [showDescription, setShowDescription] = useState(
-    lastEvolution != null ? lastEvolution[name + "Description"] : false
-  );
+  const [selectElement, setSelectElement] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
   return (
     <Fragment>
       <Form.Item label={label + ":"} name={name}>
         <Switch
-          defaultChecked={
-            lastEvolution != null ? lastEvolution[name] === 1 : undefined
-          }
           onChange={() => {
             setSelectElement(!selectElement);
           }}
