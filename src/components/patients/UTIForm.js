@@ -25,7 +25,7 @@ const UTIForm = ({ form }) => {
       if (lastEvolution.vasopressorsDescription != null)
         values.vasopressorsDescription = lastEvolution.vasopressorsDescription;
     }
-    console.log("vaaaaalueeessss", values);
+
     return values;
   };
   return (

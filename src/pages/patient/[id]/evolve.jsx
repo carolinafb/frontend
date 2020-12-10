@@ -41,9 +41,8 @@ const Evolve = ({ ...props }) => {
       })
       .then((response) => {
         setPatientName(`${response.data.name}, ${response.data.lastName}`);
-        console.log(response.data);
+
         if (lastEvolution != null) setLastEvolution(response.data.lastEvolve);
-        console.log(response.data);
       })
       .catch((err) => {
         setError(true);
@@ -53,9 +52,7 @@ const Evolve = ({ ...props }) => {
 
   const finishHandler = () => {
     form.validateFields().then((data) => {
-      console.log("data", data);
       const updatedEvolution = { ...evolution, ...data };
-      console.log("evolucion:", updatedEvolution);
       axiosInstance
         .post("/patient/evolve", {
           evolution: updatedEvolution,
@@ -158,7 +155,7 @@ const Evolve = ({ ...props }) => {
                       style={{ alignContent: "center" }}
                     />
                   )}
-                  {console.log("lastEvolve", evolution)}
+
                   <div className="steps-content">{steps[current].content}</div>
                   <div className="steps-action">
                     {current < steps.length - 1 && (

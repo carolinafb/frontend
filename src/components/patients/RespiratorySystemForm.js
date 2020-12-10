@@ -53,7 +53,6 @@ const RespiratorySystemForm = ({ form }) => {
       if (lastEvolution.dyspnoea != null)
         values.dyspnoea = lastEvolution.dyspnoea;
     }
-    console.log("vaaaaalueeessss", values);
     return values;
   };
 
@@ -113,7 +112,6 @@ const RespiratorySystemForm = ({ form }) => {
               <Form.Item label="Tipo:" name="type">
                 <Radio.Group
                   onChange={(e) => {
-                    console.log("se selecciono:", e.target.value);
                     setO2suplementaryType(e.target.value);
                   }}
                 >

@@ -50,9 +50,6 @@ const CreateForm = ({
         setVisibility(false);
       });
   };
-  const onFinishFailed = () => {
-    console.log("el boton funciona pero no se cargo bien el formilario");
-  };
 
   return (
     <Modal

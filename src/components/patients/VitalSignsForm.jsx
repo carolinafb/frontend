@@ -10,10 +10,6 @@ const VitalSignsForm = ({ form }) => {
     console.log("Success:", values);
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
   return (
     <Form
       form={form}
@@ -21,7 +17,6 @@ const VitalSignsForm = ({ form }) => {
       name="basic"
       initialValues={{ values }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
     >
       <Form.Item
         label="Temperatura"
