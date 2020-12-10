@@ -26,11 +26,11 @@ const Patient = () => {
   function calledBack(url, method) {
     setLoading(true);
     axiosInstance
-      .request({ method, url, params: { id: router.query.patient } })
+      .request({ method, url, params: { id: router.query.id } })
       .then((res) => {
         if (method == "post") {
           setNeedCreateBeds(res.data.createBed);
-          setIdPatient(router.query.patient);
+          setIdPatient(router.query.id);
           router.push(res.data.redirect);
         } else {
           setPatientData(res.data);
@@ -45,13 +45,13 @@ const Patient = () => {
   }
 
   useEffect(() => {
-    if (router.query.patient) {
+    if (router.query.id) {
       calledBack("/patient", "get");
     }
-  }, [router.query.patient]);
+  }, [router.query.id]);
 
   const createHospitalization = () => {
-    if (router.query.patient) {
+    if (router.query.id) {
       calledBack("/internment", "post");
     }
   };

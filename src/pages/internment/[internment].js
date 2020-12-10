@@ -1,19 +1,29 @@
 import Navbar from "../../components/header/Navbar";
 import CreateSystemchange from "../../components/internment/CreateSystemchange";
 import CreateFormAssingDoctors from "../../components/doctors/AssingDoctors";
-import { Button, Layout, Result, Timeline, Row, Col, Collapse } from "antd";
+import {
+  Button,
+  Layout,
+  Result,
+  Timeline,
+  Row,
+  Col,
+  Collapse,
+  Typography,
+} from "antd";
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import { useRouter } from "next/router";
 import axiosInstance from "../../components/axios";
 import { UserContext } from "../../contexts/Context";
 const { Panel } = Collapse;
+import { DownloadOutlined } from "@ant-design/icons";
 
 const internment = () => {
   const router = useRouter();
   const { Header, Content } = Layout;
+  const { Title } = Typography;
   const [err, setErr] = useState(false);
   const { DBUser } = useContext(UserContext);
-
   const [data, setData] = useState(null);
 
   const [visible, setVisible] = useState(false);
@@ -33,6 +43,7 @@ const internment = () => {
         })
         .then((res) => {
           setErr(false);
+          console.log(res.data);
           setData(res.data);
         })
         .catch((e) => {
@@ -79,14 +90,22 @@ const internment = () => {
         ) : (
           /////////////////////////////
           <Fragment>
-            <div>
-              <div className="align-column-center margin__small">
-                <h2>
+            <Fragment>
+              <div className="span_row_evenly" style={{ marginTop: "2%" }}>
+                <Title level={3}>
                   {"  Paciente:  " +
                     data.internmentData.patient.name +
                     " " +
                     data.internmentData.patient.lastName}
-                </h2>
+                </Title>
+
+                <Button
+                  type="primary"
+                  icon={<DownloadOutlined />}
+                  size={"small"}
+                >
+                  PDF
+                </Button>
               </div>
               <Row gutter={[16, 4]}>
                 <Col className="gutter-row" span={8}>
@@ -121,23 +140,26 @@ const internment = () => {
                   </div>
                 </Col>
               </Row>
-            </div>
+            </Fragment>
             <Collapse accordion>
               <Panel header={<h2>Datos de la internación </h2>}>
                 <p>
-                  Fecha de inicio de los sintomas:
+                  <strong>Fecha de inicio de los sintomas:</strong>
                   {" " + data.internmentData.dateOfSymptoms.slice(0, -14)}
                 </p>
                 <p>
-                  Fecha de diagnostico:
+                  <strong>Fecha de diagnostico:</strong>
                   {" " + data.internmentData.dateOfDiagnosis.slice(0, -14)}
                 </p>
                 <p>
-                  Fecha de Hospitalizacion:
+                  <strong>Fecha de Hospitalizacion:</strong>
                   {" " +
                     data.internmentData.dateOfHospitalization.slice(0, -14)}
                 </p>
-                <p>Comorbilidades: {data.internmentData.historyOfDisease}</p>
+                <p>
+                  <strong>Comorbilidades:</strong>{" "}
+                  {data.internmentData.historyOfDisease}
+                </p>
               </Panel>
               <Panel header={<h2>Cambio de sistemas con evoluciones</h2>}>
                 {data.internmentData.systemChanges === null ? (
@@ -192,7 +214,7 @@ const internment = () => {
                                       <Row gutter={4}>
                                         <Col className="gutter-row" span={6}>
                                           <div>
-                                            <h3>Evaluaciones</h3>
+                                            <h3>Evoluciones</h3>
                                           </div>
                                         </Col>
 
@@ -279,11 +301,8 @@ const internment = () => {
                                                       <Button
                                                         onClick={() => {
                                                           router.push(
-                                                            "/patient/" +
-                                                              data
-                                                                .internmentData
-                                                                .patientId +
-                                                              "/evolve"
+                                                            "/evolution/" +
+                                                              evaluation.id
                                                           );
                                                         }}
                                                         type="primary"
