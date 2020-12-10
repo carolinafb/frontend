@@ -20,6 +20,7 @@ const Evolve = ({ ...props }) => {
   const [patientName, setPatientName] = useState();
   const [current, setCurrent] = React.useState(0);
   const [sucess, setSucess] = useState(false);
+  const [error, setError] = useState(false);
   const [showUTI, setShowUTI] = useState(false);
   const [patientId, setPatientId] = React.useState(null);
   const [evolution, setEvolution] = React.useState({});
@@ -40,26 +41,28 @@ const Evolve = ({ ...props }) => {
       })
       .then((response) => {
         setPatientName(`${response.data.name}, ${response.data.lastName}`);
+
         if (lastEvolution != null) setLastEvolution(response.data.lastEvolve);
-        console.log(response.data);
       })
       .catch((err) => {
+        setError(true);
         console.log(err);
       });
   }, [router.query.id]);
 
   const finishHandler = () => {
     form.validateFields().then((data) => {
-      console.log("data", data);
       const updatedEvolution = { ...evolution, ...data };
-      console.log("evolucion:", updatedEvolution);
       axiosInstance
         .post("/patient/evolve", {
           evolution: updatedEvolution,
           patientId,
         })
         .then(() => setSucess(true))
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setError(err.message);
+          console.log(err);
+        });
     });
   };
 
@@ -145,7 +148,14 @@ const Evolve = ({ ...props }) => {
                       <Step key={item.title} title={item.title} />
                     ))}
                   </Steps>
-                  {console.log("lastEvolve", evolution)}
+                  {error && (
+                    <Alert
+                      message={error}
+                      type="error"
+                      style={{ alignContent: "center" }}
+                    />
+                  )}
+
                   <div className="steps-content">{steps[current].content}</div>
                   <div className="steps-action">
                     {current < steps.length - 1 && (

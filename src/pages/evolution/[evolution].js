@@ -36,9 +36,7 @@ const Evolution = () => {
         if (method == "post") {
           router.push(res.data.redirect);
         } else {
-          console.log(res.data);
           setData(res.data);
-          console.log("DBUSER:", DBUser);
         }
         setErr(false);
       })
@@ -96,12 +94,14 @@ const Evolution = () => {
                 sm={{ span: 18, offset: 3 }}
                 lg={{ span: 14, offset: 5 }}
               >
-                <Title level={5}>
+                <Title level={4} style={{ marginTop: "2%" }}>
                   {data.evolution.createTime.slice(0, -14) +
                     " " +
                     data.evolution.createTime.slice(11, -8)}
                 </Title>
-                <Title level={4}>{data.name + " " + data.lastName}</Title>
+                <Title level={3} style={{ marginTop: "1px" }}>
+                  {data.name + " " + data.lastName}
+                </Title>
                 <Collapse accordion bordered={false}>
                   <Panel header="SIGNOS VITALES" key="1">
                     <p>
@@ -148,7 +148,7 @@ const Evolution = () => {
                       <strong>Requiere O2 suplementario: </strong>
 
                       {data.evolution.requiresSupplementalOxygen
-                        ? data.evolution.requiresSupplementalOxygen
+                        ? "Si"
                         : "No cargado"}
                     </p>
 
@@ -177,7 +177,7 @@ const Evolution = () => {
 
                     <p>
                       <strong>PaFi: </strong>
-                      {data.evolution.pafi ? data.evolution.pafi : "No cargado"}
+                      {data.evolution.pafi ? "Si" : "No cargado"}
 
                       {data.evolution.pafiValue &&
                         data.evolution.pafi &&
@@ -186,9 +186,7 @@ const Evolution = () => {
 
                     <p>
                       <strong>Tos: </strong>
-                      {data.evolution.cough
-                        ? data.evolution.cough
-                        : "No cargado"}
+                      {data.evolution.cough ? "Si" : "No cargado"}
                     </p>
 
                     <p>
@@ -202,31 +200,23 @@ const Evolution = () => {
                       <strong>
                         Estabilidad/desaparicion de sintomas respiratorios:
                       </strong>
-                      {data.evolution.respiratorySymptoms
-                        ? data.evolution.respiratorySymptoms
-                        : "No cargado"}
+                      {data.evolution.respiratorySymptoms ? "Si" : "No cargado"}
                     </p>
                   </Panel>
                   <Panel header="OTROS SINTOMAS" key="3">
                     <p>
                       <strong>Somnolencia: </strong>
-                      {data.evolution.drowsiness
-                        ? data.evolution.drowsiness
-                        : "No cargado"}
+                      {data.evolution.drowsiness ? "Si" : "No cargado"}
                     </p>
 
                     <p>
                       <strong>Anosmia: </strong>
-                      {data.evolution.anosmia
-                        ? data.evolution.anosmia
-                        : "No cargado"}
+                      {data.evolution.anosmia ? "Si" : "No cargado"}
                     </p>
 
                     <p>
                       <strong>Disgeusia: </strong>
-                      {data.evolution.disagreement
-                        ? data.evolution.disagreement
-                        : "No cargado"}
+                      {data.evolution.disagreement ? "Si" : "No cargado"}
                     </p>
                   </Panel>
                   <Panel header="ESTUDIOS REALIZADOS HOY" key="4">
@@ -295,9 +285,7 @@ const Evolution = () => {
                     <Panel header="DATOS UTI" key="6">
                       <p>
                         <strong>ARM: </strong>
-                        {data.evolution.arm
-                          ? data.evolution.amr + " °C"
-                          : "No cargado"}
+                        {data.evolution.arm ? "Si" : "No cargado"}
                       </p>
 
                       <p>
@@ -311,17 +299,13 @@ const Evolution = () => {
                       <p>
                         <strong>Traqueostomia: </strong>
 
-                        {data.evolution.tracheostomy
-                          ? data.evolution.tracheostomy
-                          : "No cargado"}
+                        {data.evolution.tracheostomy ? "Si" : "No cargado"}
                       </p>
 
                       <p>
                         <strong>Vasopresores: </strong>
 
-                        {data.evolution.vasopressors
-                          ? data.evolution.vasopressors
-                          : "No cargado"}
+                        {data.evolution.vasopressors ? "Si" : "No cargado"}
                       </p>
 
                       <p>

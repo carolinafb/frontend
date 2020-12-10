@@ -144,19 +144,22 @@ const internment = () => {
             <Collapse accordion>
               <Panel header={<h2>Datos de la internación </h2>}>
                 <p>
-                  Fecha de inicio de los sintomas:
+                  <strong>Fecha de inicio de los sintomas:</strong>
                   {" " + data.internmentData.dateOfSymptoms.slice(0, -14)}
                 </p>
                 <p>
-                  Fecha de diagnostico:
+                  <strong>Fecha de diagnostico:</strong>
                   {" " + data.internmentData.dateOfDiagnosis.slice(0, -14)}
                 </p>
                 <p>
-                  Fecha de Hospitalizacion:
+                  <strong>Fecha de Hospitalizacion:</strong>
                   {" " +
                     data.internmentData.dateOfHospitalization.slice(0, -14)}
                 </p>
-                <p>Comorbilidades: {data.internmentData.historyOfDisease}</p>
+                <p>
+                  <strong>Comorbilidades:</strong>{" "}
+                  {data.internmentData.historyOfDisease}
+                </p>
               </Panel>
               <Panel header={<h2>Cambio de sistemas con evoluciones</h2>}>
                 {data.internmentData.systemChanges === null ? (
@@ -223,10 +226,14 @@ const internment = () => {
                                                 .systemId && (
                                               <div>
                                                 <Button
-                                                  /*   onClick={() => {
-                                      
-                                                }}
-                                            */
+                                                  onClick={() => {
+                                                    router.push(
+                                                      "/patient/" +
+                                                        data.internmentData
+                                                          .patientId +
+                                                        "/evolve"
+                                                    );
+                                                  }}
                                                   type="primary"
                                                 >
                                                   Agregar evolucion

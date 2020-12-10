@@ -1,4 +1,4 @@
-import Navbar from "../../../components/header/Navbar";
+import Navbar from "src/components/header/Navbar";
 import {
   Divider,
   Button,
@@ -11,8 +11,8 @@ import {
 } from "antd";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-import axiosInstance from "../../../components/axios";
-import { UserContext } from "../../../contexts/Context";
+import axiosInstance from "src/components/axios";
+import { UserContext } from "src/contexts/Context";
 
 const Patient = () => {
   const router = useRouter();
@@ -160,7 +160,7 @@ const Patient = () => {
                 </label>
                 {patientData.contactPerson.phone}
                 <br />
-                {DBUser && DBUser.systemId === 1 && (
+                {DBUser && DBUser.systemName === "GUARDIA" && (
                   <Button
                     type="primary"
                     style={{ margin: "3%" }}
