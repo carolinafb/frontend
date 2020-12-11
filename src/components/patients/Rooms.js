@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button, Space, Collapse } from "antd";
 import { useRouter } from "next/router";
 import CreateSystemchange from "../../components/internment/CreateSystemchange";
@@ -70,6 +70,8 @@ const Rooms = ({ rooms }) => {
       ),
     },
   ];
+
+  useEffect(() => {}, [visible]);
 
   return (
     <div>
