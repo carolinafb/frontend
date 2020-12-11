@@ -23,11 +23,13 @@ const CreateInternment = () => {
   const { TextArea } = Input;
   const [infoRooms, setInfoRooms] = useState(null);
   const [infoBeds, setInfoBeds] = useState(null);
-  const [validRooms, setValidRooms] = useState(false);
+  const [roomId, setRoomId] = useState(null);
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const { Title } = Typography;
-  const { DBUser, needCreateBeds, idPatient } = useContext(UserContext);
+  const { DBUser, needCreateBeds, setNeedCreateBeds, idPatient } = useContext(
+    UserContext
+  );
   const { Option } = Select;
 
   const btnErr = () => {
@@ -39,11 +41,11 @@ const CreateInternment = () => {
     }
   };
   function callToBackToAddData(url, values) {
-    setLoading(true);
     axiosInstance
       .put(url, values)
       .then((res) => {
         if (res.status) {
+          setErr(false);
           router.push(res.data.redirect);
         }
       })
@@ -51,17 +53,21 @@ const CreateInternment = () => {
         setErr(err.message);
       });
   }
-  const callToBackForInfo = (method, url, param) => {
-    setLoading(true);
+  const callToBackForInfo = (url, param) => {
     axiosInstance
-      .request({ method, url, params: param })
+      .get(url, { params: param })
       .then((res) => {
-        url === "/beds/withSpace" && setInfoBeds(res.data);
-        if (res.data.length === 0) {
-          callToBackForInfo("get", "/system", { systemName: "GUARDIA" });
+        console.log("res:", res);
+        if (url === "/beds/withSpace") {
+          setInfoBeds(res.data);
+        } else {
+          if (res.data.rooms.length === 0) {
+            callToBackForInfo("/system", { systemName: "GUARDIA" });
+          } else {
+            setInfoRooms(res.data.rooms);
+          }
         }
-        setInfoRooms(res.data);
-        setLoading(false);
+        setErr(false);
       })
       .catch((e) => {
         setErr(e.message);
@@ -71,49 +77,24 @@ const CreateInternment = () => {
   const onFinish = (values) => {
     setLoading(true);
     values.idPatient = idPatient;
-    callToBack("put", "/internment", values);
+    if (!needCreateBeds) {
+      callToBackToAddData("/internment", values);
+    } else {
+      callToBackToAddData("/internmentWithNewBed", values);
+    }
   };
 
   const onRoomSelect = (room) => {
-    console.log("se selecciono:", room);
+    setRoomId(room);
     if (!needCreateBeds) {
-      axiosInstance
-        .get("/beds/withSpace", {
-          params: {
-            id: room,
-          },
-        })
-        .then((res) => {
-          setErr(false);
-          setInfoBeds(res.data);
-        })
-        .catch((e) => {
-          setErr(e.message);
-          setInfoBeds(null);
-        });
+      callToBackForInfo("/beds/withSpace", { id: room });
     }
   };
 
   useEffect(() => {
-    axiosInstance
-      .get("/rooms/WithSpace", {
-        params: {
-          systemName: "GUARDIA",
-        },
-      })
-      .then((res) => {
-        setErr(false);
-        setInfoRooms(res.data.rooms);
-        setValidRooms(res.data.validRooms);
-      })
-      .catch((e) => {
-        setErr(e.message);
-        setInfoRooms(null);
-        setValidRooms(null);
-      });
+    callToBackForInfo("/rooms/withSpace", { systemName: "GUARDIA" });
   }, []);
 
-  console.log("necesito crear camas????:", needCreateBeds);
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
