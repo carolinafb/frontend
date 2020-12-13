@@ -1,11 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
 import { Drawer, Button, List } from "antd";
+import React, { useState, useContext, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import AlertPanel from "src/components/doctors/AlertPanel";
+import { UserContext } from "../../contexts/Context";
+import axiosInstance from "../axios";
 import TopDrawer from "./TopDrawer";
 import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
-import axiosInstance from "../axios";
-import { UserContext } from "../../contexts/Context";
-import { useRouter } from "next/router";
-import Link from "next/link";
 
 const Navbar = () => {
   const router = useRouter();
@@ -32,10 +33,10 @@ const Navbar = () => {
     // Make a request for a user with a given ID
     axiosInstance
       .get("/logOut")
-      .then((res) => {
+      .then(res => {
         router.push(res.data.redirect);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         // handle error
         console.log(error);
       });
@@ -58,9 +59,18 @@ const Navbar = () => {
       buttonsToShow.push("EVALUACIONES");
     }
   }
+
+  const [alerts, setAlerts] = useState();
+  const [alertsVisibility, setAlertsVisibility] = useState(false);
+
+  useEffect(
+    () =>
+      axiosInstance.get("/alerts").then(response => setAlerts(response.data)),
+    []
+  );
   return (
     <div className="nav-color">
-      <Button type="text" onClick={showDrawer} icon={<MenuOutlined />}></Button>
+      <Button type="text" onClick={showDrawer} icon={<MenuOutlined />} />
       <Drawer
         title={<TopDrawer userInfo={user} />}
         placement="left"
@@ -77,7 +87,7 @@ const Navbar = () => {
         <List
           size="medium"
           dataSource={buttonsToShow}
-          renderItem={(item) => (
+          renderItem={item => (
             <List.Item>
               <Link href={routes[item]}>
                 <a>{item}</a>
@@ -93,7 +103,8 @@ const Navbar = () => {
         </label>
       ) : null}
 
-      <BellFilled />
+      <BellFilled onClick={() => setAlertsVisibility(!alertsVisibility)} />
+      {alertsVisibility && <AlertPanel alerts={alerts} />}
     </div>
   );
 };
