@@ -98,7 +98,7 @@ const CreateFormAssingDoctors = ({
         {allowedDoctors && (
           <Form.Item
             name="doctors"
-            label="doctors"
+            label="doctores"
             rules={[
               {
                 required: true,

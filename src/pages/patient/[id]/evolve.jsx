@@ -126,7 +126,11 @@ const Evolve = ({ ...props }) => {
                   type="primary"
                   style={{ backgroundColor: "#4CAF50", border: "#4CAF50" }}
                   onClick={() => {
-                    router.push("/patients");
+                    if (DBUser && DBUser.role == "DOCTOR") {
+                      router.push("/patients");
+                    } else {
+                      router.push("/systems");
+                    }
                   }}
                 >
                   Continuar
