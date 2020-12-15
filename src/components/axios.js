@@ -1,6 +1,9 @@
 import axios from "axios";
+import { useLayoutEffect } from "react";
+let IS_BROWSER = typeof window !== "undefined";
+
 const axiosInstance = axios.create({
-  baseURL: "https://localhost:9000",
+  baseURL: process.env.NEXT_PUBLIC_APIENDPOINT,
   timeout: 1000000,
   withCredentials: true,
 });
