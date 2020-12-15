@@ -17,6 +17,7 @@ import axiosInstance from "../../components/axios";
 import { UserContext } from "../../contexts/Context";
 const { Panel } = Collapse;
 import { DownloadOutlined } from "@ant-design/icons";
+import CreateInternments from "../../components/internment/listInternments";
 
 const internment = () => {
   const router = useRouter();
@@ -31,6 +32,40 @@ const internment = () => {
   const [doctorVisible, setVisibleDoctor] = useState(false);
   const onCreateDoctor = () => {
     setVisibleDoctor(false);
+  };
+
+  const [internmentsVisible, setVisibleInternments] = useState(false);
+  const onReturnInternments = () => {
+    setVisibleInternments(false);
+  };
+  const onFinishEgress = () => {
+    axiosInstance
+      .put("/internment/finish", {
+        internmentId: data.internmentData.id,
+        type: "EGRESS",
+      })
+      .then(() => {
+        returnHome();
+      });
+  };
+
+  const onFinishObito = () => {
+    axiosInstance
+      .put("/internment/finish", {
+        internmentId: data.internmentData.id,
+        type: "OBITO",
+      })
+      .then(() => {
+        returnHome();
+      });
+  };
+
+  const returnHome = () => {
+    if (DBUser && DBUser.role == "DOCTOR") {
+      router.push("/patients");
+    } else {
+      router.push("/systems");
+    }
   };
 
   useEffect(() => {
@@ -65,6 +100,7 @@ const internment = () => {
       router.push("/systems");
     }
   };
+
   return (
     <Layout>
       <Header style={{ backgroundColor: "rgb(107, 45, 177)" }}>
@@ -106,40 +142,52 @@ const internment = () => {
                 >
                   PDF
                 </Button>
-              </div>
-              <Row gutter={[16, 4]}>
-                <Col className="gutter-row" span={8}>
-                  <div className="align-column-center margin__small">
-                    <h3>Sistema</h3>
-                  </div>
-                </Col>
-                <Col className="gutter-row" span={8}>
-                  <div className="align-column-center margin__small">
-                    <h3>Sala</h3>
-                  </div>
-                </Col>
-                <Col className="gutter-row" span={8}>
-                  <div className="align-column-center margin__small">
-                    <h3>Cama</h3>
-                  </div>
-                </Col>
 
-                <Col className="gutter-row" span={8}>
-                  <div className="align-column-center margin__small">
-                    {data.internmentData.location.systemName}
-                  </div>
-                </Col>
-                <Col className="gutter-row" span={8}>
-                  <div className="align-column-center margin__small">
-                    {data.internmentData.location.roomName}
-                  </div>
-                </Col>
-                <Col className="gutter-row" span={8}>
-                  <div className="align-column-center margin__small">
-                    {data.internmentData.location.bedName}
-                  </div>
-                </Col>
-              </Row>
+                <Button
+                  onClick={() => {
+                    setVisibleInternments(true);
+                  }}
+                  type="primary"
+                >
+                  Internaciones
+                </Button>
+              </div>
+              {data.internmentData.egressDate == null &&
+                data.internmentData.egressDate == null && (
+                  <Row gutter={[16, 4]}>
+                    <Col className="gutter-row" span={8}>
+                      <div className="align-column-center margin__small">
+                        <h3>Sistema</h3>
+                      </div>
+                    </Col>
+                    <Col className="gutter-row" span={8}>
+                      <div className="align-column-center margin__small">
+                        <h3>Sala</h3>
+                      </div>
+                    </Col>
+                    <Col className="gutter-row" span={8}>
+                      <div className="align-column-center margin__small">
+                        <h3>Cama</h3>
+                      </div>
+                    </Col>
+
+                    <Col className="gutter-row" span={8}>
+                      <div className="align-column-center margin__small">
+                        {data.internmentData.location.systemName}
+                      </div>
+                    </Col>
+                    <Col className="gutter-row" span={8}>
+                      <div className="align-column-center margin__small">
+                        {data.internmentData.location.roomName}
+                      </div>
+                    </Col>
+                    <Col className="gutter-row" span={8}>
+                      <div className="align-column-center margin__small">
+                        {data.internmentData.location.bedName}
+                      </div>
+                    </Col>
+                  </Row>
+                )}
             </Fragment>
             <Collapse accordion>
               <Panel header={<h2>Datos de la internación </h2>}>
@@ -167,19 +215,71 @@ const internment = () => {
                 ) : (
                   <div>
                     <div className="align-column-center margin__big">
-                      {DBUser &&
-                      DBUser.systemId ===
-                        data.internmentData.location.systemId ? (
-                        <Button
-                          onClick={() => {
-                            setVisible(true);
-                          }}
-                          type="primary"
-                        >
-                          Cambiar de sistema
-                        </Button>
+                      {data.internmentData.egressDate == null &&
+                      data.internmentData.egressDate == null ? (
+                        DBUser &&
+                        DBUser.systemId ===
+                          data.internmentData.location.systemId && (
+                          <Row gutter={4}>
+                            <Col className="gutter-row" span={8}>
+                              <div className="align-column-center margin__small">
+                                <Button
+                                  onClick={() => {
+                                    setVisible(true);
+                                  }}
+                                  type="primary"
+                                >
+                                  Cambiar de sistema
+                                </Button>
+                              </div>
+                            </Col>
+                            <Col className="gutter-row" span={8}>
+                              <div className="align-column-center margin__small">
+                                <Button
+                                  onClick={() => {
+                                    onFinishObito();
+                                  }}
+                                  type="danger"
+                                >
+                                  Registrar obito
+                                </Button>
+                              </div>
+                            </Col>
+                            <Col className="gutter-row" span={7}>
+                              {data.internmentData.location.systemName ==
+                                "PISO COVID" ||
+                              data.internmentData.location.systemName ==
+                                "HOTEL" ||
+                              data.internmentData.location.systemName ==
+                                "DOMICILIO" ? (
+                                <div className="align-column-center margin__small">
+                                  <Button
+                                    onClick={() => {
+                                      onFinishEgress();
+                                    }}
+                                    type="danger"
+                                  >
+                                    Registrar egreso
+                                  </Button>
+                                </div>
+                              ) : (
+                                <Button disabled={true} type="primary">
+                                  Registrar egreso
+                                </Button>
+                              )}
+                            </Col>
+                          </Row>
+                        )
+                      ) : data.internmentData.egressDate ? (
+                        <h2>
+                          Fecha de esgreso:{" "}
+                          {data.internmentData.egressDate.slice(0, -14)}
+                        </h2>
                       ) : (
-                        <div></div>
+                        <h2>
+                          Fecha de obito:{" "}
+                          {data.internmentData.obitoDate.slice(0, -14)}
+                        </h2>
                       )}
                     </div>
 
@@ -219,7 +319,11 @@ const internment = () => {
                                         </Col>
 
                                         <Col className="gutter-row" span={10}>
-                                          {index === 0 &&
+                                          {data.internmentData.egressDate ==
+                                            null &&
+                                            data.internmentData.egressDate ==
+                                              null &&
+                                            index === 0 &&
                                             DBUser &&
                                             DBUser.systemId ===
                                               data.internmentData.location
@@ -242,7 +346,11 @@ const internment = () => {
                                             )}
                                         </Col>
                                         <Col className="gutter-row" span={4}>
-                                          {index === 0 &&
+                                          {data.internmentData.egressDate ==
+                                            null &&
+                                            data.internmentData.egressDate ==
+                                              null &&
+                                            index === 0 &&
                                             DBUser &&
                                             DBUser.systemId ===
                                               data.internmentData.location
@@ -338,16 +446,25 @@ const internment = () => {
                   setVisible(false);
                 }}
               />
-              {DBUser.role == "JEFE DE SISTEMA" && (
-                <CreateFormAssingDoctors
-                  doctorVisible={doctorVisible}
-                  onCreateDoctor={onCreateDoctor}
-                  patientId={data.internmentData.patientId}
-                  onCancelDoctor={() => {
-                    setVisibleDoctor(false);
-                  }}
-                />
-              )}
+              <CreateInternments
+                internmentsVisible={internmentsVisible}
+                patientId={data.internmentData.patientId}
+                onReturnInternments={onReturnInternments}
+                onCancelInternments={() => {
+                  setVisibleInternments(false);
+                }}
+              />
+              {DBUser.role == "JEFE DE SISTEMA" &&
+                DBUser.systemId === data.internmentData.location.systemId && (
+                  <CreateFormAssingDoctors
+                    doctorVisible={doctorVisible}
+                    onCreateDoctor={onCreateDoctor}
+                    patientId={data.internmentData.patientId}
+                    onCancelDoctor={() => {
+                      setVisibleDoctor(false);
+                    }}
+                  />
+                )}
             </div>
           </Fragment>
           //////////////////////////////////
