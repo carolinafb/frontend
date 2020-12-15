@@ -58,7 +58,7 @@ const Systems = ({ systems }) => {
                             system.occupancy == 100 ? (
                               <Progress
                                 type="circle"
-                                percent={system.occupancy}
+                                percent={system.occupancy.toFixed(2)}
                                 strokeColor="red"
                                 width={40}
                                 status="exception"
@@ -66,7 +66,7 @@ const Systems = ({ systems }) => {
                             ) : (
                               <Progress
                                 type="circle"
-                                percent={system.occupancy}
+                                percent={system.occupancy.toFixed(2)}
                                 strokeColor="red"
                                 width={40}
                               />
@@ -74,14 +74,14 @@ const Systems = ({ systems }) => {
                           ) : system.occupancy >= orange ? (
                             <Progress
                               type="circle"
-                              percent={system.occupancy}
+                              percent={system.occupancy.toFixed(2)}
                               strokeColor="orange"
                               width={40}
                             />
                           ) : (
                             <Progress
                               type="circle"
-                              percent={system.occupancy}
+                              percent={system.occupancy.toFixed(2)}
                               strokeColor="green"
                               width={40}
                             />

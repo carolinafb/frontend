@@ -90,7 +90,7 @@ const Systems = ({ systems, refreshData }) => {
             >
               <header>
                 <Collapse accordion>
-                  <Panel header="Informacion general">
+                  <Panel header={<strong>Informacion general</strong>}>
                     {system.name == "GUARDIA" ? (
                       <div>
                         <div className="align-column-center margin__small">
@@ -114,7 +114,7 @@ const Systems = ({ systems, refreshData }) => {
                                     system.occupancy == 100 ? (
                                       <Progress
                                         type="circle"
-                                        percent={system.occupancy}
+                                        percent={system.occupancy.toFixed(2)}
                                         strokeColor="red"
                                         width={40}
                                         status="exception"
@@ -122,7 +122,7 @@ const Systems = ({ systems, refreshData }) => {
                                     ) : (
                                       <Progress
                                         type="circle"
-                                        percent={system.occupancy}
+                                        percent={system.occupancy.toFixed(2)}
                                         strokeColor="red"
                                         width={40}
                                       />
@@ -130,14 +130,14 @@ const Systems = ({ systems, refreshData }) => {
                                   ) : system.occupancy >= orange ? (
                                     <Progress
                                       type="circle"
-                                      percent={system.occupancy}
+                                      percent={system.occupancy.toFixed(2)}
                                       strokeColor="orange"
                                       width={40}
                                     />
                                   ) : (
                                     <Progress
                                       type="circle"
-                                      percent={system.occupancy}
+                                      percent={system.occupancy.toFixed(2)}
                                       strokeColor="green"
                                       width={40}
                                     />
@@ -183,7 +183,7 @@ const Systems = ({ systems, refreshData }) => {
                                   system.occupancy == 100 ? (
                                     <Progress
                                       type="circle"
-                                      percent={system.occupancy}
+                                      percent={system.occupancy.toFixed(2)}
                                       strokeColor="red"
                                       width={40}
                                       status="exception"
@@ -191,7 +191,7 @@ const Systems = ({ systems, refreshData }) => {
                                   ) : (
                                     <Progress
                                       type="circle"
-                                      percent={system.occupancy}
+                                      percent={system.occupancy.toFixed(2)}
                                       strokeColor="red"
                                       width={40}
                                     />
@@ -199,14 +199,14 @@ const Systems = ({ systems, refreshData }) => {
                                 ) : system.occupancy >= orange ? (
                                   <Progress
                                     type="circle"
-                                    percent={system.occupancy}
+                                    percent={system.occupancy.toFixed(2)}
                                     strokeColor="orange"
                                     width={40}
                                   />
                                 ) : (
                                   <Progress
                                     type="circle"
-                                    percent={system.occupancy}
+                                    percent={system.occupancy.toFixed(2)}
                                     strokeColor="green"
                                     width={40}
                                   />

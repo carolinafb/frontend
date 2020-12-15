@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Layout, Table, Button, Space } from "antd";
+import { Layout, Table, Button, Typography, Space } from "antd";
 import Navbar from "../../../components/header/Navbar";
 import CreateFormAssingDoctors from "../../../components/doctors/AssingDoctors";
 import { UserContext } from "../../../contexts/Context";
@@ -11,6 +11,7 @@ const newInTheSystem = () => {
   const { DBUser } = useContext(UserContext);
   const [err, setErr] = useState(false);
   const [patientId, setPatientId] = useState(null);
+  const { Title } = Typography;
 
   useEffect(() => {
     if (DBUser) {
@@ -69,6 +70,9 @@ const newInTheSystem = () => {
         <Navbar user={DBUser} />
       </Header>
       <Content>
+        <Title align="center" level={3} style={{ marginTop: "3%" }}>
+          Pacientes nuevos en el sistema
+        </Title>
         {patients && (
           <div>
             <Table
