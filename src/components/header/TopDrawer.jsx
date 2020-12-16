@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axiosInstance from "../axios";
-import { Card, Typography, Switch } from "antd";
+import { Card, Typography, Switch, Button } from "antd";
+import { UserContext } from "../../contexts/Context";
 
 const TopDrower = ({ userInfo }) => {
   const { role, name, lastname, systemName } = userInfo;
   const { Title } = Typography;
   // ROLES TO COMPARE: "ADMIN" "DOCTOR" "SYSTEMCHIEF" "SYSTEMRULES"
 
-const onChangeInfinitBedsOfSystem = () => {
-  axiosInstance
-    .put("/user/online-offline", {})
-    .then((res) => {
+  const onChangeInfinitBedsOfSystem = () => {
+    axiosInstance.put("/user/online-offline", {}).then((res) => {
       refreshData();
     });
-};
+  };
+
+  const { online, setOnline } = useContext(UserContext);
+
+  const toggle = () => {
+    console.log("toggle");
+    setOnline(!online);
+  };
 
   return (
     <Card
@@ -36,7 +42,8 @@ const onChangeInfinitBedsOfSystem = () => {
             <strong>En Linea:</strong>
           </label>
           <br />
-          <Switch checkedChildren="ON" unCheckedChildren="OFF" defaultChecked />
+          <Switch defaultChecked={online} onChange={toggle} />
+          <br />
         </div>
       ) : null}
     </Card>

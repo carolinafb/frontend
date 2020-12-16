@@ -6,13 +6,29 @@ const UserProvider = (props) => {
   let IS_SERVER = typeof window === "undefined";
   const HAS_STORAGE = !IS_SERVER && window.sessionStorage;
   let defaultUser = null;
+  let defaultOnline = true;
 
   if (HAS_STORAGE) {
     defaultUser = JSON.parse(sessionStorage.getItem("user"));
+    const isOnLine = sessionStorage.getItem("online") ? true : false;
+    if (isOnLine) defaultOnline = sessionStorage.getItem("online") == "true";
+    else {
+      sessionStorage.setItem("online", defaultOnline);
+    }
     console.log("se ejecuta el user provider", defaultUser);
   }
 
   const [DBUser, _setDBUser] = useState(defaultUser);
+  const [online, _setOnline] = useState(defaultOnline);
+
+  const setOnline = (data) => {
+    if (HAS_STORAGE) {
+      console.log("set online con valor ", data);
+      sessionStorage.setItem("online", data);
+    }
+    _setOnline(data);
+  };
+
   const setDBUser = (data) => {
     console.log("se llama al setDBUSER");
     if (HAS_STORAGE) {
@@ -44,6 +60,8 @@ const UserProvider = (props) => {
         setIdPatient,
         lastEvolution,
         setLastEvolution,
+        online,
+        setOnline,
       }}
     >
       {props.children}

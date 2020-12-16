@@ -1,4 +1,4 @@
-import { Drawer, Badge, Button, List } from "antd";
+import { Drawer, Button, List, Badge } from "antd";
 import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,19 +8,19 @@ import axiosInstance from "../axios";
 import TopDrawer from "./TopDrawer";
 import {
   BellFilled,
-  BellOutlined,
   LogoutOutlined,
   MenuOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
 
 const Navbar = () => {
   const router = useRouter();
   let buttonsToShow = [];
   const [visible, setVisible] = useState(false);
-  var { DBUser: user } = useContext(UserContext);
+  const { DBUser: user, online } = useContext(UserContext);
 
   const routes = {
-    ALERTAS: "/alerts",
+    ALERTAS: "",
     "INGRESAR PACIENTE": "/patient/search",
     "PACIENTES NUEVOS": "/patients/newInTheSystem",
     SISTEMAS: "",
@@ -66,9 +66,14 @@ const Navbar = () => {
   }
 
   const [alerts, setAlerts] = useState();
+  const [alertsVisibility, setAlertsVisibility] = useState(false);
 
   useEffect(() => {
-    if (user && (user.role == "DOCTOR" || user.role == "JEFE DE SISTEMA")) {
+    if (
+      online &&
+      user &&
+      (user.role == "DOCTOR" || user.role == "JEFE DE SISTEMA")
+    ) {
       axiosInstance.get("/alerts").then((response) => setAlerts(response.data));
     }
   }, []);
@@ -107,11 +112,14 @@ const Navbar = () => {
         </label>
       ) : null}
 
-      {user && (user.role == "DOCTOR" || user.role == "JEFE DE SISTEMA") && (
-        <Badge count={alerts ? alerts.length : 0} offset={[10, 10]}>
-          <BellFilled onClick={() => router.push("/alerts")} />
-        </Badge>
-      )}
+      {online &&
+        user &&
+        (user.role == "DOCTOR" || user.role == "JEFE DE SISTEMA") && (
+          <Badge count={alerts ? alerts.length : 0} offset={[10, 10]}>
+            <BellFilled onClick={() => router.push("/alerts")} />
+          </Badge>
+        )}
+      {!online && <BellOutlined />}
     </div>
   );
 };
