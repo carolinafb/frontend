@@ -33,10 +33,10 @@ const Navbar = () => {
     // Make a request for a user with a given ID
     axiosInstance
       .get("/logOut")
-      .then(res => {
+      .then((res) => {
         router.push(res.data.redirect);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         // handle error
         console.log(error);
       });
@@ -63,11 +63,11 @@ const Navbar = () => {
   const [alerts, setAlerts] = useState();
   const [alertsVisibility, setAlertsVisibility] = useState(false);
 
-  useEffect(
-    () =>
-      axiosInstance.get("/alerts").then(response => setAlerts(response.data)),
-    []
-  );
+  useEffect(() => {
+    if (user && (user.role == "DOCTOR" || user.role == "JEFE DE SISTEMA")) {
+      axiosInstance.get("/alerts").then((response) => setAlerts(response.data));
+    }
+  }, []);
   return (
     <div className="nav-color">
       <Button type="text" onClick={showDrawer} icon={<MenuOutlined />} />
@@ -87,7 +87,7 @@ const Navbar = () => {
         <List
           size="medium"
           dataSource={buttonsToShow}
-          renderItem={item => (
+          renderItem={(item) => (
             <List.Item>
               <Link href={routes[item]}>
                 <a>{item}</a>
@@ -103,7 +103,9 @@ const Navbar = () => {
         </label>
       ) : null}
 
-      <BellFilled onClick={() => setAlertsVisibility(!alertsVisibility)} />
+      {user && (user.role == "DOCTOR" || user.role == "JEFE DE SISTEMA") && (
+        <BellFilled onClick={() => setAlertsVisibility(!alertsVisibility)} />
+      )}
       {alertsVisibility && <AlertPanel alerts={alerts} />}
     </div>
   );

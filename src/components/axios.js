@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   timeout: 1000000,
   withCredentials: true,
 });
-axiosInstance.interceptors.response.use(function (response) {
+/*axiosInstance.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Do something with response data
   return response;
@@ -24,5 +24,5 @@ axiosInstance.interceptors.response.use(function (response) {
     default:
       return Promise.reject(error);
   }
-});
+});*/
 export default axiosInstance;
