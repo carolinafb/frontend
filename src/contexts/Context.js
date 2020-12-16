@@ -11,6 +11,7 @@ const UserProvider = (props) => {
     defaultUser = JSON.parse(sessionStorage.getItem("user"));
     console.log("se ejecuta el user provider", defaultUser);
   }
+
   const [DBUser, _setDBUser] = useState(defaultUser);
   const setDBUser = (data) => {
     console.log("se llama al setDBUSER");
