@@ -1,4 +1,4 @@
-import { Drawer, Button, List } from "antd";
+import { Drawer, Badge, Button, List } from "antd";
 import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,7 +6,12 @@ import AlertPanel from "src/components/doctors/AlertPanel";
 import { UserContext } from "../../contexts/Context";
 import axiosInstance from "../axios";
 import TopDrawer from "./TopDrawer";
-import { BellFilled, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+  BellFilled,
+  BellOutlined,
+  LogoutOutlined,
+  MenuOutlined,
+} from "@ant-design/icons";
 
 const Navbar = () => {
   const router = useRouter();
@@ -15,7 +20,7 @@ const Navbar = () => {
   var { DBUser: user } = useContext(UserContext);
 
   const routes = {
-    ALERTAS: "",
+    ALERTAS: "/alerts",
     "INGRESAR PACIENTE": "/patient/search",
     "PACIENTES NUEVOS": "/patients/newInTheSystem",
     SISTEMAS: "",
@@ -61,7 +66,6 @@ const Navbar = () => {
   }
 
   const [alerts, setAlerts] = useState();
-  const [alertsVisibility, setAlertsVisibility] = useState(false);
 
   useEffect(() => {
     if (user && (user.role == "DOCTOR" || user.role == "JEFE DE SISTEMA")) {
@@ -104,9 +108,10 @@ const Navbar = () => {
       ) : null}
 
       {user && (user.role == "DOCTOR" || user.role == "JEFE DE SISTEMA") && (
-        <BellFilled onClick={() => setAlertsVisibility(!alertsVisibility)} />
+        <Badge count={alerts ? alerts.length : 0} offset={[10, 10]}>
+          <BellFilled onClick={() => router.push("/alerts")} />
+        </Badge>
       )}
-      {alertsVisibility && <AlertPanel alerts={alerts} />}
     </div>
   );
 };

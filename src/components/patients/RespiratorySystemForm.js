@@ -63,9 +63,9 @@ const RespiratorySystemForm = ({ form }) => {
   );
   const [O2suplementaryType, setO2suplementaryType] = useState(
     lastEvolution != null
-      ? lastEvolution.maskWithReservoir === 1
+      ? lastEvolution.maskWithReservoir == 1
         ? "maskWithReservoir"
-        : lastEvolution.nasalOxygenCannula === 1
+        : lastEvolution.nasalOxygenCannula == 1
         ? "nasalOxygenCannula"
         : null
       : false
