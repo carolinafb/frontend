@@ -76,7 +76,7 @@ const RespiratorySystemForm = ({ form }) => {
 
   return (
     <Fragment>
-      {lastEvolution != false && (
+      {lastEvolution !== null && (
         <Form
           form={form}
           layout="vertical"
