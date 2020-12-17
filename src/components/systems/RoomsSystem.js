@@ -73,7 +73,14 @@ const RoomsSystem = ({ rooms, systemId }) => {
             </Button>
           )}
           {record["patientId"] && systemId === DBUser.systemId && (
-            <Button type="primary">Evolucionar</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                router.push("/patient/" + record["patientId"] + "/evolve");
+              }}
+            >
+              Evolucionar
+            </Button>
           )}
           {record["patientId"] && systemId === DBUser.systemId && (
             <Button
