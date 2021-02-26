@@ -8,6 +8,11 @@ The purpose of this app is an evaluation of the development process driven by cl
 UNLP - Facultad de informática
 Taller de Tecnologías de Producción de Software
 
+[Mooksups](https://whimsical.com/ttps-P4UYTJnB3wPNXvLYutAtgM)
+
+[Project documentation](https://docs.google.com/document/d/1VlzmOkXaMDMR8uLvUcoT99tKXN3IIoXaWl9b3GwRRwQ/edit?usp=sharing)
+
+
 ## Getting Started
 
 First, run the development server:
